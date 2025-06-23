@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WHS.Core.Dto;
+using WHS.Core.Dto.User;
 using WHS.Core.Response;
 using WHS.Repository.Interfaces;
 using WHS.Service.Interface;

@@ -6,13 +6,13 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using WHS.Core.Dto;
+using WHS.Core.Dto.User;
 using WHS.Core.ErrorHandle;
 using WHS.Core.Response;
 using WHS.Core.Session;
 using WHS.Repository.Interfaces;
 
-namespace WHS.Repository.Repository
+namespace WHS.Repository.Repository.User
 {
     public class UserRepository : IUserRepository
     {

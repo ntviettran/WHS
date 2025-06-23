@@ -8,15 +8,15 @@ namespace WHS.Core.Response
 {
     public class Response<T>
     {
-        public bool success { get; set; } 
-        public string message { get; set; }   
-        public T? data { get; set; }         
+        public bool IsSuccess { get; set; }
+        public string Message { get; set; }
+        public T? Data { get; set; }
 
-        public Response(bool i_success, string i_message, T? i_data = default)
+        public Response(bool success, string message, T? data = default)
         {
-            success = i_success;
-            message = i_message;
-            data = i_data;
+            IsSuccess = success;
+            Message = message;
+            Data = data;
         }
 
         public static Response<T> Success(T data, string message = "Success") => new Response<T>(true, message, data);

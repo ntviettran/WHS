@@ -102,7 +102,7 @@
             // 
             // receiveToggleBtn
             // 
-            receiveToggleBtn.BackColor = Color.RoyalBlue;
+            receiveToggleBtn.BackColor = Color.DodgerBlue;
             receiveToggleBtn.Dock = DockStyle.Top;
             receiveToggleBtn.FlatAppearance.BorderSize = 0;
             receiveToggleBtn.FlatStyle = FlatStyle.Flat;

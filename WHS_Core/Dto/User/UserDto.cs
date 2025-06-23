@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WHS.Core.Dto
+namespace WHS.Core.Dto.User
 {
     public class UserDto
     {
-        public string userName { get; set; } = string.Empty;
-        public string password { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
     }
 }
