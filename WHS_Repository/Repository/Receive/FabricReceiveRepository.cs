@@ -55,22 +55,22 @@ namespace WHS.Repository.Repository.Receive
 
                 // Bước 2: Thêm các giá trị thiếu vào datatable
                 // Thêm id_received vào DataTable
-                if (!detail.Columns.Contains("idReceived"))
-                    detail.Columns.Add("idReceived", typeof(int));
+                if (!detail.Columns.Contains("IdReceived"))
+                    detail.Columns.Add("IdReceived", typeof(int));
 
                 // Thêm created_by vào Datatable
-                if (!detail.Columns.Contains("createdBy"))
-                    detail.Columns.Add("createdBy", typeof(int));
+                if (!detail.Columns.Contains("CreatedBy"))
+                    detail.Columns.Add("CreatedBy", typeof(int));
 
                 // Thêm modified_by vào Datatable
-                if (!detail.Columns.Contains("modifiedBy"))
-                    detail.Columns.Add("modifiedBy", typeof(int));
+                if (!detail.Columns.Contains("ModifiedBy"))
+                    detail.Columns.Add("ModifiedBy", typeof(int));
 
                 foreach (DataRow row in detail.Rows)
                 {
-                    row["idReceived"] = id;
-                    row["createdBy"] = 0;
-                    row["modifiedBy"] = 0;
+                    row["IdReceived"] = id;
+                    row["CreatedBy"] = 0;
+                    row["ModifiedBy"] = 0;
                 }
 
                 // Bước3: Insert bảng con bằng SqlBulkCopy
@@ -79,20 +79,21 @@ namespace WHS.Repository.Repository.Receive
                     bulkCopy.DestinationTableName = "npl_fabric_detail";
 
                     // Ánh xạ cột
-                    bulkCopy.ColumnMappings.Add("idReceived", "id_npl_received");
-                    bulkCopy.ColumnMappings.Add("style", "style");
-                    bulkCopy.ColumnMappings.Add("color", "color");
-                    bulkCopy.ColumnMappings.Add("fabricType", "fabric_type");
-                    bulkCopy.ColumnMappings.Add("batch", "batch");
-                    bulkCopy.ColumnMappings.Add("fabricLength", "fabric_length");
-                    bulkCopy.ColumnMappings.Add("lengthUnit", "length_unit");
-                    bulkCopy.ColumnMappings.Add("fabricWeight", "fabric_weight");
-                    bulkCopy.ColumnMappings.Add("weightUnit", "weight_unit");
-                    bulkCopy.ColumnMappings.Add("rollWidth", "roll_width");
-                    bulkCopy.ColumnMappings.Add("widthUnit", "width_unit");
-                    bulkCopy.ColumnMappings.Add("fabricNumber", "fabric_number");
-                    bulkCopy.ColumnMappings.Add("createdBy", "created_by");
-                    bulkCopy.ColumnMappings.Add("modifiedBy", "modified_by");
+                    bulkCopy.ColumnMappings.Add("IdReceived", "id_npl_received");
+                    bulkCopy.ColumnMappings.Add("Style", "style");
+                    bulkCopy.ColumnMappings.Add("Color", "color");
+                    bulkCopy.ColumnMappings.Add("FabricType", "fabric_type");
+                    bulkCopy.ColumnMappings.Add("Batch", "batch");
+                    bulkCopy.ColumnMappings.Add("FabricLength", "fabric_length");
+                    bulkCopy.ColumnMappings.Add("LengthUnit", "length_unit");
+                    bulkCopy.ColumnMappings.Add("FabricWeight", "fabric_weight");
+                    bulkCopy.ColumnMappings.Add("WeightUnit", "weight_unit");
+                    bulkCopy.ColumnMappings.Add("RollWidth", "roll_width");
+                    bulkCopy.ColumnMappings.Add("WidthUnit", "width_unit");
+                    bulkCopy.ColumnMappings.Add("FabricNumber", "fabric_number");
+                    bulkCopy.ColumnMappings.Add("QuantityToReceived", "quantity_to_received");
+                    bulkCopy.ColumnMappings.Add("CreatedBy", "created_by");
+                    bulkCopy.ColumnMappings.Add("ModifiedBy", "modified_by");
 
                     await bulkCopy.WriteToServerAsync(detail);
                 }
@@ -235,7 +236,8 @@ namespace WHS.Repository.Repository.Receive
                         weight_unit as weightUnit,
                         roll_width as rollWidth,
                         width_unit as WidthUnit,
-                        fabric_number as FabricNumber
+                        fabric_number as FabricNumber,
+                        quantity_to_received as QuantityToReceived
                 from npl_fabric_detail
                 where id_npl_received = @ID";
 

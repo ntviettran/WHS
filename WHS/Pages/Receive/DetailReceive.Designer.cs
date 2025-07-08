@@ -30,7 +30,9 @@
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             panel1 = new Panel();
+            moSearchTxb = new TextBox();
             pagination = new WHS.Components.Pagination();
             addBtn = new Button();
             gridView = new DataGridView();
@@ -44,8 +46,6 @@
             quantityReceived = new DataGridViewTextBoxColumn();
             QuantityEstimate = new DataGridViewTextBoxColumn();
             label2 = new Label();
-            panel3 = new Panel();
-            moSearchTxb = new TextBox();
             panel2 = new Panel();
             typeContainer = new TableLayoutPanel();
             pldgBtn = new Button();
@@ -55,7 +55,6 @@
             label1 = new Label();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)gridView).BeginInit();
-            panel3.SuspendLayout();
             typeContainer.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -63,11 +62,11 @@
             // panel1
             // 
             panel1.BackColor = Color.WhiteSmoke;
+            panel1.Controls.Add(moSearchTxb);
             panel1.Controls.Add(pagination);
             panel1.Controls.Add(addBtn);
             panel1.Controls.Add(gridView);
             panel1.Controls.Add(label2);
-            panel1.Controls.Add(panel3);
             panel1.Controls.Add(panel2);
             panel1.Controls.Add(typeContainer);
             panel1.Controls.Add(tableLayoutPanel1);
@@ -76,6 +75,17 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(948, 715);
             panel1.TabIndex = 1;
+            // 
+            // moSearchTxb
+            // 
+            moSearchTxb.BorderStyle = BorderStyle.FixedSingle;
+            moSearchTxb.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            moSearchTxb.Location = new Point(55, 164);
+            moSearchTxb.Margin = new Padding(3, 4, 3, 4);
+            moSearchTxb.Name = "moSearchTxb";
+            moSearchTxb.Size = new Size(225, 38);
+            moSearchTxb.TabIndex = 0;
+            moSearchTxb.KeyDown += moSearchTxb_KeyDown;
             // 
             // pagination
             // 
@@ -91,10 +101,11 @@
             addBtn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             addBtn.BackColor = Color.Green;
             addBtn.FlatStyle = FlatStyle.Flat;
+            addBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             addBtn.ForeColor = Color.White;
-            addBtn.Location = new Point(851, 166);
+            addBtn.Location = new Point(815, 166);
             addBtn.Name = "addBtn";
-            addBtn.Size = new Size(94, 47);
+            addBtn.Size = new Size(130, 47);
             addBtn.TabIndex = 3;
             addBtn.Text = "Tạo mới";
             addBtn.UseVisualStyleBackColor = false;
@@ -109,7 +120,7 @@
             gridView.BackgroundColor = Color.White;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = Color.DodgerBlue;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dataGridViewCellStyle1.ForeColor = Color.White;
             dataGridViewCellStyle1.Padding = new Padding(0, 10, 0, 10);
             dataGridViewCellStyle1.SelectionBackColor = Color.DodgerBlue;
@@ -118,6 +129,14 @@
             gridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             gridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             gridView.Columns.AddRange(new DataGridViewColumn[] { id, mo, style, color, typeDetail, supplier, quantityToReceive, quantityReceived, QuantityEstimate });
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            gridView.DefaultCellStyle = dataGridViewCellStyle2;
             gridView.EnableHeadersVisualStyles = false;
             gridView.Location = new Point(1, 233);
             gridView.Name = "gridView";
@@ -125,8 +144,8 @@
             gridView.RowHeadersVisible = false;
             gridView.RowHeadersWidth = 51;
             gridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            gridView.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            gridView.RowsDefaultCellStyle = dataGridViewCellStyle3;
             gridView.RowTemplate.Height = 35;
             gridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             gridView.Size = new Size(947, 427);
@@ -217,35 +236,13 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.Black;
-            label2.Location = new Point(-3, 174);
+            label2.Location = new Point(-3, 166);
             label2.Name = "label2";
-            label2.Size = new Size(39, 23);
+            label2.Size = new Size(53, 31);
             label2.TabIndex = 1;
             label2.Text = "MO";
-            // 
-            // panel3
-            // 
-            panel3.BackColor = Color.White;
-            panel3.BorderStyle = BorderStyle.FixedSingle;
-            panel3.Controls.Add(moSearchTxb);
-            panel3.Location = new Point(42, 165);
-            panel3.Margin = new Padding(3, 4, 3, 4);
-            panel3.Name = "panel3";
-            panel3.Padding = new Padding(5);
-            panel3.Size = new Size(243, 45);
-            panel3.TabIndex = 9;
-            // 
-            // moSearchTxb
-            // 
-            moSearchTxb.BorderStyle = BorderStyle.None;
-            moSearchTxb.Location = new Point(8, 11);
-            moSearchTxb.Margin = new Padding(3, 4, 3, 4);
-            moSearchTxb.Name = "moSearchTxb";
-            moSearchTxb.Size = new Size(225, 20);
-            moSearchTxb.TabIndex = 0;
-            moSearchTxb.KeyDown += moSearchTxb_KeyDown;
             // 
             // panel2
             // 
@@ -278,6 +275,7 @@
             pldgBtn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             pldgBtn.BackColor = Color.DarkGray;
             pldgBtn.FlatStyle = FlatStyle.Flat;
+            pldgBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pldgBtn.ForeColor = Color.White;
             pldgBtn.Location = new Point(851, 3);
             pldgBtn.Name = "pldgBtn";
@@ -292,6 +290,7 @@
             plspBtn.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
             plspBtn.BackColor = Color.DarkGray;
             plspBtn.FlatStyle = FlatStyle.Flat;
+            plspBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             plspBtn.ForeColor = Color.White;
             plspBtn.Location = new Point(425, 3);
             plspBtn.Name = "plspBtn";
@@ -305,6 +304,7 @@
             // 
             fabricBtn.BackColor = Color.DodgerBlue;
             fabricBtn.FlatStyle = FlatStyle.Flat;
+            fabricBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             fabricBtn.ForeColor = Color.White;
             fabricBtn.Location = new Point(3, 3);
             fabricBtn.Name = "fabricBtn";
@@ -354,8 +354,6 @@
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)gridView).EndInit();
-            panel3.ResumeLayout(false);
-            panel3.PerformLayout();
             typeContainer.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
@@ -372,7 +370,6 @@
         private Button fabricBtn;
         private Panel panel2;
         private Label label2;
-        private Panel panel3;
         private TextBox moSearchTxb;
         private DataGridView gridView;
         private Button addBtn;

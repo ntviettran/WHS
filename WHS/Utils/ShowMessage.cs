@@ -8,14 +8,19 @@ namespace WHS.Core.Utils
 {
     public static class ShowMessage
     {
-        public static void Error(string message)
+        public static DialogResult Error(string message)
         {
-            MessageBox.Show(message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return MessageBox.Show(message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        public static void Success(string message)
+        public static DialogResult Success(string message)
         {
-            MessageBox.Show(message, "Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return MessageBox.Show(message, "Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        public static DialogResult Warning(string message)
+        {
+            return MessageBox.Show(message, "Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

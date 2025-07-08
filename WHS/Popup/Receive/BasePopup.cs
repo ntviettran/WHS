@@ -29,6 +29,9 @@ namespace WHS.Popup
         protected Button _addBtn = default!;
         protected Button _cancelBtn = default!;
 
+        public event EventHandler? SaveSuccess;
+
+        #region Setup
         public BasePopup()
         {
 
@@ -45,8 +48,19 @@ namespace WHS.Popup
             InitUI();
         }
 
+        /// <summary>
+        /// Hàm InitUI, xử lí ở các popup con
+        /// </summary>
         protected virtual void InitUI()
         {
+        }
+
+        /// <summary>
+        /// Sự kiện raise lên khi lưu thành công
+        /// </summary>
+        protected void RaiseSaveSuccess()
+        {
+            SaveSuccess?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -58,6 +72,7 @@ namespace WHS.Popup
 
             _gridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             _gridView.ScrollBars = ScrollBars.Both;
+            _gridView.AutoGenerateColumns = false;
 
             foreach (DataGridViewColumn col in _gridView.Columns)
             {
@@ -65,7 +80,9 @@ namespace WHS.Popup
                 col.FillWeight = 1;
             }
         }
+        #endregion
 
+        #region Excel
         /// <summary>
         /// Sự kiện xuất file excel mẫu
         /// </summary>
@@ -116,7 +133,9 @@ namespace WHS.Popup
                 }
             }
         }
+        #endregion
 
+        #region RegistEvent
         /// <summary>
         /// Sự kiện đăng kí click tải file mẫu
         /// </summary>
@@ -193,5 +212,108 @@ namespace WHS.Popup
                 };
             }
         }
+        #endregion
+
+        #region Validate
+        /// <summary>
+        /// Validate những input truyền vào 
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <param name="quantityTxb"></param>
+        /// <param name="estimateQuantityTxb"></param>
+        /// <returns></returns>
+        protected bool ValidateInput(Dictionary<string, TextBox> dict, TextBox quantityTxb, TextBox estimateQuantityTxb)
+        {
+            List<string> missingFields = new List<string>();
+
+            foreach (var field in dict)
+            {
+                if (string.IsNullOrWhiteSpace(field.Value.Text))
+                {
+                    missingFields.Add($"- {field.Key}");
+                }
+            }
+
+            List<string> numberErrors = new List<string>();
+
+            bool validQty = int.TryParse(quantityTxb.Text.Trim(), out int qty);
+            bool validEst = int.TryParse(estimateQuantityTxb.Text.Trim(), out int estQty);
+
+            if (!validQty)
+            {
+                numberErrors.Add("- Số lượng phải là số nguyên hợp lệ");
+            }
+
+            if (!validEst)
+            {
+                numberErrors.Add("- Số lượng dự kiến phải là số nguyên hợp lệ");
+            }
+
+            if (validQty && validEst && estQty > qty)
+            {
+                numberErrors.Add("- Số lượng dự kiến không được lớn hơn Số lượng");
+            }
+
+            // Gộp thông báo lỗi
+            if (missingFields.Count > 0 || numberErrors.Count > 0)
+            {
+                string message = "Vui lòng kiểm tra các lỗi sau:\n";
+
+                if (missingFields.Count > 0)
+                {
+                    message += "\nThiếu thông tin:\n" + string.Join("\n", missingFields);
+                }
+
+                if (numberErrors.Count > 0)
+                {
+                    message += "\n\nLỗi định dạng:\n" + string.Join("\n", numberErrors);
+                }
+
+                MessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Validate dữ liệu chi tiết của NPL
+        /// </summary>
+        /// <returns></returns>
+        protected bool ValidateNPLDetail(List<string> numCols)
+        {
+            if (_dataTable == null || _dataTable.Rows.Count == 0)
+            {
+                MessageBox.Show("Cần thêm dữ liệu chi tiết của NPL", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            List<string> errorMessages = new List<string>();
+            int rowIndex = 1;
+
+            foreach (DataRow row in _dataTable.Rows)
+            {
+                foreach (string col in numCols)
+                {
+                    string str = row[col]?.ToString()?.Trim() ?? "";
+                    if (!double.TryParse(str, out _))
+                    {
+                        errorMessages.Add($"- Dòng {rowIndex}: Cột '{_columns[col]}' không phải là số.");
+                    }
+                }
+
+                rowIndex++;
+            }
+
+            if (errorMessages.Count > 0)
+            {
+                string message = "Dữ liệu không hợp lệ:\n" + string.Join("\n", errorMessages);
+                MessageBox.Show(message, "Lỗi dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
     }
 }

@@ -52,20 +52,21 @@
             panel3.Controls.Add(label3);
             panel3.Controls.Add(label2);
             panel3.Dock = DockStyle.Right;
-            panel3.Location = new Point(519, 0);
+            panel3.Location = new Point(468, 0);
             panel3.Margin = new Padding(3, 4, 3, 4);
             panel3.Name = "panel3";
-            panel3.Size = new Size(135, 46);
+            panel3.Size = new Size(186, 46);
             panel3.TabIndex = 7;
             // 
             // pageNumeric
             // 
             pageNumeric.AutoSize = true;
             pageNumeric.BackColor = Color.WhiteSmoke;
-            pageNumeric.Location = new Point(45, 11);
+            pageNumeric.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pageNumeric.Location = new Point(71, 4);
             pageNumeric.Margin = new Padding(3, 4, 3, 4);
             pageNumeric.Name = "pageNumeric";
-            pageNumeric.Size = new Size(57, 27);
+            pageNumeric.Size = new Size(70, 38);
             pageNumeric.TabIndex = 8;
             pageNumeric.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
@@ -73,9 +74,10 @@
             // 
             totalPageLabel.AutoSize = true;
             totalPageLabel.BackColor = Color.WhiteSmoke;
-            totalPageLabel.Location = new Point(115, 15);
+            totalPageLabel.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            totalPageLabel.Location = new Point(157, 5);
             totalPageLabel.Name = "totalPageLabel";
-            totalPageLabel.Size = new Size(17, 20);
+            totalPageLabel.Size = new Size(26, 31);
             totalPageLabel.TabIndex = 7;
             totalPageLabel.Text = "1";
             // 
@@ -83,9 +85,10 @@
             // 
             label3.AutoSize = true;
             label3.BackColor = Color.WhiteSmoke;
-            label3.Location = new Point(102, 15);
+            label3.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label3.Location = new Point(140, 5);
             label3.Name = "label3";
-            label3.Size = new Size(15, 20);
+            label3.Size = new Size(23, 31);
             label3.TabIndex = 6;
             label3.Text = "/";
             // 
@@ -93,9 +96,10 @@
             // 
             label2.AutoSize = true;
             label2.BackColor = Color.WhiteSmoke;
-            label2.Location = new Point(3, 13);
+            label2.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Location = new Point(3, 5);
             label2.Name = "label2";
-            label2.Size = new Size(46, 20);
+            label2.Size = new Size(71, 31);
             label2.TabIndex = 5;
             label2.Text = "Trang";
             // 
@@ -107,7 +111,7 @@
             nextBtn.Dock = DockStyle.Right;
             nextBtn.FlatStyle = FlatStyle.Flat;
             nextBtn.ForeColor = Color.Transparent;
-            nextBtn.Location = new Point(468, 0);
+            nextBtn.Location = new Point(417, 0);
             nextBtn.Name = "nextBtn";
             nextBtn.Size = new Size(51, 46);
             nextBtn.TabIndex = 8;
@@ -121,7 +125,7 @@
             prevBtn.Dock = DockStyle.Right;
             prevBtn.FlatStyle = FlatStyle.Flat;
             prevBtn.ForeColor = Color.Transparent;
-            prevBtn.Location = new Point(417, 0);
+            prevBtn.Location = new Point(366, 0);
             prevBtn.Name = "prevBtn";
             prevBtn.Size = new Size(51, 46);
             prevBtn.TabIndex = 9;
@@ -135,25 +139,26 @@
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(82, 46);
+            panel1.Size = new Size(102, 46);
             panel1.TabIndex = 10;
             // 
             // recordLabel
             // 
             recordLabel.AutoSize = true;
-            recordLabel.Location = new Point(62, 13);
+            recordLabel.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            recordLabel.Location = new Point(73, 9);
             recordLabel.Name = "recordLabel";
-            recordLabel.Size = new Size(17, 20);
+            recordLabel.Size = new Size(26, 31);
             recordLabel.TabIndex = 1;
             recordLabel.Text = "0";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.Location = new Point(2, 9);
             label1.Name = "label1";
-            label1.Size = new Size(61, 25);
+            label1.Size = new Size(75, 31);
             label1.TabIndex = 0;
             label1.Text = "Tổng:";
             // 

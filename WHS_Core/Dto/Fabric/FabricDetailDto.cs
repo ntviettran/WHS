@@ -20,5 +20,6 @@ namespace WHS.Core.Dto.Fabric
         public float RollWidth { get; set; }
         public string WidthUnit { get; set; } = String.Empty;
         public int FabricNumber { get; set; }
+        public int QuantityToReceived { get; set; }
     }
 }

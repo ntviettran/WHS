@@ -22,7 +22,7 @@ using WHS.Repository.Repository.Receive;
 
 namespace WHS.Service.Services.Receive
 {
-    public class ReceiveService<T, D> : BaseReceive, IReceiveService<T, D>
+    public class ReceiveService<T, D> : BaseReceiveService, IReceiveService<T, D>
     {
         protected IReceiveRepository<T, D> _repository;
 

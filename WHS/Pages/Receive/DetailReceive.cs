@@ -15,6 +15,7 @@ using WHS.Core.Factory;
 using WHS.Core.Query.Base;
 using WHS.Core.Query.Receive;
 using WHS.Core.Response;
+using WHS.Core.Utils;
 using WHS.Factory;
 using WHS.Forms;
 using WHS.Popup;
@@ -25,8 +26,9 @@ namespace WHS.Pages.Receive
     public partial class DetailReceive : UserControl
     {
         private IReceiveService _receiveService;
-        private E_NPLType _type;
+        private E_NPLType _type = E_NPLType.FABRIC;
         private int _currentPage = 1;
+        private Dictionary<string, string> _columns = new Dictionary<string, string>();
 
         public DetailReceive()
         {
@@ -35,6 +37,30 @@ namespace WHS.Pages.Receive
         }
 
         #region Setup
+
+        /// <summary>
+        /// Vẽ lại các cột của gridView
+        /// </summary>
+        private void SetColumnGridView()
+        {
+            gridView.DataSource = null;
+            gridView.AutoGenerateColumns = false;
+            gridView.Columns.Clear();
+
+            // Kích hoạt autofill
+            gridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            foreach (var column in _columns)
+            {
+                gridView.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    Name = column.Key,
+                    HeaderText = column.Value,
+                    DataPropertyName = column.Key
+                });
+            }
+        }
+
         /// <summary>
         /// Sự kiện load form
         /// </summary>
@@ -42,7 +68,7 @@ namespace WHS.Pages.Receive
         /// <param name="e"></param>
         private async void DetailReceive_Load(object sender, EventArgs e)
         {
-            await FillDataGridView();
+            await LoadDataGridView();
         }
         #endregion
 
@@ -80,7 +106,21 @@ namespace WHS.Pages.Receive
             ActiveTypeBtn(fabricBtn);
 
             _currentPage = 1;
-            await FillDataGridView();
+            _columns = new Dictionary<string, string>()
+            {
+                {"ID", "ID"},
+                {"Mo", "MO"},
+                {"Style", "Style"},
+                {"Color", "Màu"},
+                {"TypeDetail", "Loại vải"},
+                {"Supplier", "Nhà cung cấp"},
+                {"QuantityToReceive", "Số lượng cần nhận"},
+                {"QuantityReceived", "Số lượng đã nhận"},
+                {"QuantityEstimate", "Sô lượng dự kiến nhận"}
+            };
+
+            SetColumnGridView();
+            await LoadDataGridView();
         }
 
         /// <summary>
@@ -94,7 +134,19 @@ namespace WHS.Pages.Receive
             ActiveTypeBtn(plspBtn);
 
             _currentPage = 1;
-            await FillDataGridView();
+            _columns = new Dictionary<string, string>()
+            {
+                {"ID", "ID"},
+                {"Mo", "MO"},
+                {"TypeDetail", "Loại PL"},
+                {"Supplier", "Nhà cung cấp"},
+                {"QuantityToReceive", "Số lượng cần nhận"},
+                {"QuantityReceived", "Số lượng đã nhận"},
+                {"QuantityEstimate", "Sô lượng dự kiến nhận"}
+            };
+
+            SetColumnGridView();
+            await LoadDataGridView();
         }
 
         /// <summary>
@@ -108,7 +160,19 @@ namespace WHS.Pages.Receive
             ActiveTypeBtn(pldgBtn);
 
             _currentPage = 1;
-            await FillDataGridView();
+            _columns = new Dictionary<string, string>()
+            {
+                {"ID", "ID"},
+                {"Mo", "MO"},
+                {"TypeDetail", "Loại PL"},
+                {"Supplier", "Nhà cung cấp"},
+                {"QuantityToReceive", "Số lượng cần nhận"},
+                {"QuantityReceived", "Số lượng đã nhận"},
+                {"QuantityEstimate", "Sô lượng dự kiến nhận"}
+            };
+
+            SetColumnGridView();
+            await LoadDataGridView();
         }
         #endregion
 
@@ -124,7 +188,7 @@ namespace WHS.Pages.Receive
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
-                await FillDataGridView();
+                await LoadDataGridView();
             }
         }
 
@@ -132,7 +196,7 @@ namespace WHS.Pages.Receive
         /// Fill dữ liệu vào datagridview
         /// </summary>
         /// <returns></returns>
-        private async Task FillDataGridView()
+        private async Task LoadDataGridView()
         {
             // Set up parameter
             Paginate paginate = new Paginate()
@@ -149,8 +213,12 @@ namespace WHS.Pages.Receive
 
             // Call service
             Response<PageDto<ReceiveDto>> res = await _receiveService.GetReceiveAsync(paginate, receiveSearch);
-
-            if (!res.IsSuccess) return;
+            
+            if (!res.IsSuccess)
+            {
+                ShowMessage.Error(res.Message);
+                return;
+            }
 
             if (res.Data != null && res.Data.PageData != null)
             {
@@ -168,7 +236,7 @@ namespace WHS.Pages.Receive
         /// <param name="e"></param>
         private void addBtn_Click(object sender, EventArgs e)
         {
-            Form? popup = _type switch
+            BasePopup? popup = _type switch
             {
                 E_NPLType.FABRIC => FormFactory.CreateForm<FabricPopup>(),
                 E_NPLType.PLSP => FormFactory.CreateForm<PLSPPopup>(),
@@ -176,7 +244,20 @@ namespace WHS.Pages.Receive
                 _ => null
             };
 
-            popup?.Show();
+            if (popup != null) { 
+                popup.Show();
+                popup.SaveSuccess += Popup_SaveSuccess;
+            }
+        }
+
+        /// <summary>
+        /// Load dữ liệu mới khi mà lưu dữ liệu ở popup thành công
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void Popup_SaveSuccess(object? sender, EventArgs e)
+        {
+            await LoadDataGridView(); 
         }
 
         /// <summary>
@@ -220,7 +301,7 @@ namespace WHS.Pages.Receive
         private async void pagination_PageChanged(object sender, int currentPage)
         {
             _currentPage = currentPage;
-            await FillDataGridView();
+            await LoadDataGridView();
 
         }
         #endregion

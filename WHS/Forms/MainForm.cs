@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using WHS.Pages.Receive;
+using WHS.Pages.Transfer;
 
 namespace WHS.Forms
 {
@@ -29,8 +30,8 @@ namespace WHS.Forms
         private void MainForm_Load(object sender, EventArgs e)
         {
             receiveSubMenu.Visible = false;
+            coordinateSubMenu.Visible = false;
         }
-
 
         /// <summary>
         /// Set lại màu mặc định cho các button trong parent
@@ -55,6 +56,10 @@ namespace WHS.Forms
             }
         }
 
+        /// <summary>
+        /// Set màu cho active button
+        /// </summary>
+        /// <param name="button"></param>
         private void ActiveButton(Button button)
         {
             SetBgButtons(sidebar);
@@ -96,6 +101,7 @@ namespace WHS.Forms
         private void ShowUserControl(UserControl newControl)
         {
             if (mainLayout == null) return;
+            if (_currentControl != null && _currentControl.GetType() == newControl.GetType()) return;
 
             // Nếu có màn nào đang chạy thì clear 
             if (_currentControl != null)
@@ -113,7 +119,7 @@ namespace WHS.Forms
         }
 
         /// <summary>
-        /// Sự kiện nhấn vào button cha "NPL cần nhận"
+        /// Sự kiện nhấn vào button toggle "NPL cần nhận"
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -135,6 +141,30 @@ namespace WHS.Forms
 
             UserControl detailReceive = Program.ServiceProvider.GetRequiredService<DetailReceive>();
             ShowUserControl(detailReceive);
+        }
+
+        /// <summary>
+        /// Sự kiện bấm vào button toggle "Điều phối"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void coordinateToggleBtn_Click(object sender, EventArgs e)
+        {
+            ShowSubMenu(coordinateSubMenu);
+        }
+
+        /// <summary>
+        /// Sự kiện bấm vào button "Chuyển NPL"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void transferNPLBtn_Click(object sender, EventArgs e)
+        {
+            if (Program.ServiceProvider == null) return;
+            ActiveButton(transferNPLBtn);
+
+            UserControl transferNPLPage = Program.ServiceProvider.GetRequiredService<TransferNPLPage>();
+            ShowUserControl(transferNPLPage);
         }
     }
 }

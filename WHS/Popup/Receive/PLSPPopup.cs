@@ -9,28 +9,33 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WHS.Core.Dto.Fabric;
+using WHS.Core.Dto.PLDG;
 using WHS.Core.Dto.PLSP;
+using WHS.Core.Enums;
 using WHS.Core.Response;
+using WHS.Core.Utils;
 using WHS.Service.Interface;
 
 namespace WHS.Popup
 {
     public partial class PLSPPopup : BasePopup
     {
-        public PLSPPopup(IReceiveService<PlspDto, FabricDetailDto> receiveService)
+        private readonly IReceiveService<PlspDto, PlspDetailDto> _plspService;
+        public PLSPPopup(IReceiveService<PlspDto, PlspDetailDto> receiveService) : base(receiveService)
         {
 
             InitializeComponent();
 
-            _receiveService = receiveService;
+            _plspService = receiveService;
             _columns = new Dictionary<string, string>()
             {
-                {"plsp_type", "Loại phụ liệu"},
-                {"plsp_code", "Mã phụ liệu"},
-                {"npl_color", "Màu"},
-                {"market_code", "Mã thị trường"},
-                {"size", "Kích thước"},
-                {"plsp_color", "Màu sản phẩm"}
+                {"PlspType", "Loại phụ liệu"},
+                {"PlspCode", "Mã phụ liệu"},
+                {"NplColor", "Màu"},
+                {"MarketCode", "Mã thị trường"},
+                {"Size", "Kích thước"},
+                {"PlspColor", "Màu sản phẩm"},
+                {"QuantityToReceived", "Số lượng cần nhận"}
             };
 
             _gridView = this.gridView;
@@ -44,5 +49,136 @@ namespace WHS.Popup
             RegisterCancelButtonEvent();
             RegisterDeleteDetailEvent();
         }
+
+        #region setup
+
+        /// <summary>
+        /// Setup load form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PLSPPopup_Load(object sender, EventArgs e)
+        {
+            if (_statusForm == E_StatusForm.ADD)
+            {
+                moTxb.Focus();
+            }
+            else
+            {
+                typeTxb.Focus();
+            }
+        }
+
+        /// <summary>
+        /// Nếu là trạng thái edit thì fill data vào input
+        /// </summary>
+        protected override void InitUI()
+        {
+            if (_statusForm == E_StatusForm.ADD) return;
+
+            InitInput();
+            InitGridView();
+        }
+
+        /// <summary>
+        /// Fill giá trị cho input khi ở chế độ edit
+        /// </summary>
+        private void InitInput()
+        {
+            if (_statusForm == E_StatusForm.ADD) return;
+
+            moTxb.Text = _receiveData.MO;
+            moTxb.ReadOnly = true;
+
+            typeTxb.Text = _receiveData.TypeDetail;
+            supplierTxb.Text = _receiveData.Supplier;
+            quantityTxb.Text = _receiveData.QuantityToReceive.ToString();
+            estimateQuantityTxb.Text = _receiveData.QuantityEstimate.ToString();
+        }
+
+        /// <summary>
+        /// Fill bảng dataGridView
+        /// </summary>
+        private async void InitGridView()
+        {
+            if (_statusForm == E_StatusForm.ADD) return;
+            if (_receiveData == null) return;
+
+            Response<List<PlspDetailDto>> res = await _plspService.GetReceiveDetailAsync(_receiveData.Id);
+
+            if (!res.IsSuccess)
+            {
+                ShowMessage.Error(res.Message);
+                return;
+            }
+
+            if (res.Data != null)
+            {
+                gridView.DataSource = res.Data;
+                gridView.ClearSelection();
+            }
+        }
+
+        #endregion
+
+        #region save
+        /// <summary>
+        /// Sự kiện click save form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void saveBtn_Click(object sender, EventArgs e)
+        {
+            // Bước1: Validate
+            var requiredFields = new Dictionary<string, TextBox>
+            {
+                { "MO", moTxb },
+                { "Loaị phụ liệu", typeTxb },
+                { "Nhà cung cấp", supplierTxb }
+            };
+            bool validateInput = ValidateInput(requiredFields, quantityTxb, estimateQuantityTxb);
+            if (!validateInput) return;
+
+            List<string> numCols = new List<string>() { "QuantityToReceived" };
+            bool validateDetail = ValidateNPLDetail(numCols);
+            if (!validateDetail) return;
+
+            // Bước2: Khai báo dữ liệu, gọi service create
+            PlspDto pldg = new PlspDto()
+            {
+                MO = moTxb.Text,
+                Type = typeTxb.Text,
+                Supplier = supplierTxb.Text,
+                QuantityToReceive = int.Parse(quantityTxb.Text),
+                QuantityEstimate = int.Parse(estimateQuantityTxb.Text),
+            };
+
+            Response<int> res;
+
+            if (_statusForm == E_StatusForm.ADD)
+            {
+                res = await _plspService.CreateReceiveAsync(pldg, _dataTable);
+            }
+            else
+            {
+                res = await _plspService.UpdateReceiveAsync(_receiveData.Id, pldg, _dataTable);
+            }
+
+            // Bước3: Xử lí message trả về
+            if (!res.IsSuccess)
+            {
+                MessageBox.Show(res.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            DialogResult result = ShowMessage.Success(res.Message);
+            if (result == DialogResult.OK)
+            {
+                RaiseSaveSuccess();
+                this.Close();
+            }
+        }
+
+        #endregion
     }
 }

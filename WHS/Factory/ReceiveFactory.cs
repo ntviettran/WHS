@@ -24,7 +24,7 @@ namespace WHS.Factory
             {
                 E_NPLType.FABRIC => Program.ServiceProvider!.GetRequiredService<IReceiveService<FabricDto, FabricDetailDto>>(),
                 E_NPLType.PLSP => Program.ServiceProvider!.GetRequiredService<IReceiveService<PlspDto, PlspDetailDto>>(),
-                E_NPLType.PLDG => Program.ServiceProvider!.GetRequiredService<IReceiveService<PlspDto, PldgDetailDto>>(),
+                E_NPLType.PLDG => Program.ServiceProvider!.GetRequiredService<IReceiveService<PldgDto, PldgDetailDto>>(),
                 _ => throw new NotImplementedException($"No service registered for type: {type}")
             };
         }

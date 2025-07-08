@@ -21,7 +21,7 @@ namespace WHS.Popup
     {
         private readonly IReceiveService<FabricDto, FabricDetailDto> _fabricService;
 
-        public FabricPopup(IReceiveService<FabricDto, FabricDetailDto> receiveService)
+        public FabricPopup(IReceiveService<FabricDto, FabricDetailDto> receiveService) : base(receiveService)
         {
             InitializeComponent();
 
@@ -29,17 +29,18 @@ namespace WHS.Popup
 
             _columns = new Dictionary<string, string>()
             {
-                {"fabricNumber", "Cuộn số"},
-                {"style", "Style"},
-                {"color", "Màu"},
-                {"fabricType", "Loại vải"},
-                {"batch", "Lót"},
-                {"fabricLength", "Chiều dài"},
-                {"lengthUnit", "Đơn vị chiều dài"},
-                {"fabricWeight", "Khối lượng"},
-                {"weightUnit", "Đơn vị khối lượng"},
-                {"rollWidth", "Khổ"},
-                {"widthUnit", "Đơn vị khổ"}
+                {"FabricNumber", "Cuộn số"},
+                {"Style", "Style"},
+                {"Color", "Màu"},
+                {"FabricType", "Loại vải"},
+                {"Batch", "Lót"},
+                {"FabricLength", "Chiều dài"},
+                {"LengthUnit", "Đơn vị chiều dài"},
+                {"FabricWeight", "Khối lượng"},
+                {"WeightUnit", "Đơn vị khối lượng"},
+                {"RollWidth", "Khổ"},
+                {"WidthUnit", "Đơn vị khổ"},
+                {"QuantityToReceived", "Số lượng cần nhận"},
             };
             _gridView = this.gridView;
             _sampleBtn = this.sampleFileBtn;
@@ -90,8 +91,6 @@ namespace WHS.Popup
 
             moTxb.Text = _receiveData.MO;
             moTxb.ReadOnly = true;
-            moTxb.BackColor = Color.LightGray;
-            moTxbContainer.BackColor = Color.LightGray;
 
             styleTxb.Text = _receiveData.Style;
             colorTxb.Text = _receiveData.Color;
@@ -125,120 +124,7 @@ namespace WHS.Popup
         }
 
         #endregion
-
-        #region validate
-        /// <summary>
-        /// Validate input điền vào 
-        /// </summary>
-        /// <returns></returns>
-        private bool ValidateInput()
-        {
-            var requiredFields = new Dictionary<string, TextBox>
-            {
-                { "MO", moTxb },
-                { "Style", styleTxb },
-                { "Màu", colorTxb },
-                { "Loại vải", fabricTypeTxb },
-                { "Nhà cung cấp", supplierTxb }
-            };
-
-            List<string> missingFields = new List<string>();
-
-            foreach (var field in requiredFields)
-            {
-                if (string.IsNullOrWhiteSpace(field.Value.Text))
-                {
-                    missingFields.Add($"- {field.Key}");
-                }
-            }
-
-            List<string> numberErrors = new List<string>();
-
-            bool validQty = int.TryParse(quantityTxb.Text.Trim(), out int qty);
-            bool validEst = int.TryParse(estimateQuantityTxb.Text.Trim(), out int estQty);
-
-            if (!validQty)
-            {
-                numberErrors.Add("- Số lượng phải là số nguyên hợp lệ");
-            }
-
-            if (!validEst)
-            {
-                numberErrors.Add("- Số lượng dự kiến phải là số nguyên hợp lệ");
-            }
-
-            if (validQty && validEst && estQty > qty)
-            {
-                numberErrors.Add("- Số lượng dự kiến không được lớn hơn Số lượng");
-            }
-
-            // Gộp thông báo lỗi
-            if (missingFields.Count > 0 || numberErrors.Count > 0)
-            {
-                string message = "Vui lòng kiểm tra các lỗi sau:\n";
-
-                if (missingFields.Count > 0)
-                {
-                    message += "\nThiếu thông tin:\n" + string.Join("\n", missingFields);
-                }
-
-                if (numberErrors.Count > 0)
-                {
-                    message += "\n\nLỗi định dạng:\n" + string.Join("\n", numberErrors);
-                }
-
-                MessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Validate dữ liệu chi tiết của NPL
-        /// </summary>
-        /// <returns></returns>
-        private bool ValiateNPLDetail()
-        {
-            if (_dataTable == null || _dataTable.Rows.Count == 0)
-            {
-                MessageBox.Show("Cần thêm dữ liệu chi tiết của NPL", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            List<string> errorMessages = new List<string>();
-            int rowIndex = 1;
-
-            foreach (DataRow row in _dataTable.Rows)
-            {
-                // Check fabric_weight
-                string weightStr = row["fabricWeight"]?.ToString()?.Trim() ?? "";
-                if (!double.TryParse(weightStr, out _))
-                {
-                    errorMessages.Add($"- Dòng {rowIndex}: Cột '{_columns["fabricWeight"]}' không phải là số.");
-                }
-
-                // Check roll_width
-                string widthStr = row["rollWidth"]?.ToString()?.Trim() ?? "";
-                if (!double.TryParse(widthStr, out _))
-                {
-                    errorMessages.Add($"- Dòng {rowIndex}: Cột '{_columns["rollWidth"]}' không phải là số.");
-                }
-
-                rowIndex++;
-            }
-
-            if (errorMessages.Count > 0)
-            {
-                string message = "Dữ liệu không hợp lệ:\n" + string.Join("\n", errorMessages);
-                MessageBox.Show(message, "Lỗi dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-
-            return true;
-        }
-        #endregion
-
+        
         #region save
         /// <summary>
         /// Sự kiện click save form
@@ -248,10 +134,19 @@ namespace WHS.Popup
         private async void saveBtn_Click(object sender, EventArgs e)
         {
             // Bước1: Validate
-            bool validateInput = ValidateInput();
+            var requiredFields = new Dictionary<string, TextBox>
+            {
+                { "MO", moTxb },
+                { "Style", styleTxb },
+                { "Màu", colorTxb },
+                { "Loại vải", fabricTypeTxb },
+                { "Nhà cung cấp", supplierTxb }
+            };
+            bool validateInput = ValidateInput(requiredFields, quantityTxb, estimateQuantityTxb);
             if (!validateInput) return;
 
-            bool validateDetail = ValiateNPLDetail();
+            List<string> numCols = new List<string>() { "FabricWeight", "RollWidth", "QuantityToReceived"};
+            bool validateDetail = ValidateNPLDetail(numCols);
             if (!validateDetail) return;
 
             // Bước2: Khai báo dữ liệu, gọi service create
@@ -283,7 +178,11 @@ namespace WHS.Popup
                 return;
             }
 
-            this.Close();
+            DialogResult result = ShowMessage.Success(res.Message);
+            if (result == DialogResult.OK) { 
+                RaiseSaveSuccess();
+                this.Close();            
+            }
         }
         #endregion
     }

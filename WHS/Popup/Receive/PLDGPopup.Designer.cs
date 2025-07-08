@@ -28,87 +28,66 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PLDGPopup));
-            moTxbContainer = new Panel();
             moTxb = new TextBox();
             panel2 = new Panel();
             sampleFileBtn = new Button();
             cancelBtn = new Button();
-            button1 = new Button();
+            saveBtn = new Button();
             addBtn = new Button();
             label9 = new Label();
             gridView = new DataGridView();
-            pldg_type = new DataGridViewTextBoxColumn();
-            pack_code = new DataGridViewTextBoxColumn();
-            po_code = new DataGridViewTextBoxColumn();
-            quantity_per_carton = new DataGridViewTextBoxColumn();
-            net_weight = new DataGridViewTextBoxColumn();
-            gross_weight = new DataGridViewTextBoxColumn();
+            PldgType = new DataGridViewTextBoxColumn();
+            PackCode = new DataGridViewTextBoxColumn();
+            PoCode = new DataGridViewTextBoxColumn();
+            QuantityPerCarton = new DataGridViewTextBoxColumn();
+            NetWeight = new DataGridViewTextBoxColumn();
+            GrossWeight = new DataGridViewTextBoxColumn();
             color = new DataGridViewTextBoxColumn();
-            pldg_weight = new DataGridViewTextBoxColumn();
-            weight_unit = new DataGridViewTextBoxColumn();
-            pldg_size = new DataGridViewTextBoxColumn();
-            size_unit = new DataGridViewTextBoxColumn();
+            PldgWeight = new DataGridViewTextBoxColumn();
+            WeightUnit = new DataGridViewTextBoxColumn();
+            PldgSize = new DataGridViewTextBoxColumn();
+            SizeUnit = new DataGridViewTextBoxColumn();
+            QuantityToReceived = new DataGridViewTextBoxColumn();
             label8 = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
             panel3 = new Panel();
             label1 = new Label();
             panel4 = new Panel();
-            label2 = new Label();
-            panel5 = new Panel();
             typeTxb = new TextBox();
+            label2 = new Label();
             panel10 = new Panel();
-            panel15 = new Panel();
             supplierTxb = new TextBox();
             label6 = new Label();
             panel13 = new Panel();
-            panel16 = new Panel();
             quantityTxb = new TextBox();
             label5 = new Label();
             panel11 = new Panel();
-            label7 = new Label();
-            panel9 = new Panel();
             estimateQuantityTxb = new TextBox();
+            label7 = new Label();
             ((System.ComponentModel.ISupportInitialize)_dataTable).BeginInit();
-            moTxbContainer.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)gridView).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             panel3.SuspendLayout();
             panel4.SuspendLayout();
-            panel5.SuspendLayout();
             panel10.SuspendLayout();
-            panel15.SuspendLayout();
             panel13.SuspendLayout();
-            panel16.SuspendLayout();
             panel11.SuspendLayout();
-            panel9.SuspendLayout();
             SuspendLayout();
-            // 
-            // moTxbContainer
-            // 
-            moTxbContainer.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            moTxbContainer.AutoSize = true;
-            moTxbContainer.BackColor = Color.White;
-            moTxbContainer.BorderStyle = BorderStyle.FixedSingle;
-            moTxbContainer.Controls.Add(moTxb);
-            moTxbContainer.Location = new Point(3, 33);
-            moTxbContainer.Margin = new Padding(3, 4, 3, 4);
-            moTxbContainer.Name = "moTxbContainer";
-            moTxbContainer.Padding = new Padding(5);
-            moTxbContainer.Size = new Size(254, 45);
-            moTxbContainer.TabIndex = 1;
             // 
             // moTxb
             // 
             moTxb.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            moTxb.BorderStyle = BorderStyle.None;
-            moTxb.Location = new Point(9, 12);
+            moTxb.BorderStyle = BorderStyle.FixedSingle;
+            moTxb.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            moTxb.Location = new Point(2, 41);
             moTxb.Margin = new Padding(3, 4, 3, 4);
             moTxb.Name = "moTxb";
-            moTxb.Size = new Size(235, 20);
+            moTxb.Size = new Size(256, 38);
             moTxb.TabIndex = 0;
             // 
             // panel2
@@ -116,7 +95,7 @@
             panel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panel2.Controls.Add(sampleFileBtn);
             panel2.Controls.Add(cancelBtn);
-            panel2.Controls.Add(button1);
+            panel2.Controls.Add(saveBtn);
             panel2.Controls.Add(addBtn);
             panel2.Controls.Add(label9);
             panel2.Controls.Add(gridView);
@@ -125,7 +104,7 @@
             panel2.Dock = DockStyle.Fill;
             panel2.Location = new Point(20, 20);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1067, 683);
+            panel2.Size = new Size(1067, 692);
             panel2.TabIndex = 2;
             // 
             // sampleFileBtn
@@ -133,10 +112,11 @@
             sampleFileBtn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             sampleFileBtn.BackColor = Color.DeepSkyBlue;
             sampleFileBtn.FlatStyle = FlatStyle.Flat;
+            sampleFileBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             sampleFileBtn.ForeColor = Color.White;
-            sampleFileBtn.Location = new Point(870, 208);
+            sampleFileBtn.Location = new Point(832, 208);
             sampleFileBtn.Name = "sampleFileBtn";
-            sampleFileBtn.Size = new Size(94, 45);
+            sampleFileBtn.Size = new Size(122, 45);
             sampleFileBtn.TabIndex = 18;
             sampleFileBtn.Text = "File mẫu";
             sampleFileBtn.UseVisualStyleBackColor = false;
@@ -146,36 +126,40 @@
             cancelBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             cancelBtn.BackColor = Color.Red;
             cancelBtn.FlatStyle = FlatStyle.Flat;
+            cancelBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cancelBtn.ForeColor = Color.White;
-            cancelBtn.Location = new Point(870, 638);
+            cancelBtn.Location = new Point(840, 645);
             cancelBtn.Name = "cancelBtn";
             cancelBtn.Size = new Size(94, 45);
             cancelBtn.TabIndex = 14;
             cancelBtn.Text = "Hủy";
             cancelBtn.UseVisualStyleBackColor = false;
             // 
-            // button1
+            // saveBtn
             // 
-            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            button1.BackColor = Color.DodgerBlue;
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.ForeColor = Color.White;
-            button1.Location = new Point(973, 638);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 45);
-            button1.TabIndex = 13;
-            button1.Text = "Xác nhận";
-            button1.UseVisualStyleBackColor = false;
+            saveBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            saveBtn.BackColor = Color.DodgerBlue;
+            saveBtn.FlatStyle = FlatStyle.Flat;
+            saveBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            saveBtn.ForeColor = Color.White;
+            saveBtn.Location = new Point(940, 645);
+            saveBtn.Name = "saveBtn";
+            saveBtn.Size = new Size(126, 45);
+            saveBtn.TabIndex = 13;
+            saveBtn.Text = "Xác nhận";
+            saveBtn.UseVisualStyleBackColor = false;
+            saveBtn.Click += saveBtn_Click;
             // 
             // addBtn
             // 
             addBtn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             addBtn.BackColor = Color.Green;
             addBtn.FlatStyle = FlatStyle.Flat;
+            addBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             addBtn.ForeColor = Color.White;
-            addBtn.Location = new Point(973, 208);
+            addBtn.Location = new Point(962, 208);
             addBtn.Name = "addBtn";
-            addBtn.Size = new Size(94, 45);
+            addBtn.Size = new Size(105, 45);
             addBtn.TabIndex = 5;
             addBtn.Text = "Thêm";
             addBtn.UseVisualStyleBackColor = false;
@@ -183,10 +167,10 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label9.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label9.Location = new Point(-6, 212);
             label9.Name = "label9";
-            label9.Size = new Size(300, 38);
+            label9.Size = new Size(322, 41);
             label9.TabIndex = 11;
             label9.Text = "Chi tiết NPL đóng gói";
             // 
@@ -197,105 +181,132 @@
             gridView.AllowUserToResizeRows = false;
             gridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             gridView.BackgroundColor = Color.White;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = Color.DodgerBlue;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle3.ForeColor = Color.White;
-            dataGridViewCellStyle3.Padding = new Padding(0, 10, 0, 10);
-            dataGridViewCellStyle3.SelectionBackColor = Color.DodgerBlue;
-            dataGridViewCellStyle3.SelectionForeColor = Color.White;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            gridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.DodgerBlue;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.Padding = new Padding(0, 10, 0, 10);
+            dataGridViewCellStyle1.SelectionBackColor = Color.DodgerBlue;
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            gridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             gridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            gridView.Columns.AddRange(new DataGridViewColumn[] { pldg_type, pack_code, po_code, quantity_per_carton, net_weight, gross_weight, color, pldg_weight, weight_unit, pldg_size, size_unit });
+            gridView.Columns.AddRange(new DataGridViewColumn[] { PldgType, PackCode, PoCode, QuantityPerCarton, NetWeight, GrossWeight, color, PldgWeight, WeightUnit, PldgSize, SizeUnit, QuantityToReceived });
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            gridView.DefaultCellStyle = dataGridViewCellStyle2;
             gridView.EnableHeadersVisualStyles = false;
             gridView.Location = new Point(0, 260);
             gridView.Name = "gridView";
             gridView.RowHeadersVisible = false;
             gridView.RowHeadersWidth = 51;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            gridView.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            gridView.RowsDefaultCellStyle = dataGridViewCellStyle3;
             gridView.RowTemplate.Height = 35;
             gridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             gridView.Size = new Size(1067, 356);
             gridView.TabIndex = 10;
             // 
-            // pldg_type
+            // PldgType
             // 
-            pldg_type.HeaderText = "Loại phụ liệu";
-            pldg_type.MinimumWidth = 6;
-            pldg_type.Name = "pldg_type";
-            pldg_type.Width = 125;
+            PldgType.DataPropertyName = "PldgType";
+            PldgType.HeaderText = "Loại phụ liệu";
+            PldgType.MinimumWidth = 6;
+            PldgType.Name = "PldgType";
+            PldgType.Width = 125;
             // 
-            // pack_code
+            // PackCode
             // 
-            pack_code.HeaderText = "Mã pack";
-            pack_code.MinimumWidth = 6;
-            pack_code.Name = "pack_code";
-            pack_code.Width = 125;
+            PackCode.DataPropertyName = "PackCode";
+            PackCode.HeaderText = "Mã pack";
+            PackCode.MinimumWidth = 6;
+            PackCode.Name = "PackCode";
+            PackCode.Width = 125;
             // 
-            // po_code
+            // PoCode
             // 
-            po_code.HeaderText = "Mã PO";
-            po_code.MinimumWidth = 6;
-            po_code.Name = "po_code";
-            po_code.Width = 125;
+            PoCode.DataPropertyName = "PoCode";
+            PoCode.HeaderText = "Mã PO";
+            PoCode.MinimumWidth = 6;
+            PoCode.Name = "PoCode";
+            PoCode.Width = 125;
             // 
-            // quantity_per_carton
+            // QuantityPerCarton
             // 
-            quantity_per_carton.HeaderText = "Số lượng mỗi thùng";
-            quantity_per_carton.MinimumWidth = 6;
-            quantity_per_carton.Name = "quantity_per_carton";
-            quantity_per_carton.Width = 125;
+            QuantityPerCarton.DataPropertyName = "QuantityPerCarton";
+            QuantityPerCarton.HeaderText = "Số lượng mỗi thùng";
+            QuantityPerCarton.MinimumWidth = 6;
+            QuantityPerCarton.Name = "QuantityPerCarton";
+            QuantityPerCarton.Width = 125;
             // 
-            // net_weight
+            // NetWeight
             // 
-            net_weight.HeaderText = "N.W";
-            net_weight.MinimumWidth = 6;
-            net_weight.Name = "net_weight";
-            net_weight.Width = 125;
+            NetWeight.DataPropertyName = "NetWeight";
+            NetWeight.HeaderText = "N.W";
+            NetWeight.MinimumWidth = 6;
+            NetWeight.Name = "NetWeight";
+            NetWeight.Width = 125;
             // 
-            // gross_weight
+            // GrossWeight
             // 
-            gross_weight.HeaderText = "G.W";
-            gross_weight.MinimumWidth = 6;
-            gross_weight.Name = "gross_weight";
-            gross_weight.Width = 125;
+            GrossWeight.DataPropertyName = "GrossWeight";
+            GrossWeight.HeaderText = "G.W";
+            GrossWeight.MinimumWidth = 6;
+            GrossWeight.Name = "GrossWeight";
+            GrossWeight.Width = 125;
             // 
             // color
             // 
+            color.DataPropertyName = "color";
             color.HeaderText = "Màu";
             color.MinimumWidth = 6;
             color.Name = "color";
             color.Width = 125;
             // 
-            // pldg_weight
+            // PldgWeight
             // 
-            pldg_weight.HeaderText = "Khối lượng";
-            pldg_weight.MinimumWidth = 6;
-            pldg_weight.Name = "pldg_weight";
-            pldg_weight.Width = 125;
+            PldgWeight.DataPropertyName = "PldgWeight";
+            PldgWeight.HeaderText = "Khối lượng";
+            PldgWeight.MinimumWidth = 6;
+            PldgWeight.Name = "PldgWeight";
+            PldgWeight.Width = 125;
             // 
-            // weight_unit
+            // WeightUnit
             // 
-            weight_unit.HeaderText = "Đơn vị khối lượng";
-            weight_unit.MinimumWidth = 6;
-            weight_unit.Name = "weight_unit";
-            weight_unit.Width = 125;
+            WeightUnit.DataPropertyName = "WeightUnit";
+            WeightUnit.HeaderText = "Đơn vị khối lượng";
+            WeightUnit.MinimumWidth = 6;
+            WeightUnit.Name = "WeightUnit";
+            WeightUnit.Width = 125;
             // 
-            // pldg_size
+            // PldgSize
             // 
-            pldg_size.HeaderText = "Kích thước";
-            pldg_size.MinimumWidth = 6;
-            pldg_size.Name = "pldg_size";
-            pldg_size.Width = 125;
+            PldgSize.DataPropertyName = "PldgSize";
+            PldgSize.HeaderText = "Kích thước";
+            PldgSize.MinimumWidth = 6;
+            PldgSize.Name = "PldgSize";
+            PldgSize.Width = 125;
             // 
-            // size_unit
+            // SizeUnit
             // 
-            size_unit.HeaderText = "Đơn vị kích thước";
-            size_unit.MinimumWidth = 6;
-            size_unit.Name = "size_unit";
-            size_unit.Width = 125;
+            SizeUnit.DataPropertyName = "SizeUnit";
+            SizeUnit.HeaderText = "Đơn vị kích thước";
+            SizeUnit.MinimumWidth = 6;
+            SizeUnit.Name = "SizeUnit";
+            SizeUnit.Width = 125;
+            // 
+            // QuantityToReceived
+            // 
+            QuantityToReceived.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            QuantityToReceived.DataPropertyName = "QuantityToReceived";
+            QuantityToReceived.HeaderText = "Số lượng cần nhận";
+            QuantityToReceived.MinimumWidth = 6;
+            QuantityToReceived.Name = "QuantityToReceived";
             // 
             // label8
             // 
@@ -330,8 +341,8 @@
             // panel3
             // 
             panel3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel3.Controls.Add(moTxb);
             panel3.Controls.Add(label1);
-            panel3.Controls.Add(moTxbContainer);
             panel3.Location = new Point(3, 3);
             panel3.Name = "panel3";
             panel3.Size = new Size(260, 88);
@@ -340,231 +351,168 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(3, 6);
+            label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Location = new Point(-1, 6);
             label1.Name = "label1";
-            label1.Size = new Size(33, 20);
+            label1.Size = new Size(52, 31);
             label1.TabIndex = 2;
             label1.Text = "MO";
             // 
             // panel4
             // 
             panel4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panel4.AutoSize = true;
+            panel4.Controls.Add(typeTxb);
             panel4.Controls.Add(label2);
-            panel4.Controls.Add(panel5);
             panel4.Location = new Point(269, 3);
             panel4.Name = "panel4";
             panel4.Size = new Size(260, 88);
             panel4.TabIndex = 1;
             // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(1, 6);
-            label2.Name = "label2";
-            label2.Size = new Size(94, 20);
-            label2.TabIndex = 2;
-            label2.Text = "Loại phụ liệu";
-            // 
-            // panel5
-            // 
-            panel5.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panel5.AutoSize = true;
-            panel5.BackColor = Color.White;
-            panel5.BorderStyle = BorderStyle.FixedSingle;
-            panel5.Controls.Add(typeTxb);
-            panel5.Location = new Point(3, 33);
-            panel5.Margin = new Padding(3, 4, 3, 4);
-            panel5.Name = "panel5";
-            panel5.Padding = new Padding(5);
-            panel5.Size = new Size(254, 45);
-            panel5.TabIndex = 1;
-            // 
             // typeTxb
             // 
             typeTxb.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            typeTxb.BorderStyle = BorderStyle.None;
-            typeTxb.Location = new Point(9, 12);
+            typeTxb.BorderStyle = BorderStyle.FixedSingle;
+            typeTxb.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            typeTxb.Location = new Point(3, 42);
             typeTxb.Margin = new Padding(3, 4, 3, 4);
             typeTxb.Name = "typeTxb";
-            typeTxb.Size = new Size(235, 20);
+            typeTxb.Size = new Size(254, 38);
             typeTxb.TabIndex = 1;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Location = new Point(-3, 6);
+            label2.Name = "label2";
+            label2.Size = new Size(145, 31);
+            label2.TabIndex = 2;
+            label2.Text = "Loại phụ liệu";
             // 
             // panel10
             // 
             panel10.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panel10.AutoSize = true;
-            panel10.Controls.Add(panel15);
+            panel10.Controls.Add(supplierTxb);
             panel10.Controls.Add(label6);
             panel10.Location = new Point(535, 3);
             panel10.Name = "panel10";
             panel10.Size = new Size(260, 88);
             panel10.TabIndex = 2;
             // 
-            // panel15
-            // 
-            panel15.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panel15.AutoSize = true;
-            panel15.BackColor = Color.White;
-            panel15.BorderStyle = BorderStyle.FixedSingle;
-            panel15.Controls.Add(supplierTxb);
-            panel15.Location = new Point(3, 33);
-            panel15.Margin = new Padding(3, 4, 3, 4);
-            panel15.Name = "panel15";
-            panel15.Padding = new Padding(5);
-            panel15.Size = new Size(254, 45);
-            panel15.TabIndex = 2;
-            // 
             // supplierTxb
             // 
             supplierTxb.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            supplierTxb.BorderStyle = BorderStyle.None;
-            supplierTxb.Location = new Point(9, 12);
+            supplierTxb.BorderStyle = BorderStyle.FixedSingle;
+            supplierTxb.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            supplierTxb.Location = new Point(3, 42);
             supplierTxb.Margin = new Padding(3, 4, 3, 4);
             supplierTxb.Name = "supplierTxb";
-            supplierTxb.Size = new Size(235, 20);
+            supplierTxb.Size = new Size(254, 38);
             supplierTxb.TabIndex = 2;
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(3, 6);
+            label6.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label6.Location = new Point(-2, 5);
             label6.Name = "label6";
-            label6.Size = new Size(122, 20);
+            label6.Size = new Size(191, 31);
             label6.TabIndex = 7;
             label6.Text = "Mã nhà cung cấp";
             // 
             // panel13
             // 
             panel13.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panel13.AutoSize = true;
-            panel13.Controls.Add(panel16);
+            panel13.Controls.Add(quantityTxb);
             panel13.Controls.Add(label5);
             panel13.Location = new Point(801, 3);
             panel13.Name = "panel13";
             panel13.Size = new Size(263, 88);
             panel13.TabIndex = 3;
             // 
-            // panel16
-            // 
-            panel16.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panel16.AutoSize = true;
-            panel16.BackColor = Color.White;
-            panel16.BorderStyle = BorderStyle.FixedSingle;
-            panel16.Controls.Add(quantityTxb);
-            panel16.Location = new Point(3, 33);
-            panel16.Margin = new Padding(3, 4, 3, 4);
-            panel16.Name = "panel16";
-            panel16.Padding = new Padding(5);
-            panel16.Size = new Size(257, 45);
-            panel16.TabIndex = 3;
-            // 
             // quantityTxb
             // 
             quantityTxb.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            quantityTxb.BorderStyle = BorderStyle.None;
-            quantityTxb.Location = new Point(10, 12);
+            quantityTxb.BorderStyle = BorderStyle.FixedSingle;
+            quantityTxb.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            quantityTxb.Location = new Point(2, 41);
             quantityTxb.Margin = new Padding(3, 4, 3, 4);
             quantityTxb.Name = "quantityTxb";
-            quantityTxb.Size = new Size(235, 20);
+            quantityTxb.Size = new Size(259, 38);
             quantityTxb.TabIndex = 3;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(1, 6);
+            label5.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label5.Location = new Point(1, 4);
             label5.Name = "label5";
-            label5.Size = new Size(132, 20);
+            label5.Size = new Size(205, 31);
             label5.TabIndex = 2;
             label5.Text = "Số lượng cần nhận";
             // 
             // panel11
             // 
             panel11.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panel11.AutoSize = true;
+            panel11.Controls.Add(estimateQuantityTxb);
             panel11.Controls.Add(label7);
-            panel11.Controls.Add(panel9);
             panel11.Location = new Point(3, 97);
             panel11.Name = "panel11";
             panel11.Size = new Size(260, 88);
             panel11.TabIndex = 4;
             // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Location = new Point(3, 9);
-            label7.Name = "label7";
-            label7.Size = new Size(158, 20);
-            label7.TabIndex = 8;
-            label7.Text = "Số lượng dự kiến nhận";
-            // 
-            // panel9
-            // 
-            panel9.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panel9.AutoSize = true;
-            panel9.BackColor = Color.White;
-            panel9.BorderStyle = BorderStyle.FixedSingle;
-            panel9.Controls.Add(estimateQuantityTxb);
-            panel9.Location = new Point(4, 34);
-            panel9.Margin = new Padding(3, 4, 3, 4);
-            panel9.Name = "panel9";
-            panel9.Padding = new Padding(5);
-            panel9.Size = new Size(251, 45);
-            panel9.TabIndex = 4;
-            // 
             // estimateQuantityTxb
             // 
             estimateQuantityTxb.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            estimateQuantityTxb.BorderStyle = BorderStyle.None;
-            estimateQuantityTxb.Location = new Point(7, 12);
+            estimateQuantityTxb.BorderStyle = BorderStyle.FixedSingle;
+            estimateQuantityTxb.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            estimateQuantityTxb.Location = new Point(3, 44);
             estimateQuantityTxb.Margin = new Padding(3, 4, 3, 4);
             estimateQuantityTxb.Name = "estimateQuantityTxb";
-            estimateQuantityTxb.Size = new Size(235, 20);
+            estimateQuantityTxb.Size = new Size(254, 38);
             estimateQuantityTxb.TabIndex = 4;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label7.Location = new Point(-2, 9);
+            label7.Name = "label7";
+            label7.Size = new Size(245, 31);
+            label7.TabIndex = 8;
+            label7.Text = "Số lượng dự kiến nhận";
             // 
             // PLDGPopup
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1107, 723);
+            ClientSize = new Size(1107, 732);
             Controls.Add(panel2);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "PLDGPopup";
             Padding = new Padding(20);
             Text = "Tạo NPL cần nhận";
             WindowState = FormWindowState.Maximized;
+            Load += PLDGPopup_Load;
             ((System.ComponentModel.ISupportInitialize)_dataTable).EndInit();
-            moTxbContainer.ResumeLayout(false);
-            moTxbContainer.PerformLayout();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)gridView).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
-            tableLayoutPanel1.PerformLayout();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
-            panel5.ResumeLayout(false);
-            panel5.PerformLayout();
             panel10.ResumeLayout(false);
             panel10.PerformLayout();
-            panel15.ResumeLayout(false);
-            panel15.PerformLayout();
             panel13.ResumeLayout(false);
             panel13.PerformLayout();
-            panel16.ResumeLayout(false);
-            panel16.PerformLayout();
             panel11.ResumeLayout(false);
             panel11.PerformLayout();
-            panel9.ResumeLayout(false);
-            panel9.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
-
-        private Panel moTxbContainer;
         private TextBox moTxb;
         private Panel panel2;
         private Label label1;
@@ -572,37 +520,34 @@
         private TableLayoutPanel tableLayoutPanel1;
         private Panel panel4;
         private Label label2;
-        private Panel panel5;
         private TextBox typeTxb;
         private Panel panel10;
         private Label label5;
         private Panel panel11;
         private Label label8;
         private Label label7;
-        private Panel panel9;
         private TextBox estimateQuantityTxb;
         private Panel panel13;
-        private Panel panel16;
         private TextBox quantityTxb;
-        private Panel panel15;
         private TextBox supplierTxb;
         private Label label6;
         private DataGridView gridView;
         private Label label9;
         private Button addBtn;
         private Button cancelBtn;
-        private Button button1;
-        private DataGridViewTextBoxColumn pldg_type;
-        private DataGridViewTextBoxColumn pack_code;
-        private DataGridViewTextBoxColumn po_code;
-        private DataGridViewTextBoxColumn quantity_per_carton;
-        private DataGridViewTextBoxColumn net_weight;
-        private DataGridViewTextBoxColumn gross_weight;
-        private DataGridViewTextBoxColumn color;
-        private DataGridViewTextBoxColumn pldg_weight;
-        private DataGridViewTextBoxColumn weight_unit;
-        private DataGridViewTextBoxColumn pldg_size;
-        private DataGridViewTextBoxColumn size_unit;
+        private Button saveBtn;
         private Button sampleFileBtn;
+        private DataGridViewTextBoxColumn PldgType;
+        private DataGridViewTextBoxColumn PackCode;
+        private DataGridViewTextBoxColumn PoCode;
+        private DataGridViewTextBoxColumn QuantityPerCarton;
+        private DataGridViewTextBoxColumn NetWeight;
+        private DataGridViewTextBoxColumn GrossWeight;
+        private DataGridViewTextBoxColumn color;
+        private DataGridViewTextBoxColumn PldgWeight;
+        private DataGridViewTextBoxColumn WeightUnit;
+        private DataGridViewTextBoxColumn PldgSize;
+        private DataGridViewTextBoxColumn SizeUnit;
+        private DataGridViewTextBoxColumn QuantityToReceived;
     }
 }

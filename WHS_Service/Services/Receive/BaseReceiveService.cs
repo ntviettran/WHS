@@ -18,11 +18,11 @@ using WHS.Service.Interface;
 
 namespace WHS.Service.Services.Receive
 {
-    public abstract class BaseReceive : IReceiveService
+    public abstract class BaseReceiveService : IReceiveService
     {
         protected IReceiveRepository _receiveRepository;
 
-        public BaseReceive(IReceiveRepository receiveRepository)
+        public BaseReceiveService(IReceiveRepository receiveRepository)
         {
             _receiveRepository = receiveRepository;
         }
