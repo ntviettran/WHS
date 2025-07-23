@@ -31,7 +31,7 @@ namespace WHS.Repository.Repository.Vehicle
 
             try
             {
-                string sql = "SELECT ISNULL(MAX(id), 0) + 1 FROM vehicle";
+                string sql = "SELECT ISNULL(MAX(id), 0) + 1 FROM sys_vehicle";
                 int nextId = await conn.ExecuteScalarAsync<int>(sql);
 
                 return Response<int>.Success(nextId);
@@ -54,7 +54,7 @@ namespace WHS.Repository.Repository.Vehicle
 
             try
             {
-                string sql = @"insert into vehicle (id, vehicle_type, vehicle_mode, license_plate, seal_number, capacity, created_by, modified_by)
+                string sql = @"insert into sys_vehicle (id, vehicle_type, vehicle_mode, license_plate, seal_number, capacity, created_by, modified_by)
                             values (@ID, @VehicleType, @VehicleMode, @licensePlate, @SealNumber, @Capacity, @CreatedBy, @CreatedBy)
                             ";
                 int id = await conn.ExecuteAsync(sql, new
@@ -90,7 +90,7 @@ namespace WHS.Repository.Repository.Vehicle
 
             try
             {
-                string sql = "select id, vehicle_type as VehicleType, vehicle_mode as VehicleMode, license_plate as LicensePlate, seal_number as SealNumber, capacity from vehicle where id = @id";
+                string sql = "select id, vehicle_type, vehicle_mode, license_plate, seal_number, capacity from sys_vehicle where id = @id";
                 VehicleDto? vehicle = await conn.QueryFirstOrDefaultAsync<VehicleDto>(sql, new {id});
 
                 if (vehicle == null) return Response<VehicleDto>.Fail($"Không tìm thấy phương tiện nào có id là {id}");
@@ -144,8 +144,8 @@ namespace WHS.Repository.Repository.Vehicle
                 }
 
                 // Bước3: Get dữ liệu từ database
-                string sql = @$"select id, vehicle_type as VehicleType, vehicle_mode as VehicleMode, license_plate as LicensePlate, seal_number as SealNumber, capacity
-                               from vehicle
+                string sql = @$"select id, vehicle_type, vehicle_mode, license_plate, seal_number, capacity
+                               from sys_vehicle
                                {whereClause}";
 
                 List<VehicleDto> items = (await conn.QueryAsync<VehicleDto>(sql, parameters)).ToList();

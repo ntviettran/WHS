@@ -28,7 +28,7 @@ namespace WHS.Popup.Transfer
         public TransferDto Transfer { get; set; } = new TransferDto();
         public VehicleDto Vehicle { get; set; } = new VehicleDto();
         public UserControl? CallerForm { get; set; } = default!;
-        public EventHandler? SaveSucces;
+        public Action<TransferDto, EventArgs>? SaveSucces;
 
         public AddTransferPopup(ITransferService transferService, IVehicleService vehicleService)
         {
@@ -88,9 +88,7 @@ namespace WHS.Popup.Transfer
             idTxb.Text = Transfer.ID.ToString();
             createdDatePicker.Value = Transfer.CreatedAt;
             estimateExecDatePicker.Value = Transfer.PlanExecDate;
-            execDatePicker.Value = Transfer.ExecDate;
             estimateWarehouseDatePicker.Value = Transfer.PlanWarehouseDate;
-            warehouseDatePicker.Value = Transfer.WarehouseDate;
 
             vehicleIdTxb.Text = Vehicle.ID.ToString();
             vehicleModeTxb.Text = EnumHelper.GetEnumDescription(Vehicle.VehicleMode);
@@ -105,7 +103,7 @@ namespace WHS.Popup.Transfer
         /// </summary>
         public void SaveSuccesCallback()
         {
-            SaveSucces?.Invoke(this, EventArgs.Empty);
+            SaveSucces?.Invoke(Transfer, EventArgs.Empty);
         }
         #endregion
 
@@ -156,12 +154,11 @@ namespace WHS.Popup.Transfer
                 VehicleId = int.Parse(vehicleIdTxb.Text),
                 CreatedAt = createdDatePicker.Value,
                 PlanExecDate = estimateExecDatePicker.Value,
-                ExecDate = execDatePicker.Value,
                 PlanWarehouseDate = estimateWarehouseDatePicker.Value,
-                WarehouseDate = warehouseDatePicker.Value,
                 TransferStatus = null
             };
 
+            Transfer = transferData;
             this.Hide();
 
             _popup.Status = _status;
@@ -171,26 +168,6 @@ namespace WHS.Popup.Transfer
         #endregion
 
         #region Input
-        /// <summary>
-        /// Update thời gian ngày thực hiện giống với ngày thực hiện dự kiến
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void estimateExecDatePicker_ValueChanged(object sender, EventArgs e)
-        {
-            execDatePicker.Value = estimateExecDatePicker.Value;
-        }
-
-        /// <summary>
-        // Update thời gian về kho theo thời gian dự kiến về kho
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void estimateWarehouseDatePicker_ValueChanged(object sender, EventArgs e)
-        {
-            warehouseDatePicker.Value = estimateWarehouseDatePicker.Value;
-        }
-
         /// <summary>
         /// Sự kiện gõ id thì fill vào những trường input phương tiện
         /// </summary>
@@ -235,7 +212,7 @@ namespace WHS.Popup.Transfer
             }
             else
             {
-                ShowMessage.Error("ID phải là số nguyên");
+                ShowMessage.Warning("ID phải là số nguyên");
             }
         }
 

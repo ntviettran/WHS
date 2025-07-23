@@ -4,16 +4,19 @@ using Microsoft.Extensions.DependencyInjection;
 using WHS.Core.Dto.Fabric;
 using WHS.Core.Dto.PLDG;
 using WHS.Core.Dto.PLSP;
-using WHS.Core.Dto.Receive;
 using WHS.Core.Dto.Transfer;
 using WHS.Factory;
 using WHS.Forms;
+using WHS.Pages;
 using WHS.Pages.Receive;
 using WHS.Pages.Transfer;
 using WHS.Popup;
+using WHS.Popup.PO;
+using WHS.Popup.Receive.ReceiveDetailTransaction;
 using WHS.Popup.Transfer;
 using WHS.Repository.Interfaces;
 using WHS.Repository.Repository.Coordinate;
+using WHS.Repository.Repository.PO;
 using WHS.Repository.Repository.Receive;
 using WHS.Repository.Repository.Transfer;
 using WHS.Repository.Repository.User;
@@ -21,6 +24,7 @@ using WHS.Repository.Repository.Vehicle;
 using WHS.Service.Interface;
 using WHS.Service.Services;
 using WHS.Service.Services.Coordinate;
+using WHS.Service.Services.PO;
 using WHS.Service.Services.Receive;
 using WHS.Service.Services.Transfer;
 using WHS.Service.Services.Vehicle;
@@ -42,6 +46,8 @@ namespace WHS
             var serviceCollection = new ServiceCollection();
             ConfigureServices(serviceCollection);
 
+            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+            
             ServiceProvider = serviceCollection.BuildServiceProvider();
 
             ApplicationConfiguration.Initialize();
@@ -51,9 +57,6 @@ namespace WHS
 
             MainForm mainForm = new MainForm();
             Application.Run(mainForm);
-
-            //TransferDetail mainForm = new TransferDetail();
-            //Application.Run(mainForm);
         }
 
         private static void ConfigureServices(IServiceCollection services)
@@ -66,11 +69,14 @@ namespace WHS
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped(typeof(IReceiveRepository<,>), typeof(ReceiveRepository<,>));
-            services.AddScoped<IReceiveRepository<FabricDto, FabricDetailDto>, FabricReceiveRepository>();
-            services.AddScoped<IReceiveRepository<PldgDto, PldgDetailDto>, PldgReceiveRepository>();
-            services.AddScoped<IReceiveRepository<PlspDto, PlspDetailDto>, PlspReceiveRepository>();
+            services.AddScoped<IReceiveRepository<FabricDto, FabricReceivedDto>, FabricReceiveRepository>();
+            services.AddScoped<IReceiveRepository<PldgDto, PldgReceivedDto>, PldgReceiveRepository>();
+            services.AddScoped<IReceiveRepository<PlspDto, PlspReceivedDto>, PlspReceiveRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IVehicleService, VehicleService>();
+
+            services.AddScoped<IPORepository, PORepository>();
+            services.AddScoped<IPOService, PoService>();
 
             services.AddScoped<ITransferRepository, BaseTransferRepository>();
             services.AddScoped<ITransferService, BaseTransferService>();
@@ -79,22 +85,27 @@ namespace WHS
             services.AddScoped<ITransferRepository<PLDGCoordinationDto, PLDGTransferDetailDto>, PLDGTransferRepository>();
             services.AddScoped(typeof(ITransferService<,>), typeof(TransferService<,>));
 
-            services.AddScoped<IReceiveService<FabricDto, FabricDetailDto>, ReceiveService<FabricDto, FabricDetailDto>>();
-            services.AddScoped<IReceiveService<PlspDto, PlspDetailDto>, ReceiveService<PlspDto, PlspDetailDto>>();
-            services.AddScoped<IReceiveService<PldgDto, PldgDetailDto>, ReceiveService<PldgDto, PldgDetailDto>>();
+            services.AddScoped<IReceiveService<FabricDto, FabricReceivedDto>, ReceiveService<FabricDto, FabricReceivedDto>>();
+            services.AddScoped<IReceiveService<PlspDto, PlspReceivedDto>, ReceiveService<PlspDto, PlspReceivedDto>>();
+            services.AddScoped<IReceiveService<PldgDto, PldgReceivedDto>, ReceiveService<PldgDto, PldgReceivedDto>>();
 
             services.AddTransient<LoginForm>();
             services.AddTransient<DetailReceive>();
-            services.AddTransient<TransferNPLPage>();
+            services.AddTransient<CoordinateNPLPage>();
+            services.AddTransient<POPage>();
 
             services.AddTransient<FabricPopup>();
+            services.AddTransient<FabricTransaction>();
             services.AddTransient<PLSPPopup>();
+            services.AddTransient<PLSPTransaction>();
             services.AddTransient<PLDGPopup>();
+            services.AddTransient<PLDGTransaction>();
             services.AddTransient<AddTransferPopup>();
             services.AddTransient<AddTransferDetailPopup>();
             services.AddTransient<VehiclePopup>();
             services.AddTransient<AddVehiclePopup>();
             services.AddTransient<TransferDetail>();
+            services.AddTransient<PoPopup>();
         }
     }
 }

@@ -105,7 +105,7 @@
             // 
             // nextBtn
             // 
-            nextBtn.BackColor = Color.DodgerBlue;
+            nextBtn.BackColor = Color.FromArgb(0, 46, 92);
             nextBtn.BackgroundImage = Properties.Resources.arrow_right;
             nextBtn.BackgroundImageLayout = ImageLayout.Zoom;
             nextBtn.Dock = DockStyle.Right;
@@ -119,7 +119,7 @@
             // 
             // prevBtn
             // 
-            prevBtn.BackColor = Color.DodgerBlue;
+            prevBtn.BackColor = Color.FromArgb(0, 46, 92);
             prevBtn.BackgroundImage = Properties.Resources.arrow_left;
             prevBtn.BackgroundImageLayout = ImageLayout.Zoom;
             prevBtn.Dock = DockStyle.Right;

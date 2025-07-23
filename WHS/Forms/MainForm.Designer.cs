@@ -30,20 +30,24 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             sidebar = new Panel();
-            coordinateSubMenu = new Panel();
-            transferNPLBtn = new Button();
-            coordinateToggleBtn = new Button();
-            receiveSubMenu = new Panel();
-            transactionReceiveBtn = new Button();
+            logoutToggleBtn = new Button();
+            panel1 = new Panel();
+            transferWarhouseSubMenu = new Panel();
+            coordinateManage = new Button();
+            transferToggleBtn = new Button();
+            deliverySubMenu = new Panel();
+            coordinateBtn = new Button();
             detailReceiveBtn = new Button();
-            receiveToggleBtn = new Button();
+            deliveryToggleBtn = new Button();
+            poToggleBtn = new Button();
             panel2 = new Panel();
             label1 = new Label();
             pictureBox1 = new PictureBox();
             mainLayout = new Panel();
             sidebar.SuspendLayout();
-            coordinateSubMenu.SuspendLayout();
-            receiveSubMenu.SuspendLayout();
+            panel1.SuspendLayout();
+            transferWarhouseSubMenu.SuspendLayout();
+            deliverySubMenu.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
@@ -52,87 +56,115 @@
             // 
             sidebar.AutoScroll = true;
             sidebar.BackColor = Color.Black;
-            sidebar.Controls.Add(coordinateSubMenu);
-            sidebar.Controls.Add(coordinateToggleBtn);
-            sidebar.Controls.Add(receiveSubMenu);
-            sidebar.Controls.Add(receiveToggleBtn);
+            sidebar.Controls.Add(logoutToggleBtn);
+            sidebar.Controls.Add(panel1);
             sidebar.Controls.Add(panel2);
             sidebar.Dock = DockStyle.Left;
             sidebar.ForeColor = Color.White;
             sidebar.Location = new Point(0, 0);
             sidebar.Name = "sidebar";
-            sidebar.Size = new Size(261, 450);
+            sidebar.Size = new Size(290, 619);
             sidebar.TabIndex = 0;
             // 
-            // coordinateSubMenu
+            // logoutToggleBtn
             // 
-            coordinateSubMenu.BackColor = Color.FromArgb(35, 32, 39);
-            coordinateSubMenu.Controls.Add(transferNPLBtn);
-            coordinateSubMenu.Dock = DockStyle.Top;
-            coordinateSubMenu.Location = new Point(0, 277);
-            coordinateSubMenu.Name = "coordinateSubMenu";
-            coordinateSubMenu.Size = new Size(261, 52);
-            coordinateSubMenu.TabIndex = 0;
+            logoutToggleBtn.BackColor = Color.Black;
+            logoutToggleBtn.Dock = DockStyle.Bottom;
+            logoutToggleBtn.FlatAppearance.BorderSize = 0;
+            logoutToggleBtn.FlatStyle = FlatStyle.Flat;
+            logoutToggleBtn.Font = new Font("Segoe UI", 13.8F);
+            logoutToggleBtn.Location = new Point(0, 574);
+            logoutToggleBtn.Name = "logoutToggleBtn";
+            logoutToggleBtn.Size = new Size(290, 45);
+            logoutToggleBtn.TabIndex = 7;
+            logoutToggleBtn.Text = "Đăng xuất";
+            logoutToggleBtn.TextAlign = ContentAlignment.MiddleLeft;
+            logoutToggleBtn.UseVisualStyleBackColor = false;
+            logoutToggleBtn.Click += logoutBtn_Click;
             // 
-            // transferNPLBtn
+            // panel1
             // 
-            transferNPLBtn.Dock = DockStyle.Top;
-            transferNPLBtn.FlatAppearance.BorderSize = 0;
-            transferNPLBtn.FlatStyle = FlatStyle.Flat;
-            transferNPLBtn.Font = new Font("Segoe UI", 13.8F);
-            transferNPLBtn.ForeColor = Color.Transparent;
-            transferNPLBtn.Location = new Point(0, 0);
-            transferNPLBtn.Name = "transferNPLBtn";
-            transferNPLBtn.Padding = new Padding(20, 0, 0, 0);
-            transferNPLBtn.Size = new Size(261, 45);
-            transferNPLBtn.TabIndex = 0;
-            transferNPLBtn.Text = "Chuyển NPL";
-            transferNPLBtn.TextAlign = ContentAlignment.MiddleLeft;
-            transferNPLBtn.UseVisualStyleBackColor = true;
-            transferNPLBtn.Click += transferNPLBtn_Click;
+            panel1.Controls.Add(transferWarhouseSubMenu);
+            panel1.Controls.Add(transferToggleBtn);
+            panel1.Controls.Add(deliverySubMenu);
+            panel1.Controls.Add(deliveryToggleBtn);
+            panel1.Controls.Add(poToggleBtn);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(0, 89);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(290, 406);
+            panel1.TabIndex = 1;
             // 
-            // coordinateToggleBtn
+            // transferWarhouseSubMenu
             // 
-            coordinateToggleBtn.BackColor = Color.DodgerBlue;
-            coordinateToggleBtn.Dock = DockStyle.Top;
-            coordinateToggleBtn.FlatAppearance.BorderSize = 0;
-            coordinateToggleBtn.FlatStyle = FlatStyle.Flat;
-            coordinateToggleBtn.Font = new Font("Segoe UI", 13.8F);
-            coordinateToggleBtn.Location = new Point(0, 232);
-            coordinateToggleBtn.Name = "coordinateToggleBtn";
-            coordinateToggleBtn.Size = new Size(261, 45);
-            coordinateToggleBtn.TabIndex = 3;
-            coordinateToggleBtn.Text = "Điều phối";
-            coordinateToggleBtn.TextAlign = ContentAlignment.MiddleLeft;
-            coordinateToggleBtn.UseVisualStyleBackColor = false;
-            coordinateToggleBtn.Click += coordinateToggleBtn_Click;
+            transferWarhouseSubMenu.BackColor = Color.FromArgb(35, 32, 39);
+            transferWarhouseSubMenu.Controls.Add(coordinateManage);
+            transferWarhouseSubMenu.Dock = DockStyle.Top;
+            transferWarhouseSubMenu.Location = new Point(0, 233);
+            transferWarhouseSubMenu.Name = "transferWarhouseSubMenu";
+            transferWarhouseSubMenu.Size = new Size(290, 52);
+            transferWarhouseSubMenu.TabIndex = 12;
             // 
-            // receiveSubMenu
+            // coordinateManage
             // 
-            receiveSubMenu.BackColor = Color.FromArgb(35, 32, 39);
-            receiveSubMenu.Controls.Add(transactionReceiveBtn);
-            receiveSubMenu.Controls.Add(detailReceiveBtn);
-            receiveSubMenu.Dock = DockStyle.Top;
-            receiveSubMenu.Location = new Point(0, 134);
-            receiveSubMenu.Name = "receiveSubMenu";
-            receiveSubMenu.Size = new Size(261, 98);
-            receiveSubMenu.TabIndex = 2;
+            coordinateManage.Dock = DockStyle.Top;
+            coordinateManage.FlatAppearance.BorderSize = 0;
+            coordinateManage.FlatStyle = FlatStyle.Flat;
+            coordinateManage.Font = new Font("Segoe UI", 13.8F);
+            coordinateManage.ForeColor = Color.Transparent;
+            coordinateManage.Location = new Point(0, 0);
+            coordinateManage.Name = "coordinateManage";
+            coordinateManage.Padding = new Padding(20, 0, 0, 0);
+            coordinateManage.Size = new Size(290, 45);
+            coordinateManage.TabIndex = 0;
+            coordinateManage.Text = "Quản lí đợt chuyển";
+            coordinateManage.TextAlign = ContentAlignment.MiddleLeft;
+            coordinateManage.UseVisualStyleBackColor = true;
+            coordinateManage.Click += coordinateManage_Click;
             // 
-            // transactionReceiveBtn
+            // transferToggleBtn
             // 
-            transactionReceiveBtn.BackColor = Color.FromArgb(35, 32, 39);
-            transactionReceiveBtn.Dock = DockStyle.Top;
-            transactionReceiveBtn.FlatAppearance.BorderSize = 0;
-            transactionReceiveBtn.FlatStyle = FlatStyle.Flat;
-            transactionReceiveBtn.Font = new Font("Segoe UI", 13.8F);
-            transactionReceiveBtn.Location = new Point(0, 45);
-            transactionReceiveBtn.Name = "transactionReceiveBtn";
-            transactionReceiveBtn.Padding = new Padding(20, 0, 0, 0);
-            transactionReceiveBtn.Size = new Size(261, 45);
-            transactionReceiveBtn.TabIndex = 5;
-            transactionReceiveBtn.Text = "Giao dịch NPL";
-            transactionReceiveBtn.TextAlign = ContentAlignment.MiddleLeft;
-            transactionReceiveBtn.UseVisualStyleBackColor = false;
+            transferToggleBtn.BackColor = Color.Black;
+            transferToggleBtn.Dock = DockStyle.Top;
+            transferToggleBtn.FlatAppearance.BorderSize = 0;
+            transferToggleBtn.FlatStyle = FlatStyle.Flat;
+            transferToggleBtn.Font = new Font("Segoe UI", 13.8F);
+            transferToggleBtn.Location = new Point(0, 188);
+            transferToggleBtn.Name = "transferToggleBtn";
+            transferToggleBtn.Size = new Size(290, 45);
+            transferToggleBtn.TabIndex = 11;
+            transferToggleBtn.Text = "Đợt chuyển";
+            transferToggleBtn.TextAlign = ContentAlignment.MiddleLeft;
+            transferToggleBtn.UseVisualStyleBackColor = false;
+            transferToggleBtn.Click += transferToggleBtn_Click;
+            // 
+            // deliverySubMenu
+            // 
+            deliverySubMenu.BackColor = Color.FromArgb(35, 32, 39);
+            deliverySubMenu.Controls.Add(detailReceiveBtn);
+            deliverySubMenu.Controls.Add(coordinateBtn);
+            deliverySubMenu.Dock = DockStyle.Top;
+            deliverySubMenu.Location = new Point(0, 90);
+            deliverySubMenu.Name = "deliverySubMenu";
+            deliverySubMenu.Size = new Size(290, 98);
+            deliverySubMenu.TabIndex = 9;
+            // 
+            // coordinateBtn
+            // 
+            coordinateBtn.Dock = DockStyle.Top;
+            coordinateBtn.FlatAppearance.BorderSize = 0;
+            coordinateBtn.FlatStyle = FlatStyle.Flat;
+            coordinateBtn.Font = new Font("Segoe UI", 13.8F);
+            coordinateBtn.ForeColor = Color.Transparent;
+            coordinateBtn.Location = new Point(0, 45);
+            coordinateBtn.Name = "coordinateBtn";
+            coordinateBtn.Padding = new Padding(20, 0, 0, 0);
+            coordinateBtn.Size = new Size(290, 45);
+            coordinateBtn.TabIndex = 0;
+            coordinateBtn.Text = "Điều phối";
+            coordinateBtn.TextAlign = ContentAlignment.MiddleLeft;
+            coordinateBtn.UseVisualStyleBackColor = true;
+            coordinateBtn.Click += coordinateBtn_Click;
             // 
             // detailReceiveBtn
             // 
@@ -144,28 +176,44 @@
             detailReceiveBtn.Location = new Point(0, 0);
             detailReceiveBtn.Name = "detailReceiveBtn";
             detailReceiveBtn.Padding = new Padding(20, 0, 0, 0);
-            detailReceiveBtn.Size = new Size(261, 45);
+            detailReceiveBtn.Size = new Size(290, 45);
             detailReceiveBtn.TabIndex = 4;
-            detailReceiveBtn.Text = "Chi tiết NPL";
+            detailReceiveBtn.Text = "Theo dõi NPL cần nhận";
             detailReceiveBtn.TextAlign = ContentAlignment.MiddleLeft;
             detailReceiveBtn.UseVisualStyleBackColor = false;
             detailReceiveBtn.Click += detailReceiveBtn_Click;
             // 
-            // receiveToggleBtn
+            // deliveryToggleBtn
             // 
-            receiveToggleBtn.BackColor = Color.DodgerBlue;
-            receiveToggleBtn.Dock = DockStyle.Top;
-            receiveToggleBtn.FlatAppearance.BorderSize = 0;
-            receiveToggleBtn.FlatStyle = FlatStyle.Flat;
-            receiveToggleBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            receiveToggleBtn.Location = new Point(0, 89);
-            receiveToggleBtn.Name = "receiveToggleBtn";
-            receiveToggleBtn.Size = new Size(261, 45);
-            receiveToggleBtn.TabIndex = 1;
-            receiveToggleBtn.Text = "NPL cần nhận";
-            receiveToggleBtn.TextAlign = ContentAlignment.MiddleLeft;
-            receiveToggleBtn.UseVisualStyleBackColor = false;
-            receiveToggleBtn.Click += receiveToggleBtn_Click;
+            deliveryToggleBtn.BackColor = Color.Black;
+            deliveryToggleBtn.Dock = DockStyle.Top;
+            deliveryToggleBtn.FlatAppearance.BorderSize = 0;
+            deliveryToggleBtn.FlatStyle = FlatStyle.Flat;
+            deliveryToggleBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            deliveryToggleBtn.Location = new Point(0, 45);
+            deliveryToggleBtn.Name = "deliveryToggleBtn";
+            deliveryToggleBtn.Size = new Size(290, 45);
+            deliveryToggleBtn.TabIndex = 8;
+            deliveryToggleBtn.Text = "Vận chuyển";
+            deliveryToggleBtn.TextAlign = ContentAlignment.MiddleLeft;
+            deliveryToggleBtn.UseVisualStyleBackColor = false;
+            deliveryToggleBtn.Click += deliveryToggleBtn_Click;
+            // 
+            // poToggleBtn
+            // 
+            poToggleBtn.BackColor = Color.Black;
+            poToggleBtn.Dock = DockStyle.Top;
+            poToggleBtn.FlatAppearance.BorderSize = 0;
+            poToggleBtn.FlatStyle = FlatStyle.Flat;
+            poToggleBtn.Font = new Font("Segoe UI", 13.8F);
+            poToggleBtn.Location = new Point(0, 0);
+            poToggleBtn.Name = "poToggleBtn";
+            poToggleBtn.Size = new Size(290, 45);
+            poToggleBtn.TabIndex = 13;
+            poToggleBtn.Text = "PO";
+            poToggleBtn.TextAlign = ContentAlignment.MiddleLeft;
+            poToggleBtn.UseVisualStyleBackColor = false;
+            poToggleBtn.Click += poToggleBtn_Click;
             // 
             // panel2
             // 
@@ -174,7 +222,7 @@
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(261, 89);
+            panel2.Size = new Size(290, 89);
             panel2.TabIndex = 0;
             // 
             // label1
@@ -201,16 +249,16 @@
             // 
             mainLayout.BackColor = Color.WhiteSmoke;
             mainLayout.Dock = DockStyle.Fill;
-            mainLayout.Location = new Point(261, 0);
+            mainLayout.Location = new Point(290, 0);
             mainLayout.Name = "mainLayout";
-            mainLayout.Size = new Size(539, 450);
+            mainLayout.Size = new Size(510, 619);
             mainLayout.TabIndex = 1;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(800, 619);
             Controls.Add(mainLayout);
             Controls.Add(sidebar);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -219,8 +267,9 @@
             WindowState = FormWindowState.Maximized;
             Load += MainForm_Load;
             sidebar.ResumeLayout(false);
-            coordinateSubMenu.ResumeLayout(false);
-            receiveSubMenu.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            transferWarhouseSubMenu.ResumeLayout(false);
+            deliverySubMenu.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -230,16 +279,19 @@
         #endregion
 
         private Panel sidebar;
-        private Button receiveToggleBtn;
         private Panel panel2;
         private Label label1;
         private PictureBox pictureBox1;
-        private Panel receiveSubMenu;
-        private Button detailReceiveBtn;
-        private Button transactionReceiveBtn;
         private Panel mainLayout;
-        private Button coordinateToggleBtn;
-        private Panel coordinateSubMenu;
-        private Button transferNPLBtn;
+        private Button logoutToggleBtn;
+        private Panel panel1;
+        private Panel transferWarhouseSubMenu;
+        private Button coordinateManage;
+        private Button transferToggleBtn;
+        private Button coordinateBtn;
+        private Panel deliverySubMenu;
+        private Button detailReceiveBtn;
+        private Button deliveryToggleBtn;
+        private Button poToggleBtn;
     }
 }

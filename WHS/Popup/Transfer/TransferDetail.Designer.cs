@@ -33,12 +33,24 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TransferDetail));
             panel1 = new Panel();
             panel11 = new Panel();
+            panel14 = new Panel();
+            gridView = new DataGridView();
+            panelBottom = new Panel();
+            saveBtn = new Button();
+            panel13 = new Panel();
+            uploadExcelBtn = new Button();
+            mid4 = new Panel();
+            downExcelBtn = new Button();
+            mid3 = new Panel();
+            failBtn = new Button();
+            mid2 = new Panel();
+            confirmBtn = new Button();
+            mid1 = new Panel();
             editBtn = new Button();
             typeContainer = new TableLayoutPanel();
             fabricBtn = new Button();
             plspBtn = new Button();
             pldgBtn = new Button();
-            gridView = new DataGridView();
             tableLayoutPanel1 = new TableLayoutPanel();
             panel2 = new Panel();
             tableLayoutPanel3 = new TableLayoutPanel();
@@ -90,8 +102,11 @@
             label8 = new Label();
             panel1.SuspendLayout();
             panel11.SuspendLayout();
-            typeContainer.SuspendLayout();
+            panel14.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)gridView).BeginInit();
+            panelBottom.SuspendLayout();
+            panel13.SuspendLayout();
+            typeContainer.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             panel2.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
@@ -133,24 +148,204 @@
             // panel11
             // 
             panel11.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panel11.Controls.Add(editBtn);
+            panel11.Controls.Add(panel14);
+            panel11.Controls.Add(panel13);
             panel11.Controls.Add(typeContainer);
-            panel11.Controls.Add(gridView);
             panel11.Location = new Point(1, 294);
             panel11.Name = "panel11";
             panel11.Size = new Size(1424, 497);
             panel11.TabIndex = 11;
             // 
+            // panel14
+            // 
+            panel14.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel14.Controls.Add(gridView);
+            panel14.Controls.Add(panelBottom);
+            panel14.Location = new Point(0, 84);
+            panel14.Name = "panel14";
+            panel14.Size = new Size(1424, 410);
+            panel14.TabIndex = 9;
+            // 
+            // gridView
+            // 
+            gridView.AllowUserToAddRows = false;
+            gridView.AllowUserToDeleteRows = false;
+            gridView.BackgroundColor = Color.White;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(0, 46, 92);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.Padding = new Padding(10, 0, 10, 0);
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(0, 46, 92);
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            gridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            gridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            gridView.DefaultCellStyle = dataGridViewCellStyle2;
+            gridView.Dock = DockStyle.Fill;
+            gridView.EnableHeadersVisualStyles = false;
+            gridView.Location = new Point(0, 0);
+            gridView.Name = "gridView";
+            gridView.RowHeadersVisible = false;
+            gridView.RowHeadersWidth = 51;
+            gridView.RowTemplate.Height = 35;
+            gridView.Size = new Size(1424, 339);
+            gridView.TabIndex = 6;
+            // 
+            // panelBottom
+            // 
+            panelBottom.Controls.Add(saveBtn);
+            panelBottom.Dock = DockStyle.Bottom;
+            panelBottom.Location = new Point(0, 339);
+            panelBottom.Name = "panelBottom";
+            panelBottom.Size = new Size(1424, 71);
+            panelBottom.TabIndex = 7;
+            // 
+            // saveBtn
+            // 
+            saveBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            saveBtn.BackColor = Color.FromArgb(0, 46, 92);
+            saveBtn.FlatStyle = FlatStyle.Flat;
+            saveBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            saveBtn.ForeColor = Color.White;
+            saveBtn.Location = new Point(1300, 21);
+            saveBtn.Name = "saveBtn";
+            saveBtn.Size = new Size(123, 47);
+            saveBtn.TabIndex = 11;
+            saveBtn.Text = "Xác nhận";
+            saveBtn.UseVisualStyleBackColor = false;
+            saveBtn.Click += saveBtn_Click;
+            // 
+            // panel13
+            // 
+            panel13.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            panel13.Controls.Add(uploadExcelBtn);
+            panel13.Controls.Add(mid4);
+            panel13.Controls.Add(downExcelBtn);
+            panel13.Controls.Add(mid3);
+            panel13.Controls.Add(failBtn);
+            panel13.Controls.Add(mid2);
+            panel13.Controls.Add(confirmBtn);
+            panel13.Controls.Add(mid1);
+            panel13.Controls.Add(editBtn);
+            panel13.Location = new Point(463, 2);
+            panel13.Name = "panel13";
+            panel13.Size = new Size(961, 51);
+            panel13.TabIndex = 8;
+            // 
+            // uploadExcelBtn
+            // 
+            uploadExcelBtn.AutoSize = true;
+            uploadExcelBtn.BackColor = Color.DarkTurquoise;
+            uploadExcelBtn.Dock = DockStyle.Right;
+            uploadExcelBtn.FlatStyle = FlatStyle.Flat;
+            uploadExcelBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            uploadExcelBtn.ForeColor = Color.White;
+            uploadExcelBtn.Location = new Point(31, 0);
+            uploadExcelBtn.Name = "uploadExcelBtn";
+            uploadExcelBtn.Size = new Size(142, 51);
+            uploadExcelBtn.TabIndex = 11;
+            uploadExcelBtn.Text = "Đẩy dữ liệu";
+            uploadExcelBtn.UseVisualStyleBackColor = false;
+            uploadExcelBtn.Click += uploadExcelBtn_Click;
+            // 
+            // mid4
+            // 
+            mid4.Dock = DockStyle.Right;
+            mid4.Location = new Point(173, 0);
+            mid4.Name = "mid4";
+            mid4.Size = new Size(19, 51);
+            mid4.TabIndex = 12;
+            // 
+            // downExcelBtn
+            // 
+            downExcelBtn.AutoSize = true;
+            downExcelBtn.BackColor = Color.Green;
+            downExcelBtn.Dock = DockStyle.Right;
+            downExcelBtn.FlatStyle = FlatStyle.Flat;
+            downExcelBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            downExcelBtn.ForeColor = Color.White;
+            downExcelBtn.Location = new Point(192, 0);
+            downExcelBtn.Name = "downExcelBtn";
+            downExcelBtn.Size = new Size(134, 51);
+            downExcelBtn.TabIndex = 10;
+            downExcelBtn.Text = "Tải dữ liệu";
+            downExcelBtn.UseVisualStyleBackColor = false;
+            downExcelBtn.Click += downExcelBtn_Click;
+            // 
+            // mid3
+            // 
+            mid3.Dock = DockStyle.Right;
+            mid3.Location = new Point(326, 0);
+            mid3.Name = "mid3";
+            mid3.Size = new Size(19, 51);
+            mid3.TabIndex = 10;
+            // 
+            // failBtn
+            // 
+            failBtn.AutoSize = true;
+            failBtn.BackColor = Color.Crimson;
+            failBtn.Dock = DockStyle.Right;
+            failBtn.FlatStyle = FlatStyle.Flat;
+            failBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            failBtn.ForeColor = Color.White;
+            failBtn.Location = new Point(345, 0);
+            failBtn.Name = "failBtn";
+            failBtn.Size = new Size(222, 51);
+            failBtn.TabIndex = 10;
+            failBtn.Text = "Về kho thất bại";
+            failBtn.UseVisualStyleBackColor = false;
+            failBtn.Click += failBtn_Click;
+            // 
+            // mid2
+            // 
+            mid2.Dock = DockStyle.Right;
+            mid2.Location = new Point(567, 0);
+            mid2.Name = "mid2";
+            mid2.Size = new Size(19, 51);
+            mid2.TabIndex = 9;
+            // 
+            // confirmBtn
+            // 
+            confirmBtn.AutoSize = true;
+            confirmBtn.BackColor = Color.FromArgb(0, 46, 92);
+            confirmBtn.Dock = DockStyle.Right;
+            confirmBtn.FlatStyle = FlatStyle.Flat;
+            confirmBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            confirmBtn.ForeColor = Color.White;
+            confirmBtn.Location = new Point(586, 0);
+            confirmBtn.Name = "confirmBtn";
+            confirmBtn.Size = new Size(222, 51);
+            confirmBtn.TabIndex = 9;
+            confirmBtn.Text = "Xác nhận thực hiện";
+            confirmBtn.UseVisualStyleBackColor = false;
+            confirmBtn.Click += confirmBtn_Click;
+            // 
+            // mid1
+            // 
+            mid1.Dock = DockStyle.Right;
+            mid1.Location = new Point(808, 0);
+            mid1.Name = "mid1";
+            mid1.Size = new Size(19, 51);
+            mid1.TabIndex = 8;
+            // 
             // editBtn
             // 
-            editBtn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            editBtn.BackColor = Color.Green;
+            editBtn.BackColor = Color.FromArgb(0, 46, 92);
+            editBtn.Dock = DockStyle.Right;
             editBtn.FlatStyle = FlatStyle.Flat;
             editBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             editBtn.ForeColor = Color.White;
-            editBtn.Location = new Point(1287, 3);
+            editBtn.Location = new Point(827, 0);
             editBtn.Name = "editBtn";
-            editBtn.Size = new Size(134, 48);
+            editBtn.Size = new Size(134, 51);
             editBtn.TabIndex = 6;
             editBtn.Text = "Chỉnh sửa";
             editBtn.UseVisualStyleBackColor = false;
@@ -174,7 +369,7 @@
             // 
             // fabricBtn
             // 
-            fabricBtn.BackColor = Color.DodgerBlue;
+            fabricBtn.BackColor = Color.FromArgb(0, 46, 92);
             fabricBtn.FlatStyle = FlatStyle.Flat;
             fabricBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             fabricBtn.ForeColor = Color.White;
@@ -214,40 +409,6 @@
             pldgBtn.UseVisualStyleBackColor = false;
             pldgBtn.Click += pldgBtn_Click;
             // 
-            // gridView
-            // 
-            gridView.AllowUserToAddRows = false;
-            gridView.AllowUserToDeleteRows = false;
-            gridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            gridView.BackgroundColor = Color.White;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.DodgerBlue;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = Color.White;
-            dataGridViewCellStyle1.Padding = new Padding(10, 0, 10, 0);
-            dataGridViewCellStyle1.SelectionBackColor = Color.DodgerBlue;
-            dataGridViewCellStyle1.SelectionForeColor = Color.White;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            gridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            gridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            gridView.DefaultCellStyle = dataGridViewCellStyle2;
-            gridView.EnableHeadersVisualStyles = false;
-            gridView.Location = new Point(1, 78);
-            gridView.Name = "gridView";
-            gridView.ReadOnly = true;
-            gridView.RowHeadersVisible = false;
-            gridView.RowHeadersWidth = 51;
-            gridView.RowTemplate.Height = 35;
-            gridView.Size = new Size(1423, 416);
-            gridView.TabIndex = 6;
-            // 
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.ColumnCount = 5;
@@ -270,6 +431,7 @@
             // panel2
             // 
             panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel2.BackColor = Color.FromArgb(251, 236, 197);
             panel2.BorderStyle = BorderStyle.FixedSingle;
             panel2.Controls.Add(tableLayoutPanel3);
             panel2.Controls.Add(label1);
@@ -311,6 +473,7 @@
             // 
             // tableLayoutPanel4
             // 
+            tableLayoutPanel4.BackColor = Color.FromArgb(254, 249, 236);
             tableLayoutPanel4.ColumnCount = 3;
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
@@ -361,6 +524,7 @@
             // 
             // tableLayoutPanel6
             // 
+            tableLayoutPanel6.BackColor = Color.FromArgb(254, 249, 236);
             tableLayoutPanel6.ColumnCount = 3;
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
@@ -411,6 +575,7 @@
             // 
             // tableLayoutPanel7
             // 
+            tableLayoutPanel7.BackColor = Color.FromArgb(254, 249, 236);
             tableLayoutPanel7.ColumnCount = 3;
             tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
@@ -461,6 +626,7 @@
             // 
             // tableLayoutPanel5
             // 
+            tableLayoutPanel5.BackColor = Color.FromArgb(254, 249, 236);
             tableLayoutPanel5.ColumnCount = 3;
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
@@ -512,6 +678,7 @@
             // panel26
             // 
             panel26.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel26.BackColor = Color.FromArgb(170, 216, 210);
             panel26.BorderStyle = BorderStyle.FixedSingle;
             panel26.Controls.Add(panel28);
             panel26.Controls.Add(panel27);
@@ -534,6 +701,7 @@
             // 
             // tableLayoutPanel12
             // 
+            tableLayoutPanel12.BackColor = Color.FromArgb(228, 242, 241);
             tableLayoutPanel12.ColumnCount = 3;
             tableLayoutPanel12.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel12.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
@@ -584,6 +752,7 @@
             // 
             // tableLayoutPanel13
             // 
+            tableLayoutPanel13.BackColor = Color.FromArgb(228, 242, 241);
             tableLayoutPanel13.ColumnCount = 3;
             tableLayoutPanel13.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel13.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
@@ -635,6 +804,7 @@
             // panel5
             // 
             panel5.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel5.BackColor = Color.FromArgb(228, 240, 247);
             panel5.BorderStyle = BorderStyle.FixedSingle;
             panel5.Controls.Add(tableLayoutPanel2);
             panel5.Controls.Add(label8);
@@ -676,6 +846,7 @@
             // 
             // tableLayoutPanel9
             // 
+            tableLayoutPanel9.BackColor = Color.FromArgb(232, 235, 238);
             tableLayoutPanel9.ColumnCount = 3;
             tableLayoutPanel9.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel9.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
@@ -726,6 +897,7 @@
             // 
             // tableLayoutPanel11
             // 
+            tableLayoutPanel11.BackColor = Color.FromArgb(232, 235, 238);
             tableLayoutPanel11.ColumnCount = 3;
             tableLayoutPanel11.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel11.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
@@ -776,6 +948,7 @@
             // 
             // tableLayoutPanel10
             // 
+            tableLayoutPanel10.BackColor = Color.FromArgb(232, 235, 238);
             tableLayoutPanel10.ColumnCount = 3;
             tableLayoutPanel10.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel10.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
@@ -826,6 +999,7 @@
             // 
             // tableLayoutPanel8
             // 
+            tableLayoutPanel8.BackColor = Color.FromArgb(232, 235, 238);
             tableLayoutPanel8.ColumnCount = 3;
             tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
@@ -885,10 +1059,15 @@
             Padding = new Padding(20);
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Thông tin đợt chuyển";
+            Load += TransferDetail_Load;
             panel1.ResumeLayout(false);
             panel11.ResumeLayout(false);
-            typeContainer.ResumeLayout(false);
+            panel14.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)gridView).EndInit();
+            panelBottom.ResumeLayout(false);
+            panel13.ResumeLayout(false);
+            panel13.PerformLayout();
+            typeContainer.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
@@ -974,7 +1153,6 @@
         private TableLayoutPanel tableLayoutPanel3;
         private Panel panel11;
         private Button fabricBtn;
-        private DataGridView gridView;
         private Button pldgBtn;
         private Button plspBtn;
         private Panel panel12;
@@ -992,5 +1170,18 @@
         private TableLayoutPanel tableLayoutPanel11;
         private TableLayoutPanel tableLayoutPanel10;
         private Button editBtn;
+        private Panel panel13;
+        private Panel mid1;
+        private Button confirmBtn;
+        private Button uploadExcelBtn;
+        private Panel mid3;
+        private Panel mid4;
+        private Button downExcelBtn;
+        private Panel mid2;
+        private Panel panel14;
+        private Panel panelBottom;
+        private Button saveBtn;
+        private DataGridView gridView;
+        private Button failBtn;
     }
 }

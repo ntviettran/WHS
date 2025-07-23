@@ -90,7 +90,7 @@
             // nextBtn
             // 
             nextBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            nextBtn.BackColor = Color.DodgerBlue;
+            nextBtn.BackColor = Color.FromArgb(0, 46, 92);
             nextBtn.FlatStyle = FlatStyle.Flat;
             nextBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             nextBtn.ForeColor = Color.White;

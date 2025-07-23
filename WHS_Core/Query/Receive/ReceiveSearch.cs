@@ -9,7 +9,6 @@ namespace WHS.Core.Query.Receive
 {
     public class ReceiveSearch
     {
-        public string MO { get; set; } = String.Empty;
-        public E_NPLType Type { get; set; }
+        public string? MO { get; set; } = String.Empty;
     }
 }

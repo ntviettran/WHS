@@ -26,9 +26,14 @@ namespace WHS.Service.Services.Receive
     {
         protected IReceiveRepository<T, D> _repository;
 
-        public ReceiveService(IReceiveRepository<T, D> receiveRepository) : base(receiveRepository)
+        public ReceiveService(IReceiveRepository<T, D> receiveRepository)
         {
             _repository = receiveRepository;
+        }
+
+        public Task<Response<PageDto<GroupReceiveDto>>> GetGroupedReceiveAsync(Paginate paginate, ReceiveSearch receiveSearch)
+        {
+            return _repository.GetGroupedReceiveAsync(paginate, receiveSearch);
         }
 
         /// <summary>
@@ -37,9 +42,17 @@ namespace WHS.Service.Services.Receive
         /// <param name="fabric"></param>
         /// <param name="detail"></param>
         /// <returns></returns>
-        public async Task<Response<int>> CreateReceiveAsync(T fabric, DataTable detail)
+        public async Task<Response<int>> CreateReceiveAsync(DataTable detail)
         {
-            return await _repository.CreateReceiveAsync(fabric, detail);
+            // Kiểm tra trùng lặp giá trị
+            var checkDuplicate = await _repository.CheckDuplicateValue(detail);
+            
+            if (!checkDuplicate.IsSuccess)
+            {
+                return Response<int>.Fail(checkDuplicate.Message);
+            }
+
+            return await _repository.CreateReceiveAsync(detail);
         }
 
         /// <summary>
@@ -50,9 +63,9 @@ namespace WHS.Service.Services.Receive
         /// <param name="detail"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<Response<int>> UpdateReceiveAsync(int id, T data, DataTable detail)
+        public async Task<Response<int>> UpdateReceiveAsync(int id, DataTable detail)
         {
-            return await _repository.UpdateReceiveAsync(id, data, detail);
+            return await _repository.UpdateReceiveAsync(id, detail);
         }
 
         /// <summary>
@@ -60,9 +73,9 @@ namespace WHS.Service.Services.Receive
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task<Response<List<D>>> GetReceiveDetailAsync(int id)
+        public Task<Response<List<D>>> GetReceiveDetailAsync(GroupReceiveDto receiveData)
         {
-            return _repository.GetReceiveDetailAsync(id);
+            return _repository.GetReceiveDetailAsync(receiveData);
         }
     }
 }

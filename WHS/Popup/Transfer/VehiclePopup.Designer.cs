@@ -68,7 +68,7 @@
             // addBtn
             // 
             addBtn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            addBtn.BackColor = Color.Green;
+            addBtn.BackColor = Color.FromArgb(0, 46, 92);
             addBtn.FlatStyle = FlatStyle.Flat;
             addBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             addBtn.ForeColor = Color.White;
@@ -98,7 +98,7 @@
             // saveBtn
             // 
             saveBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            saveBtn.BackColor = Color.DodgerBlue;
+            saveBtn.BackColor = Color.FromArgb(0, 46, 92);
             saveBtn.FlatStyle = FlatStyle.Flat;
             saveBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             saveBtn.ForeColor = Color.White;
@@ -118,11 +118,11 @@
             gridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             gridView.BackgroundColor = Color.White;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.DodgerBlue;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(0, 46, 92);
             dataGridViewCellStyle1.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dataGridViewCellStyle1.ForeColor = Color.White;
             dataGridViewCellStyle1.Padding = new Padding(0, 10, 0, 10);
-            dataGridViewCellStyle1.SelectionBackColor = Color.DodgerBlue;
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(0, 46, 92);
             dataGridViewCellStyle1.SelectionForeColor = Color.White;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             gridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
@@ -266,7 +266,6 @@
             Padding = new Padding(20);
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Thông tin xe";
-            WindowState = FormWindowState.Maximized;
             Load += VehiclePopup_Load;
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)gridView).EndInit();

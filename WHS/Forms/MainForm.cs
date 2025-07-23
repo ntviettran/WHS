@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
+using WHS.Core.Session;
+using WHS.Pages;
 using WHS.Pages.Receive;
 using WHS.Pages.Transfer;
 
@@ -15,6 +17,8 @@ namespace WHS.Forms
 {
     public partial class MainForm : Form
     {
+        public bool IsLogout { get; set; } = false;
+
         private UserControl? _currentControl;
 
         public MainForm()
@@ -29,15 +33,24 @@ namespace WHS.Forms
         /// <param name="e"></param>
         private void MainForm_Load(object sender, EventArgs e)
         {
-            receiveSubMenu.Visible = false;
-            coordinateSubMenu.Visible = false;
+            deliverySubMenu.Visible = false;
+            //transferWarhouseSubMenu.Visible = false;
+            if (Session.CurrentUser.DepartmentId == 2)
+            {
+                poToggleBtn.Visible = false;
+                deliveryToggleBtn.Visible = false;
+            }
+            else
+            {
+                //transferToggleBtn.Visible = false;
+            }
         }
 
         /// <summary>
         /// Set lại màu mặc định cho các button trong parent
         /// </summary>
         /// <param name="parent"></param>
-        private void SetBgButtons(Control parent)
+        private void SetBgButtons(Control parent, string nameToggle)
         {
             foreach (Control control in parent.Controls)
             {
@@ -47,11 +60,20 @@ namespace WHS.Forms
                     {
                         btn.BackColor = Color.FromArgb(35, 32, 39);
                     }
+                    else
+                    {
+                        btn.BackColor = Color.Black;
+                    }
+
+                    if (btn.Name == nameToggle)
+                    {
+                        btn.BackColor = Color.FromArgb(0, 46, 92);
+                    }
                 }
                 else if (control.HasChildren)
                 {
                     // Nếu control là panel con (hoặc có children), duyệt tiếp
-                    SetBgButtons(control);
+                    SetBgButtons(control, nameToggle);
                 }
             }
         }
@@ -60,9 +82,11 @@ namespace WHS.Forms
         /// Set màu cho active button
         /// </summary>
         /// <param name="button"></param>
-        private void ActiveButton(Button button)
+        private void ActiveButton(string nameToggle, Button? button)
         {
-            SetBgButtons(sidebar);
+            SetBgButtons(sidebar, nameToggle);
+
+            if (button == null) return;
             button.BackColor = Color.FromArgb(49, 50, 51);
         }
 
@@ -71,9 +95,13 @@ namespace WHS.Forms
         /// </summary>
         private void HideSubMenu()
         {
-            if (receiveSubMenu.Visible == true)
+            if (deliverySubMenu.Visible == true)
             {
-                receiveSubMenu.Visible = false;
+                deliverySubMenu.Visible = false;
+            }
+            if (transferWarhouseSubMenu.Visible == true)
+            {
+                transferWarhouseSubMenu.Visible = false;
             }
         }
 
@@ -101,7 +129,6 @@ namespace WHS.Forms
         private void ShowUserControl(UserControl newControl)
         {
             if (mainLayout == null) return;
-            if (_currentControl != null && _currentControl.GetType() == newControl.GetType()) return;
 
             // Nếu có màn nào đang chạy thì clear 
             if (_currentControl != null)
@@ -123,11 +150,12 @@ namespace WHS.Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void receiveToggleBtn_Click(object sender, EventArgs e)
+        private void deliveryToggleBtn_Click(object sender, EventArgs e)
         {
-            ShowSubMenu(receiveSubMenu);
+            deliveryToggleBtn.BackColor = Color.FromArgb(0, 46, 92);
+            SetBgButtons(sidebar, "deliveryToggleBtn");
+            ShowSubMenu(deliverySubMenu);
         }
-
 
         /// <summary>
         /// Sự kiện bấm chọn "Chi tiết NPL"
@@ -137,20 +165,10 @@ namespace WHS.Forms
         private void detailReceiveBtn_Click(object sender, EventArgs e)
         {
             if (Program.ServiceProvider == null) return;
-            ActiveButton(detailReceiveBtn);
+            ActiveButton("deliveryToggleBtn", detailReceiveBtn);
 
-            UserControl detailReceive = Program.ServiceProvider.GetRequiredService<DetailReceive>();
+            DetailReceive detailReceive = Program.ServiceProvider.GetRequiredService<DetailReceive>();
             ShowUserControl(detailReceive);
-        }
-
-        /// <summary>
-        /// Sự kiện bấm vào button toggle "Điều phối"
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void coordinateToggleBtn_Click(object sender, EventArgs e)
-        {
-            ShowSubMenu(coordinateSubMenu);
         }
 
         /// <summary>
@@ -158,13 +176,62 @@ namespace WHS.Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void transferNPLBtn_Click(object sender, EventArgs e)
+        private void coordinateBtn_Click(object sender, EventArgs e)
         {
             if (Program.ServiceProvider == null) return;
-            ActiveButton(transferNPLBtn);
+            ActiveButton("deliveryToggleBtn", coordinateBtn);
 
-            UserControl transferNPLPage = Program.ServiceProvider.GetRequiredService<TransferNPLPage>();
+            CoordinateNPLPage transferNPLPage = Program.ServiceProvider.GetRequiredService<CoordinateNPLPage>();
             ShowUserControl(transferNPLPage);
+        }
+
+        /// <summary>
+        /// Sự kiện click button toggle "Đợt chuyển"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void transferToggleBtn_Click(object sender, EventArgs e)
+        {
+            transferToggleBtn.BackColor = Color.FromArgb(0, 46, 92);
+            SetBgButtons(sidebar, "transferToggleBtn");
+            ShowSubMenu(transferWarhouseSubMenu);
+        }
+
+        /// <summary>
+        /// Sự kiện click button "Quản lý đợt chuyển"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void coordinateManage_Click(object sender, EventArgs e)
+        {
+            if (Program.ServiceProvider == null) return;
+            ActiveButton("transferToggleBtn", coordinateManage);
+
+            CoordinateNPLPage transferNPLPage = Program.ServiceProvider.GetRequiredService<CoordinateNPLPage>();
+            transferNPLPage.InitWarehouseManager();
+            ShowUserControl(transferNPLPage);
+        }
+
+        /// <summary>
+        /// Mở quản lý po
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void poToggleBtn_Click(object sender, EventArgs e)
+        {
+            HideSubMenu();
+            SetBgButtons(sidebar, "poToggleBtn");
+
+            if (Program.ServiceProvider == null) return;
+
+            POPage poPage = Program.ServiceProvider.GetRequiredService<POPage>();
+            ShowUserControl(poPage);
+        }
+
+        private void logoutBtn_Click(object sender, EventArgs e)
+        {
+            IsLogout = true;
+            this.Close();
         }
     }
 }

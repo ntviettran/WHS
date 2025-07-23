@@ -56,15 +56,6 @@
             label8 = new Label();
             panel3 = new Panel();
             tableLayoutPanel1 = new TableLayoutPanel();
-            panel12 = new Panel();
-            warehouseDatePicker = new DateTimePicker();
-            label7 = new Label();
-            panel10 = new Panel();
-            estimateWarehouseDatePicker = new DateTimePicker();
-            label6 = new Label();
-            panel8 = new Panel();
-            execDatePicker = new DateTimePicker();
-            label5 = new Label();
             panel6 = new Panel();
             estimateExecDatePicker = new DateTimePicker();
             label4 = new Label();
@@ -74,6 +65,9 @@
             panel21 = new Panel();
             idTxb = new TextBox();
             label2 = new Label();
+            panel10 = new Panel();
+            estimateWarehouseDatePicker = new DateTimePicker();
+            label6 = new Label();
             label1 = new Label();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -86,12 +80,10 @@
             panel34.SuspendLayout();
             panel3.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
-            panel12.SuspendLayout();
-            panel10.SuspendLayout();
-            panel8.SuspendLayout();
             panel6.SuspendLayout();
             panel4.SuspendLayout();
             panel21.SuspendLayout();
+            panel10.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -103,7 +95,7 @@
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(20, 20);
             panel1.Name = "panel1";
-            panel1.Size = new Size(612, 696);
+            panel1.Size = new Size(612, 640);
             panel1.TabIndex = 0;
             // 
             // cancelBtn
@@ -113,7 +105,7 @@
             cancelBtn.FlatStyle = FlatStyle.Flat;
             cancelBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cancelBtn.ForeColor = Color.White;
-            cancelBtn.Location = new Point(374, 648);
+            cancelBtn.Location = new Point(373, 590);
             cancelBtn.Name = "cancelBtn";
             cancelBtn.Size = new Size(94, 47);
             cancelBtn.TabIndex = 12;
@@ -124,11 +116,11 @@
             // nextBtn
             // 
             nextBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            nextBtn.BackColor = Color.DodgerBlue;
+            nextBtn.BackColor = Color.FromArgb(0, 46, 92);
             nextBtn.FlatStyle = FlatStyle.Flat;
             nextBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             nextBtn.ForeColor = Color.White;
-            nextBtn.Location = new Point(472, 648);
+            nextBtn.Location = new Point(473, 590);
             nextBtn.Name = "nextBtn";
             nextBtn.Size = new Size(139, 47);
             nextBtn.TabIndex = 11;
@@ -141,9 +133,9 @@
             panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel2.Controls.Add(tableLayoutPanel2);
             panel2.Controls.Add(label8);
-            panel2.Location = new Point(0, 308);
+            panel2.Location = new Point(0, 224);
             panel2.Name = "panel2";
-            panel2.Size = new Size(612, 319);
+            panel2.Size = new Size(612, 327);
             panel2.TabIndex = 5;
             // 
             // tableLayoutPanel2
@@ -388,7 +380,7 @@
             panel3.Dock = DockStyle.Top;
             panel3.Location = new Point(0, 0);
             panel3.Name = "panel3";
-            panel3.Size = new Size(612, 308);
+            panel3.Size = new Size(612, 221);
             panel3.TabIndex = 4;
             // 
             // tableLayoutPanel1
@@ -397,116 +389,17 @@
             tableLayoutPanel1.ColumnCount = 2;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Controls.Add(panel12, 1, 2);
-            tableLayoutPanel1.Controls.Add(panel10, 0, 2);
-            tableLayoutPanel1.Controls.Add(panel8, 1, 1);
             tableLayoutPanel1.Controls.Add(panel6, 0, 1);
             tableLayoutPanel1.Controls.Add(panel4, 1, 0);
             tableLayoutPanel1.Controls.Add(panel21, 0, 0);
+            tableLayoutPanel1.Controls.Add(panel10, 1, 1);
             tableLayoutPanel1.Location = new Point(0, 48);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 3;
+            tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel1.Size = new Size(612, 260);
+            tableLayoutPanel1.Size = new Size(612, 173);
             tableLayoutPanel1.TabIndex = 1;
-            // 
-            // panel12
-            // 
-            panel12.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panel12.Controls.Add(warehouseDatePicker);
-            panel12.Controls.Add(label7);
-            panel12.Location = new Point(309, 175);
-            panel12.Name = "panel12";
-            panel12.Size = new Size(300, 82);
-            panel12.TabIndex = 6;
-            // 
-            // warehouseDatePicker
-            // 
-            warehouseDatePicker.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
-            warehouseDatePicker.CustomFormat = "dd/MM/yyyy";
-            warehouseDatePicker.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            warehouseDatePicker.Format = DateTimePickerFormat.Custom;
-            warehouseDatePicker.Location = new Point(3, 40);
-            warehouseDatePicker.Margin = new Padding(0);
-            warehouseDatePicker.Name = "warehouseDatePicker";
-            warehouseDatePicker.Size = new Size(295, 38);
-            warehouseDatePicker.TabIndex = 16;
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label7.Location = new Point(-1, 4);
-            label7.Name = "label7";
-            label7.Size = new Size(140, 31);
-            label7.TabIndex = 2;
-            label7.Text = "Ngày về kho";
-            // 
-            // panel10
-            // 
-            panel10.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panel10.Controls.Add(estimateWarehouseDatePicker);
-            panel10.Controls.Add(label6);
-            panel10.Location = new Point(3, 175);
-            panel10.Name = "panel10";
-            panel10.Size = new Size(300, 82);
-            panel10.TabIndex = 5;
-            // 
-            // estimateWarehouseDatePicker
-            // 
-            estimateWarehouseDatePicker.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
-            estimateWarehouseDatePicker.CustomFormat = "dd/MM/yyyy";
-            estimateWarehouseDatePicker.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            estimateWarehouseDatePicker.Format = DateTimePickerFormat.Custom;
-            estimateWarehouseDatePicker.Location = new Point(2, 40);
-            estimateWarehouseDatePicker.Margin = new Padding(0);
-            estimateWarehouseDatePicker.Name = "estimateWarehouseDatePicker";
-            estimateWarehouseDatePicker.Size = new Size(296, 38);
-            estimateWarehouseDatePicker.TabIndex = 16;
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label6.Location = new Point(-3, 6);
-            label6.Name = "label6";
-            label6.Size = new Size(222, 31);
-            label6.TabIndex = 2;
-            label6.Text = "Ngày dự kiến về kho";
-            // 
-            // panel8
-            // 
-            panel8.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panel8.Controls.Add(execDatePicker);
-            panel8.Controls.Add(label5);
-            panel8.Location = new Point(309, 89);
-            panel8.Name = "panel8";
-            panel8.Size = new Size(300, 80);
-            panel8.TabIndex = 4;
-            // 
-            // execDatePicker
-            // 
-            execDatePicker.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
-            execDatePicker.CustomFormat = "dd/MM/yyyy";
-            execDatePicker.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            execDatePicker.Format = DateTimePickerFormat.Custom;
-            execDatePicker.Location = new Point(1, 36);
-            execDatePicker.Margin = new Padding(0);
-            execDatePicker.Name = "execDatePicker";
-            execDatePicker.Size = new Size(297, 38);
-            execDatePicker.TabIndex = 16;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(0, 1);
-            label5.Name = "label5";
-            label5.Size = new Size(170, 31);
-            label5.TabIndex = 2;
-            label5.Text = "Ngày thực hiện";
             // 
             // panel6
             // 
@@ -515,7 +408,7 @@
             panel6.Controls.Add(label4);
             panel6.Location = new Point(3, 89);
             panel6.Name = "panel6";
-            panel6.Size = new Size(300, 80);
+            panel6.Size = new Size(300, 81);
             panel6.TabIndex = 3;
             // 
             // estimateExecDatePicker
@@ -554,9 +447,10 @@
             // 
             createdDatePicker.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
             createdDatePicker.CustomFormat = "dd/MM/yyyy";
+            createdDatePicker.Enabled = false;
             createdDatePicker.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             createdDatePicker.Format = DateTimePickerFormat.Custom;
-            createdDatePicker.Location = new Point(1, 38);
+            createdDatePicker.Location = new Point(1, 37);
             createdDatePicker.Margin = new Padding(0);
             createdDatePicker.Name = "createdDatePicker";
             createdDatePicker.Size = new Size(297, 38);
@@ -566,7 +460,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(-3, 4);
+            label3.Location = new Point(-3, 3);
             label3.Name = "label3";
             label3.Size = new Size(228, 31);
             label3.TabIndex = 2;
@@ -605,6 +499,38 @@
             label2.TabIndex = 2;
             label2.Text = "ID";
             // 
+            // panel10
+            // 
+            panel10.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel10.Controls.Add(estimateWarehouseDatePicker);
+            panel10.Controls.Add(label6);
+            panel10.Location = new Point(309, 89);
+            panel10.Name = "panel10";
+            panel10.Size = new Size(300, 81);
+            panel10.TabIndex = 5;
+            // 
+            // estimateWarehouseDatePicker
+            // 
+            estimateWarehouseDatePicker.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
+            estimateWarehouseDatePicker.CustomFormat = "dd/MM/yyyy";
+            estimateWarehouseDatePicker.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            estimateWarehouseDatePicker.Format = DateTimePickerFormat.Custom;
+            estimateWarehouseDatePicker.Location = new Point(2, 37);
+            estimateWarehouseDatePicker.Margin = new Padding(0);
+            estimateWarehouseDatePicker.Name = "estimateWarehouseDatePicker";
+            estimateWarehouseDatePicker.Size = new Size(296, 38);
+            estimateWarehouseDatePicker.TabIndex = 16;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label6.Location = new Point(-3, 2);
+            label6.Name = "label6";
+            label6.Size = new Size(222, 31);
+            label6.TabIndex = 2;
+            label6.Text = "Ngày dự kiến về kho";
+            // 
             // label1
             // 
             label1.AutoSize = true;
@@ -619,7 +545,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(652, 736);
+            ClientSize = new Size(652, 680);
             Controls.Add(panel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "AddTransferPopup";
@@ -647,18 +573,14 @@
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
-            panel12.ResumeLayout(false);
-            panel12.PerformLayout();
-            panel10.ResumeLayout(false);
-            panel10.PerformLayout();
-            panel8.ResumeLayout(false);
-            panel8.PerformLayout();
             panel6.ResumeLayout(false);
             panel6.PerformLayout();
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             panel21.ResumeLayout(false);
             panel21.PerformLayout();
+            panel10.ResumeLayout(false);
+            panel10.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -689,15 +611,9 @@
         private Label label8;
         private Panel panel3;
         private TableLayoutPanel tableLayoutPanel1;
-        private Panel panel12;
-        private Label label7;
-        private DateTimePicker warehouseDatePicker;
         private Panel panel10;
         private Label label6;
         private DateTimePicker estimateWarehouseDatePicker;
-        private Panel panel8;
-        private Label label5;
-        private DateTimePicker execDatePicker;
         private Panel panel6;
         private Label label4;
         private DateTimePicker estimateExecDatePicker;

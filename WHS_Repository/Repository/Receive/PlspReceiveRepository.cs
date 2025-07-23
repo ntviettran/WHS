@@ -1,27 +1,114 @@
-﻿using System;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dapper;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
+using WHS.Core.Dto;
 using WHS.Core.Dto.Fabric;
+using WHS.Core.Dto.PLDG;
 using WHS.Core.Dto.PLSP;
+using WHS.Core.Dto.Receive;
 using WHS.Core.Enums;
 using WHS.Core.ErrorHandle;
+using WHS.Core.Query.Base;
+using WHS.Core.Query.Receive;
 using WHS.Core.Response;
 
 namespace WHS.Repository.Repository.Receive
 {
-    public class PlspReceiveRepository : ReceiveRepository<PlspDto, PlspDetailDto>
+    public class PlspReceiveRepository : ReceiveRepository<PlspDto, PlspReceivedDto>
     {
         public PlspReceiveRepository(IConfiguration configuration) : base(configuration)
         {
         }
 
-        public override async Task<Response<int>> CreateReceiveAsync(PlspDto plsp, DataTable detail)
+        /// <summary>
+        /// Get dữ liệu grouped theo mo
+        /// </summary>
+        /// <param name="paginate"></param>
+        /// <param name="receiveSearch"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public override async Task<Response<PageDto<GroupReceiveDto>>> GetGroupedReceiveAsync(Paginate paginate, ReceiveSearch receiveSearch)
+        {
+            using var conn = CreateConnection();
+            await conn.OpenAsync();
+
+            try
+            {
+                // Tạo query
+                string baseSql = "from vw_grouped_plsp_received";
+                string countSql = $"select count(mo) {baseSql} where  @Mo is null or mo like @Mo;";
+                string dataSql = $@"select mo, type_detail, supplier, quantity_to_received, received_quantity, expected_quantity {baseSql}
+                                    where @Mo is null or mo like @Mo
+                                    order by modified_at
+                                    offset @Offset rows fetch next @PageSize rows only;";
+
+                // Tạo paramers
+                int offset = (paginate.PageIndex - 1) * paginate.PageSize;
+                var parameters = new
+                {
+                    Offset = offset,
+                    paginate.PageSize,
+                    Mo = string.IsNullOrEmpty(receiveSearch.MO) ? null : $"%{receiveSearch.MO}%"
+                };
+
+                // Lấy số lượng bản ghi và dữ liệu
+                var total = await conn.ExecuteScalarAsync<int>(countSql, parameters);
+                List<GroupReceiveDto> items = (await conn.QueryAsync<GroupReceiveDto>(dataSql, parameters)).ToList();
+
+                int totalPages = (int)Math.Ceiling(total / (double)paginate.PageSize);
+                PageDto<GroupReceiveDto> result = new PageDto<GroupReceiveDto>()
+                {
+                    TotalPage = totalPages,
+                    TotalRecord = total,
+                    PageData = items
+                };
+
+                return Response<PageDto<GroupReceiveDto>>.Success(result);
+            }
+            catch (Exception ex)
+            {
+                return ErrorHandler<PageDto<GroupReceiveDto>>.Show(ex);
+            }
+        }
+
+        /// <summary>
+        /// Check duplicate value
+        /// </summary>
+        /// <param name="detail"></param>
+        /// <returns></returns>
+        public override async Task<Response<bool>> CheckDuplicateValue(DataTable detail)
+        {
+            var columnChecks = new List<string>
+            {
+                "MO", "Supplier", "PlspType", "PlspCode", "MarketCode", "NplColor", "Size", "PlspColor"
+            };
+
+            string sqlCheck = @"
+                select distinct t.keyhash
+                from #tempkeys t
+                join sys_npl_plsp_received r on
+                    t.keyhash collate sql_latin1_general_cp1_ci_as = lower(concat_ws('||',
+                        isnull(r.mo, ''),
+                        isnull(r.supplier, ''),
+                        isnull(r.plsp_type, ''),
+                        isnull(r.plsp_code, ''),
+                        isnull(r.market_code, ''),
+                        isnull(r.npl_color, ''),
+                        isnull(r.size, ''),
+                        isnull(r.plsp_color, '')
+                    ))
+                ";
+
+            return await BaseCheckDuplicate(detail, columnChecks, sqlCheck);
+        }
+
+        public override async Task<Response<int>> CreateReceiveAsync(DataTable detail)
         {
             using var conn = CreateConnection();
             await conn.OpenAsync();
@@ -29,33 +116,6 @@ namespace WHS.Repository.Repository.Receive
 
             try
             {
-
-                // Bước 1: Insert bảng cha và lấy ID
-                string insertHeaderSql = @"
-                    insert into npl_received (mo, type_detail, supplier, quantity_to_receive, quantity_estimate, npl_type, created_by, modified_by)
-                    output inserted.id
-                    values (@Mo, @Type, @Supplier, @QuantityToReceive, @QuantityEstimate, @NPLType, @CreatedBy, @ModifiedBy);";
-
-                int id = await conn.ExecuteScalarAsync<int>(
-                    insertHeaderSql, new
-                    {
-                        plsp.MO,
-                        plsp.Type,
-                        plsp.Supplier,
-                        plsp.QuantityToReceive,
-                        plsp.QuantityEstimate,
-                        NPLType = E_NPLType.PLSP,
-                        CreatedBy = 0,
-                        ModifiedBy = 0
-                    },
-                    transaction: transaction
-                );
-
-                // Bước 2: Thêm các giá trị thiếu vào datatable
-                // Thêm id_received vào DataTable
-                if (!detail.Columns.Contains("IdReceived"))
-                    detail.Columns.Add("IdReceived", typeof(int));
-
                 // Thêm created_by vào Datatable
                 if (!detail.Columns.Contains("CreatedBy"))
                     detail.Columns.Add("CreatedBy", typeof(int));
@@ -66,7 +126,6 @@ namespace WHS.Repository.Repository.Receive
 
                 foreach (DataRow row in detail.Rows)
                 {
-                    row["IdReceived"] = id;
                     row["CreatedBy"] = 0;
                     row["ModifiedBy"] = 0;
                 }
@@ -74,17 +133,21 @@ namespace WHS.Repository.Repository.Receive
                 // Bước3: Insert bảng con bằng SqlBulkCopy
                 using (var bulkCopy = new SqlBulkCopy(conn, SqlBulkCopyOptions.Default, transaction))
                 {
-                    bulkCopy.DestinationTableName = "npl_plsp_detail";
+                    bulkCopy.DestinationTableName = "sys_npl_plsp_received";
 
                     // Ánh xạ cột
-                    bulkCopy.ColumnMappings.Add("IdReceived", "id_npl_received");
+                    bulkCopy.ColumnMappings.Add("MO", "mo");
+                    bulkCopy.ColumnMappings.Add("Supplier", "supplier");
                     bulkCopy.ColumnMappings.Add("PlspType", "plsp_type");
                     bulkCopy.ColumnMappings.Add("PlspCode", "plsp_code");
-                    bulkCopy.ColumnMappings.Add("PlspColor", "npl_color");
+                    bulkCopy.ColumnMappings.Add("NplColor", "npl_color");
                     bulkCopy.ColumnMappings.Add("MarketCode", "market_code");
                     bulkCopy.ColumnMappings.Add("Size", "size");
                     bulkCopy.ColumnMappings.Add("PlspColor", "plsp_color");
                     bulkCopy.ColumnMappings.Add("QuantityToReceived", "quantity_to_received");
+                    bulkCopy.ColumnMappings.Add("OrderDate", "order_date");
+                    bulkCopy.ColumnMappings.Add("AvailableDate", "available_date");
+                    bulkCopy.ColumnMappings.Add("ExpectedDate", "expected_date");
                     bulkCopy.ColumnMappings.Add("CreatedBy", "created_by");
                     bulkCopy.ColumnMappings.Add("ModifiedBy", "modified_by");
 
@@ -94,7 +157,7 @@ namespace WHS.Repository.Repository.Receive
                 // Commit
                 transaction.Commit();
 
-                return Response<int>.Success(id, "Đã tạo NPL thành công!");
+                return Response<int>.Success(1, "Đã tạo NPL thành công!");
             }
             catch (Exception ex)
             {
@@ -110,92 +173,35 @@ namespace WHS.Repository.Repository.Receive
         /// <param name="detail"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public override async Task<Response<int>> UpdateReceiveAsync(int id, PlspDto plsp, DataTable detail)
+        public override async Task<Response<int>> UpdateReceiveAsync(int id, DataTable detail)
         {
-            using var conn = CreateConnection();
-            await conn.OpenAsync();
-            using var transaction = conn.BeginTransaction();
+            //string updateSql = @"
+            //update npl_received
+            //set
+            //    mo = @Mo,
+            //    type_detail = @TypeDetail,
+            //    supplier = @Supplier,
+            //    quantity_to_received = @QuantityToReceived,
+            //    quantity_estimate = @QuantityEstimate,
+            //    modified_by = @ModifiedBy,
+            //    modified_at = GETDATE()
+            //where id = @ID;";
 
-            try
-            {
-                //Bước 1: Update bảng cha npl_received
-                string updateHeaderSql = @"
-                update npl_received
-                set
-                    mo = @Mo,
-                    style = @Style,
-                    color = @Color,
-                    type_detail = @FabricType,
-                    supplier = @Supplier,
-                    quantity_to_receive = @QuantityToReceive,
-                    quantity_estimate = @QuantityEstimate,
-                    modified_by = @ModifiedBy,
-                    modified_at = GETDATE()
-                where id_npl_received = @ID;";
+            //var parentParams = new
+            //{
+            //    plsp.MO,
+            //    plsp.TypeDetail,
+            //    plsp.Supplier,
+            //    plsp.QuantityToReceived,
+            //    plsp.QuantityEstimate,
+            //    ModifiedBy = 0,
+            //    ID = id,
+            //};
 
-                await conn.ExecuteAsync(updateHeaderSql, new
-                {
-                    plsp.MO,
-                    plsp.Type,
-                    plsp.Supplier,
-                    plsp.QuantityToReceive,
-                    plsp.QuantityEstimate,
-                    NPLType = E_NPLType.PLSP,
-                    CreatedBy = 0,
-                    ModifiedBy = 0
-                }, transaction: transaction);
+            //return await UpdateReceiveBaseAsync(id, updateSql, parentParams, detail,
+            //    "viet_sp_upsert_npl_plsp_detail", "dbo.NplPlspDetailType");
 
-                // Bước 2: Update những dòng đã chỉnh sửa
-
-
-                // Bước 2: Thêm các giá trị thiếu vào datatable
-                // Thêm id_received vào DataTable
-                if (!detail.Columns.Contains("idReceived"))
-                    detail.Columns.Add("idReceived", typeof(int));
-
-                // Thêm created_by vào Datatable
-                if (!detail.Columns.Contains("createdBy"))
-                    detail.Columns.Add("createdBy", typeof(int));
-
-                // Thêm modified_by vào Datatable
-                if (!detail.Columns.Contains("modifiedBy"))
-                    detail.Columns.Add("modifiedBy", typeof(int));
-
-                foreach (DataRow row in detail.Rows)
-                {
-                    row["idReceived"] = id;
-                    row["createdBy"] = 0;
-                    row["modifiedBy"] = 0;
-                }
-
-                // Bước3: Insert bảng con bằng SqlBulkCopy
-                using (var bulkCopy = new SqlBulkCopy(conn, SqlBulkCopyOptions.Default, transaction))
-                {
-                    bulkCopy.DestinationTableName = "npl_fabric_detail";
-
-                    // Ánh xạ cột
-                    bulkCopy.ColumnMappings.Add("IdReceived", "id_npl_received");
-                    bulkCopy.ColumnMappings.Add("PlspType", "plsp_type");
-                    bulkCopy.ColumnMappings.Add("PlspCode", "plsp_code");
-                    bulkCopy.ColumnMappings.Add("PlspColor", "plsp_color");
-                    bulkCopy.ColumnMappings.Add("MarketCode", "market_code");
-                    bulkCopy.ColumnMappings.Add("Size", "zie");
-                    bulkCopy.ColumnMappings.Add("PlspColor", "plsp_color");
-                    bulkCopy.ColumnMappings.Add("CreatedBy", "created_by");
-                    bulkCopy.ColumnMappings.Add("ModifiedBy", "modified_by");
-
-                    await bulkCopy.WriteToServerAsync(detail);
-                }
-
-                // Commit
-                transaction.Commit();
-
-                return Response<int>.Success(id, "Đã tạo NPL thành công!");
-            }
-            catch (Exception ex)
-            {
-                return ErrorHandler<int>.Show(ex);
-            }
+            return Response<int>.Success(1);
         }
 
         /// <summary>
@@ -204,7 +210,7 @@ namespace WHS.Repository.Repository.Receive
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public override async Task<Response<List<PlspDetailDto>>> GetReceiveDetailAsync(int id)
+        public override async Task<Response<List<PlspReceivedDto>>> GetReceiveDetailAsync(GroupReceiveDto receiveData)
         {
             using var conn = CreateConnection();
             await conn.OpenAsync();
@@ -212,23 +218,23 @@ namespace WHS.Repository.Repository.Receive
             try
             {
                 string sql = @"
-                select  id, 
-                        plsp_type as PlspType, 
-                        plsp_code as PlspCode, 
-                        npl_color as NplColor, 
-                        market_code as MarketCode,
-                        size,
-                        plsp_color as PlspColor,
-                        quantity_to_received as QuantityToReceived
-                from npl_plsp_detail
-                where id_npl_received = @ID";
+                select *
+                from vw_npl_plsp_detail
+                where mo = @MO and plsp_type = @TypeDetail and supplier = @Supplier";
 
-                var result = (await conn.QueryAsync<PlspDetailDto>(sql, new { ID = id })).ToList();
-                return Response<List<PlspDetailDto>>.Success(result);
+                var parameters = new
+                {
+                    receiveData.MO,
+                    receiveData.TypeDetail,
+                    receiveData.Supplier
+                };
+
+                var result = (await conn.QueryAsync<PlspReceivedDto>(sql, parameters)).ToList();
+                return Response<List<PlspReceivedDto>>.Success(result);
             }
             catch (Exception ex)
             {
-                return ErrorHandler<List<PlspDetailDto>>.Show(ex);
+                return ErrorHandler<List<PlspReceivedDto>>.Show(ex);
             }
         }
     }

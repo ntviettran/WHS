@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,6 +10,8 @@ using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WHS.Core.Dto.Fabric;
+using WHS.Core.Dto.PLDG;
 using WHS.Core.Dto.PLSP;
 using WHS.Core.Dto.Transfer;
 using WHS.Core.Enums;
@@ -17,6 +20,7 @@ using WHS.Core.Utils;
 using WHS.Factory;
 using WHS.Service.Interface;
 using WHS.Service.Services.Receive;
+using WHS.Utils;
 
 namespace WHS.Popup.Transfer
 {
@@ -29,10 +33,11 @@ namespace WHS.Popup.Transfer
         private ITransferService _transferService;
         private E_NPLType _type = E_NPLType.FABRIC;
         private Dictionary<string, string> _columns = new Dictionary<string, string>();
+        private Dictionary<string, string> _coordinateColumns = new Dictionary<string, string>();
 
-        private List<FabricCoordinationDto> _fabricSelected = new List<FabricCoordinationDto>();
-        private List<PLSPCoordinationDto> _plspSelected = new List<PLSPCoordinationDto>();
-        private List<PLDGCoordinationDto> _pldgSelected = new List<PLDGCoordinationDto>();
+        private List<FabricTransferDetailDto> _fabricSelected = new List<FabricTransferDetailDto>();
+        private List<PLSPTransferDetailDto> _plspSelected = new List<PLSPTransferDetailDto>();
+        private List<PLDGTransferDetailDto> _pldgSelected = new List<PLDGTransferDetailDto>();
 
         public AddTransferDetailPopup()
         {
@@ -69,6 +74,8 @@ namespace WHS.Popup.Transfer
         /// <param name="e"></param>
         private void AddTransferDetailPopup_Load(object sender, EventArgs e)
         {
+            GridViewUtils.SetBuffer(coordinateView);
+            GridViewUtils.SetBuffer(coordinateDetailView);
             GetDataFabric();
         }
 
@@ -93,28 +100,26 @@ namespace WHS.Popup.Transfer
 
                             if (_fabricSelected.Count == 0 && resDetail.IsSuccess && resDetail.Data != null)
                             {
-                                _fabricSelected = resDetail.Data.Select(f => new FabricCoordinationDto()
-                                {
-                                    ID = f.ID,
-                                    IdNplReceived = f.IdNplReceived,
-                                    MO = f.MO,
-                                    Style = f.Style,
-                                    Color = f.Color,
-                                    FabricType = f.FabricType,
-                                    Batch = f.Batch,
-                                    QuantityToReceived = f.QuantityToReceived,
-                                    QuantityReceived = f.QuantityReceived,
-                                    EstimateQuantity = f.EstimateQuantity,
-                                }).ToList();
+                                _fabricSelected = resDetail.Data;
                             }
                         }
                     }
                     break;
                 case E_NPLType.PLSP:
-                    if (_transferService is ITransferService<PLSPCoordinationDto, PLDGTransferDetailDto> plspService)
+                    if (_transferService is ITransferService<PLSPCoordinationDto, PLSPTransferDetailDto> plspService)
                     {
                         Response<List<PLSPCoordinationDto>> res = await plspService.GetTransferCoordinateByStatus(status);
                         FillCoordiateTable<PLSPCoordinationDto>(res);
+
+                        if (Status == E_StatusPage.EDIT)
+                        {
+                            Response<List<PLSPTransferDetailDto>> resDetail = await plspService.GetTransferDetail(TransferData.ID);
+
+                            if (_plspSelected.Count == 0 && resDetail.IsSuccess && resDetail.Data != null)
+                            {
+                                _plspSelected = resDetail.Data;
+                            }
+                        }
                     }
                     break;
                 case E_NPLType.PLDG:
@@ -122,6 +127,16 @@ namespace WHS.Popup.Transfer
                     {
                         Response<List<PLDGCoordinationDto>> res = await pldgService.GetTransferCoordinateByStatus(status);
                         FillCoordiateTable<PLDGCoordinationDto>(res);
+
+                        if (Status == E_StatusPage.EDIT)
+                        {
+                            Response<List<PLDGTransferDetailDto>> resDetail = await pldgService.GetTransferDetail(TransferData.ID);
+
+                            if (_pldgSelected.Count == 0 && resDetail.IsSuccess && resDetail.Data != null)
+                            {
+                                _pldgSelected = resDetail.Data;
+                            }
+                        }
                     }
                     break;
                 default:
@@ -181,26 +196,19 @@ namespace WHS.Popup.Transfer
                     MinimumWidth = 150,
                     ReadOnly = true
                 });
+            }
 
-                if (column.Key == "StatusDescription" || column.Key == "DispatchStatusDescription") continue;
-
+            foreach (var column in _coordinateColumns)
+            {
                 coordinateDetailView.Columns.Add(new DataGridViewTextBoxColumn
                 {
                     Name = column.Key,
                     HeaderText = column.Value,
                     DataPropertyName = column.Key,
                     MinimumWidth = 150,
-                    ReadOnly = true
+                    ReadOnly = column.Key != "EstimateQuantity"
                 });
             }
-
-            coordinateDetailView.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "EstimateQuantity",
-                HeaderText = "Số lượng dự kiến",
-                DataPropertyName = "EstimateQuantity",
-                MinimumWidth = 150
-            });
         }
 
         /// <summary>
@@ -219,7 +227,7 @@ namespace WHS.Popup.Transfer
             }
 
             // Active button truyền vào
-            button.BackColor = Color.DodgerBlue;
+            button.BackColor = Color.FromArgb(0,46,92);
 
             _transferService = TransferFactory.GetService(_type);
         }
@@ -235,18 +243,37 @@ namespace WHS.Popup.Transfer
             _columns = new Dictionary<string, string>
             {
                 {"ID", "ID"},
-                {"IdNplReceived", "ID NPL nhận"},
                 {"MO", "MO"},
                 {"Style", "Style"},
                 {"Color", "Màu"},
                 {"FabricType", "Loại vải"},
-                {"Batch", "Lót"},
+                {"Batch", "Lot"},
+                {"FabricNumber", "Cuộn số"},
                 {"QuantityToReceived", "Số lượng cần nhận"},
                 {"QuantityReceived", "Số lượng đã nhận"},
-                {"RemainingQuantity", "Số lượng còn phải nhận"},
+                {"RemainingQuantity", "Số lượng còn lại"},
                 {"StatusDescription", "Trạng thái"},
                 {"DispatchStatusDescription", "Trạng thái điều phối"},
             };
+
+            _coordinateColumns = new Dictionary<string, string>
+            {
+                {"ID", "ID"},
+                {"MO", "MO"},
+                {"Style", "Style"},
+                {"Color", "Màu"},
+                {"FabricType", "Loại vải"},
+                {"Batch", "Lot"},
+                {"QuantityToReceived", "Số lượng cần nhận"},
+                {"QuantityReceived", "Số lượng thực nhận"},
+                {"QuantityStatusDescription", "Trạng thái số lượng"},
+                {"LengthReceived", "Chiều dài thực nhận"},
+                {"LengthStatusDescription", "Trạng thái chiều dài"},
+                {"WeightReceived", "Khối lượng thực nhận"},
+                {"WeightStatusDescription", "Trạng thái khối lượng"},
+                {"EstimateQuantity", "Số lượng dự kiến nhận"},
+            };
+
             SetColumnGridView();
             await GetCoordiateView();
 
@@ -272,16 +299,30 @@ namespace WHS.Popup.Transfer
             _columns = new Dictionary<string, string>
             {
                 {"ID", "ID"},
-                {"IdNplReceived", "ID NPL nhận"},
                 {"MO", "MO"},
                 {"PlspType", "Loại phụ liệu"},
                 {"PlspCode", "Mã code"},
                 {"NplColor", "Màu"},
                 {"QuantityToReceived", "Số lượng cần nhận"},
                 {"QuantityReceived", "Số lượng đã nhận"},
-                {"RemainingQuantity", "Số lượng còn phải nhận"},
                 {"StatusDescription", "Trạng thái"},
                 {"DispatchStatusDescription", "Trạng thái điều phối"}
+            };
+
+            _coordinateColumns = new Dictionary<string, string>
+            {
+                {"ID", "ID"},
+                {"MO", "MO"},
+                {"PlspType", "Loại phụ liệu"},
+                {"PlspCode", "Mã code"},
+                {"NplColor", "Màu"},
+                {"MarketCode", "Mã thị trường"},
+                {"Size", "Kích thước"},
+                {"PlspColor", "Màu sắc sản phẩm"},
+                {"QuantityToReceived", "Số lượng cần nhận"},
+                {"QuantityReceived", "Số lượng thực nhận"},
+                {"QuantityStatusDescription", "Trạng thái số lượng"},
+                {"EstimateQuantity", "Số lượng đã nhận"},
             };
             SetColumnGridView();
             await GetCoordiateView();
@@ -305,16 +346,31 @@ namespace WHS.Popup.Transfer
             _columns = new Dictionary<string, string>
             {
                 {"ID", "ID"},
-                {"IdNplReceived", "ID NPL nhận"},
                 {"MO", "MO"},
                 {"PldgType", "Loại phụ liệu"},
-                {"PackCode", "Mã pack"},
+                {"PldgCode", "Mã pack"},
                 {"Color", "Màu"},
                 {"QuantityToReceived", "Số lượng cần nhận"},
                 {"QuantityReceived", "Số lượng đã nhận"},
-                {"RemainingQuantity", "Số lượng còn phải nhận"},
                 {"StatusDescription", "Trạng thái"},
                 {"DispatchStatusDescription", "Trạng thái điều phối"}
+            };
+
+            _coordinateColumns = new Dictionary<string, string>
+            {
+                {"ID", "ID"},
+                {"MO", "MO"},
+                {"PldgType", "Loại phụ liệu"},
+                {"PldgCode", "Mã pack"},
+                {"PoCode", "Mã PO"},
+                {"Color", "Màu"},
+                {"PldgSize", "Kích thước"},
+                {"NetWeight", "N.W"},
+                {"GrossWeight", "G.W"},
+                {"QuantityToReceived", "Số lượng cần nhận"},
+                {"QuantityReceived", "Số lượng đã nhận"},
+                {"QuantityStatusDescription", "Trạng thái số lượng"},
+                {"EstimateQuantity", "Số lượng đã nhận"},
             };
             SetColumnGridView();
             await GetCoordiateView();
@@ -361,39 +417,6 @@ namespace WHS.Popup.Transfer
         }
 
         /// <summary>
-        /// Hàm handle row selection theo generictype
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="row"></param>
-        /// <param name="isChecked"></param>
-        /// <param name="selectedList"></param>
-        private void HandleRowSelection<T>(DataGridViewRow row, bool isChecked, List<T> selectedList)
-        where T : class
-        {
-            var item = row.DataBoundItem as T;
-            if (item == null) return;
-
-            // Dùng reflection nếu không muốn dùng interface
-            var id = (int)typeof(T).GetProperty("ID")?.GetValue(item)!;
-            var remaining = (int)typeof(T).GetProperty("RemainingQuantity")?.GetValue(item)!;
-            var estimateProp = typeof(T).GetProperty("EstimateQuantity");
-
-            if (isChecked)
-            {
-                estimateProp?.SetValue(item, remaining);
-                if (!selectedList.Any(x => (int)typeof(T).GetProperty("ID")?.GetValue(x)! == id))
-                    selectedList.Add(item);
-            }
-            else
-            {
-                selectedList.RemoveAll(x => (int)typeof(T).GetProperty("ID")?.GetValue(x)! == id);
-            }
-
-            coordinateDetailView.DataSource = null;
-            coordinateDetailView.DataSource = selectedList;
-        }
-
-        /// <summary>
         /// Bắt sự kiện click checkbox
         /// </summary>
         /// <param name="sender"></param>
@@ -409,13 +432,124 @@ namespace WHS.Popup.Transfer
                 switch (_type)
                 {
                     case E_NPLType.FABRIC:
-                        HandleRowSelection<FabricCoordinationDto>(row, isChecked, _fabricSelected);
+                        {
+                            var item = row.DataBoundItem as FabricCoordinationDto;
+                            if (item == null) return;
+
+                            var id = (int)typeof(FabricCoordinationDto).GetProperty("ID")?.GetValue(item)!;
+
+                            if (isChecked)
+                            {
+                                if (!_fabricSelected.Any(x => x.ID! == id))
+                                {
+                                    FabricTransferDetailDto detail = new FabricTransferDetailDto()
+                                    {
+                                        ID = item.ID,
+                                        MO = item.MO,
+                                        Style = item.Style,
+                                        Color = item.Color,
+                                        FabricType = item.FabricType,
+                                        Batch = item.Batch,
+                                        FabricNumber = item.FabricNumber,
+                                        QuantityToReceived = item.QuantityToReceived,
+                                        ReceivedQuantity = item.ReceivedQuantity,
+                                        WeightReceived = item.WeightReceived,
+                                        EstimateQuantity = item.RemainingQuantity,
+                                        QuantityStatus = TransferUtils.GetQuantityIntStatus(item.QuantityToReceived, item.ReceivedQuantity),
+                                        LengthStatus = TransferUtils.GetQuantityFloatStatus(item.FabricLength, item.LengthReceived),
+                                        WeightStatus = TransferUtils.GetQuantityFloatStatus(item.FabricWeight, item.WeightReceived)
+                                    };
+
+                                    _fabricSelected.Add(detail);
+                                }
+                            }
+                            else
+                            {
+                                _fabricSelected.RemoveAll(x => x.ID == id);
+                            }
+
+                            coordinateDetailView.DataSource = null;
+                            coordinateDetailView.DataSource = _fabricSelected;
+                        } 
                         break;
                     case E_NPLType.PLDG:
-                        HandleRowSelection<PLDGCoordinationDto>(row, isChecked, _pldgSelected);
+                        {
+                            var item = row.DataBoundItem as PLDGCoordinationDto;
+                            if (item == null) return;
+
+                            var id = (int)typeof(PLDGCoordinationDto).GetProperty("ID")?.GetValue(item)!;
+
+                            if (isChecked)
+                            {
+                                if (!_pldgSelected.Any(x => x.ID! == id))
+                                {
+                                    PLDGTransferDetailDto detail = new PLDGTransferDetailDto()
+                                    {
+                                        ID = item.ID,
+                                        MO = item.MO,
+                                        PldgType = item.PldgType,
+                                        Color = item.Color,
+                                        PldgCode = item.PldgCode,
+                                        NetWeight = item.NetWeight,
+                                        GrossWeight = item.GrossWeight,
+                                        PoCode = item.PoCode,
+                                        PldgSize = item.PldgSize,
+                                        QuantityToReceived = item.QuantityToReceived,
+                                        ReceivedQuantity = item.ReceivedQuantity,
+                                        EstimateQuantity = item.RemainingQuantity,
+                                        QuantityStatus = TransferUtils.GetQuantityIntStatus(item.QuantityToReceived, item.ReceivedQuantity)
+                                    };
+
+                                    _pldgSelected.Add(detail);
+                                }
+                            }
+                            else
+                            {
+                                _pldgSelected.RemoveAll(x => x.ID == id);
+                            }
+
+                            coordinateDetailView.DataSource = null;
+                            coordinateDetailView.DataSource = _pldgSelected;
+                        }
                         break;
                     case E_NPLType.PLSP:
-                        HandleRowSelection<PLSPCoordinationDto>(row, isChecked, _plspSelected);
+                        {
+                            var item = row.DataBoundItem as PLSPCoordinationDto;
+                            if (item == null) return;
+
+                            var id = (int)typeof(PLSPCoordinationDto).GetProperty("ID")?.GetValue(item)!;
+
+                            if (isChecked)
+                            {
+                                if (!_plspSelected.Any(x => x.ID! == id))
+                                {
+                                    PLSPTransferDetailDto detail = new PLSPTransferDetailDto()
+                                    {
+                                        ID = item.ID,
+                                        MO = item.MO,
+                                        PlspCode = item.PlspCode,
+                                        PlspType = item.PlspType,
+                                        NplColor = item.NplColor,
+                                        MarketCode = item.MarketCode,
+                                        PlspColor = item.PlspColor,
+                                        Size = item.Size,
+                                        QuantityToReceived = item.QuantityToReceived,
+                                        ReceivedQuantity = item.ReceivedQuantity,
+                                        EstimateQuantity = item.RemainingQuantity,
+                                        QuantityStatus = TransferUtils.GetQuantityIntStatus(item.QuantityToReceived, item.ReceivedQuantity)
+                                    };
+
+                                    _plspSelected.Add(detail);
+                                }
+                            }
+                            else
+                            {
+                                _plspSelected.RemoveAll(x => x.ID == id);
+                            }
+
+                            coordinateDetailView.DataSource = null;
+                            coordinateDetailView.DataSource = _plspSelected;
+                        }
                         break;
                     default:
                         break;
@@ -447,7 +581,8 @@ namespace WHS.Popup.Transfer
                 return;
             }
 
-            DialogResult result = ShowMessage.Success("Tạo đợt chuyển thành công!");
+            string message = Status == E_StatusPage.ADD ? "Tạo" : "Sửa";
+            DialogResult result = ShowMessage.Success($"{message} đợt chuyển thành công!");
             if (result == DialogResult.OK)
             {
                 this.Close();
@@ -464,19 +599,29 @@ namespace WHS.Popup.Transfer
         /// <param name="e"></param>
         private void coordinateDetailView_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Delete && coordinateDetailView.SelectedRows.Count > 0)
+            if (e.KeyCode != Keys.Delete) return;
+            IList? sourceList = _type switch
             {
-                var bindingList = coordinateDetailView.DataSource as BindingList<FabricCoordinationDto>;
-                if (bindingList == null) return;
+                E_NPLType.FABRIC => _fabricSelected,
+                E_NPLType.PLSP => _plspSelected,
+                E_NPLType.PLDG => _pldgSelected,
+                _ => null
+            };
 
-                foreach (DataGridViewRow row in coordinateDetailView.SelectedRows)
+            if (sourceList == null) return;
+
+            // Duyệt các dòng đã chọn
+            foreach (DataGridViewRow row in coordinateDetailView.SelectedRows)
+            {
+                var item = row.DataBoundItem;
+                if (item != null)
                 {
-                    if (row.DataBoundItem is FabricCoordinationDto item)
-                    {
-                        bindingList.Remove(item);
-                    }
+                    sourceList.Remove(item); 
                 }
             }
+
+            coordinateDetailView.DataSource = null;
+            coordinateDetailView.DataSource = sourceList;
         }
     }
 }

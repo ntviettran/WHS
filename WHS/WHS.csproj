@@ -13,8 +13,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Popup\Receive\FabricPopup.cs" />
-    <Compile Update="Popup\Receive\PLDGPopup.cs">
+    <Compile Update="Popup\Receive\DetailReceive\FabricPopup.cs" />
+    <Compile Update="Popup\Receive\DetailReceive\PLDGPopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Popup\Receive\ReceiveDetailTransaction\PLDGTransaction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Popup\Receive\ReceiveDetailTransaction\PLSPTransaction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Popup\Receive\ReceiveDetailTransaction\BaseTransaction.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Properties\Resources.Designer.cs">

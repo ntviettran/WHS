@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using WHS.Core.Dto.Fabric;
 using WHS.Core.Dto.PLDG;
 using WHS.Core.Dto.PLSP;
-using WHS.Core.Dto.Transfer;
 using WHS.Core.Enums;
 using WHS.Repository.Interfaces;
 using WHS.Service.Interface;

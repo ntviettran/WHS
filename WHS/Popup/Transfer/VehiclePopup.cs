@@ -15,6 +15,7 @@ using WHS.Core.Response;
 using WHS.Core.Utils;
 using WHS.Service.Interface;
 using WHS.Service.Services.Coordinate;
+using WHS.Utils;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static OfficeOpenXml.ExcelErrorValue;
 
@@ -69,6 +70,7 @@ namespace WHS.Popup.Transfer
         /// <param name="e"></param>
         private async void VehiclePopup_Load(object sender, EventArgs e)
         {
+            GridViewUtils.SetBuffer(gridView);
             await GetDataGridView();
         }
 

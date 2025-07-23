@@ -13,8 +13,8 @@ namespace WHS.Core.Dto.Transfer
         public E_NPLType DetailType { get; set; }
         public int DetailID { get; set; }
         public int EstimateQuantity { get; set; }
-        public int? EstimateLength { get; set; }
-        public int? EstimateWeight { get; set; }
+        public float? EstimateLength { get; set; }
+        public float? EstimateWeight { get; set; }
         public E_QuantityStatus QuantityStatus { get; set; }
         public E_QuantityStatus LengthStatus { get; set; }
         public E_QuantityStatus WeightStatus { get; set; }
@@ -24,14 +24,25 @@ namespace WHS.Core.Dto.Transfer
     public class TransferDetailDto : TransferDetailCreateDto
     {
         public int ID { get; set; }
+        public int TransferDetailId { get; set; }
         public string MO { get; set; } = String.Empty;
-        public int IdNplReceived { get; set; }
-        public int QuantityReceived { get; set; }
+        public int ReceivedQuantity { get; set; }
         public float LengthReceived { get; set; }
         public float WeightReceived { get; set; }
         public string QuantityStatusDescription => EnumHelper.GetEnumDescription(QuantityStatus);
         public string LengthStatusDescription => EnumHelper.GetEnumDescription(LengthStatus);
         public string WeightStatusDescription => EnumHelper.GetEnumDescription(WeightStatus);
 
+    }
+
+    public class TransferQuantityDetailDto
+    {
+        public int ID { get; set; }
+        public int ReceivedQuantity { get; set; }
+        public float LengthReceived { get; set; }
+        public float WeightReceived { get; set; }
+        public E_QuantityStatus QuantityStatus { get; set; }
+        public E_QuantityStatus LengthStatus { get; set; }
+        public E_QuantityStatus WeightStatus { get; set; }
     }
 }

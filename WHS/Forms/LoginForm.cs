@@ -59,7 +59,14 @@ namespace WHS.Forms
                 // Xử lý nếu mainform bám đóng thì đóng luôn cả login form để đóng hẳn app
                 mainform.FormClosed += (s, args) =>
                 {
-                    this.Close();
+                    if (mainform.IsLogout)
+                    {
+                        userNameTxb.Text = "";
+                        passwordTxb.Text = "";
+                        this.Show();
+                        userNameTxb.Focus();
+                    }
+                    else this.Close();
                 };
                 this.Hide();
             }

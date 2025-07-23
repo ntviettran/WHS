@@ -16,17 +16,11 @@ namespace WHS.Factory
 
     public class ReceiveFactory
     {
-        public static IReceiveService GetService(E_NPLType type)
+        public static IReceiveService<T, D> GetService<T,D>(E_NPLType type)
         {
             if (Program.ServiceProvider == null) throw new NotImplementedException($"No service registered for type: {type}");
 
-            return type switch
-            {
-                E_NPLType.FABRIC => Program.ServiceProvider!.GetRequiredService<IReceiveService<FabricDto, FabricDetailDto>>(),
-                E_NPLType.PLSP => Program.ServiceProvider!.GetRequiredService<IReceiveService<PlspDto, PlspDetailDto>>(),
-                E_NPLType.PLDG => Program.ServiceProvider!.GetRequiredService<IReceiveService<PldgDto, PldgDetailDto>>(),
-                _ => throw new NotImplementedException($"No service registered for type: {type}")
-            };
+            return Program.ServiceProvider!.GetRequiredService<IReceiveService<T, D>>();
         }
     }
 }

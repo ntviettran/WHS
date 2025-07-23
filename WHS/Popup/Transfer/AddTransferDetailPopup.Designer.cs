@@ -73,17 +73,17 @@
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(20, 20);
             panel1.Name = "panel1";
-            panel1.Size = new Size(874, 855);
+            panel1.Size = new Size(1191, 855);
             panel1.TabIndex = 0;
             // 
             // backBtn
             // 
             backBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            backBtn.BackColor = Color.DodgerBlue;
+            backBtn.BackColor = Color.Crimson;
             backBtn.FlatStyle = FlatStyle.Flat;
             backBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             backBtn.ForeColor = Color.White;
-            backBtn.Location = new Point(655, 805);
+            backBtn.Location = new Point(972, 805);
             backBtn.Name = "backBtn";
             backBtn.Size = new Size(116, 47);
             backBtn.TabIndex = 26;
@@ -94,11 +94,11 @@
             // saveBtn
             // 
             saveBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            saveBtn.BackColor = Color.Green;
+            saveBtn.BackColor = Color.FromArgb(0, 46, 92);
             saveBtn.FlatStyle = FlatStyle.Flat;
             saveBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             saveBtn.ForeColor = Color.White;
-            saveBtn.Location = new Point(777, 805);
+            saveBtn.Location = new Point(1094, 805);
             saveBtn.Name = "saveBtn";
             saveBtn.Size = new Size(94, 47);
             saveBtn.TabIndex = 25;
@@ -118,7 +118,7 @@
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(870, 657);
+            tableLayoutPanel1.Size = new Size(1187, 657);
             tableLayoutPanel1.TabIndex = 24;
             // 
             // panel3
@@ -128,7 +128,7 @@
             panel3.Controls.Add(coordinateDetailView);
             panel3.Location = new Point(3, 331);
             panel3.Name = "panel3";
-            panel3.Size = new Size(864, 323);
+            panel3.Size = new Size(1181, 323);
             panel3.TabIndex = 26;
             // 
             // label2
@@ -143,15 +143,17 @@
             // 
             // coordinateDetailView
             // 
+            coordinateDetailView.AllowUserToAddRows = false;
+            coordinateDetailView.AllowUserToDeleteRows = false;
             coordinateDetailView.AllowUserToResizeRows = false;
             coordinateDetailView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             coordinateDetailView.BackgroundColor = Color.White;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.DodgerBlue;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(0, 46, 92);
             dataGridViewCellStyle1.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dataGridViewCellStyle1.ForeColor = Color.White;
             dataGridViewCellStyle1.Padding = new Padding(10);
-            dataGridViewCellStyle1.SelectionBackColor = Color.DodgerBlue;
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(0, 46, 92);
             dataGridViewCellStyle1.SelectionForeColor = Color.White;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             coordinateDetailView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
@@ -177,18 +179,18 @@
             coordinateDetailView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             coordinateDetailView.RowHeadersWidth = 51;
             coordinateDetailView.RowTemplate.Height = 35;
-            coordinateDetailView.Size = new Size(862, 275);
+            coordinateDetailView.Size = new Size(1179, 275);
             coordinateDetailView.TabIndex = 22;
             coordinateDetailView.KeyDown += coordinateDetailView_KeyDown;
             // 
             // panel4
             // 
             panel4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panel4.Controls.Add(label1);
             panel4.Controls.Add(coordinateView);
+            panel4.Controls.Add(label1);
             panel4.Location = new Point(3, 3);
             panel4.Name = "panel4";
-            panel4.Size = new Size(864, 322);
+            panel4.Size = new Size(1181, 322);
             panel4.TabIndex = 25;
             // 
             // label1
@@ -209,11 +211,11 @@
             coordinateView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             coordinateView.BackgroundColor = Color.White;
             dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = Color.DodgerBlue;
+            dataGridViewCellStyle4.BackColor = Color.FromArgb(0, 46, 92);
             dataGridViewCellStyle4.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dataGridViewCellStyle4.ForeColor = Color.White;
             dataGridViewCellStyle4.Padding = new Padding(10);
-            dataGridViewCellStyle4.SelectionBackColor = Color.DodgerBlue;
+            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(0, 46, 92);
             dataGridViewCellStyle4.SelectionForeColor = Color.White;
             dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
             coordinateView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
@@ -241,7 +243,7 @@
             coordinateView.RowHeadersWidth = 51;
             coordinateView.RowTemplate.Height = 35;
             coordinateView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            coordinateView.Size = new Size(862, 272);
+            coordinateView.Size = new Size(1179, 272);
             coordinateView.TabIndex = 21;
             coordinateView.CellContentClick += coordinateView_CellContentClick;
             // 
@@ -259,7 +261,7 @@
             typeContainer.Name = "typeContainer";
             typeContainer.RowCount = 1;
             typeContainer.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            typeContainer.Size = new Size(874, 54);
+            typeContainer.Size = new Size(1191, 54);
             typeContainer.TabIndex = 22;
             // 
             // pldgBtn
@@ -269,7 +271,7 @@
             pldgBtn.FlatStyle = FlatStyle.Flat;
             pldgBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pldgBtn.ForeColor = Color.White;
-            pldgBtn.Location = new Point(777, 3);
+            pldgBtn.Location = new Point(1094, 3);
             pldgBtn.Name = "pldgBtn";
             pldgBtn.Size = new Size(94, 47);
             pldgBtn.TabIndex = 2;
@@ -284,7 +286,7 @@
             plspBtn.FlatStyle = FlatStyle.Flat;
             plspBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             plspBtn.ForeColor = Color.White;
-            plspBtn.Location = new Point(389, 3);
+            plspBtn.Location = new Point(548, 3);
             plspBtn.Name = "plspBtn";
             plspBtn.Size = new Size(94, 48);
             plspBtn.TabIndex = 1;
@@ -294,7 +296,7 @@
             // 
             // fabricBtn
             // 
-            fabricBtn.BackColor = Color.DodgerBlue;
+            fabricBtn.BackColor = Color.FromArgb(0, 46, 92);
             fabricBtn.FlatStyle = FlatStyle.Flat;
             fabricBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             fabricBtn.ForeColor = Color.White;
@@ -318,7 +320,7 @@
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.RowCount = 1;
             tableLayoutPanel3.RowStyles.Add(new RowStyle());
-            tableLayoutPanel3.Size = new Size(874, 52);
+            tableLayoutPanel3.Size = new Size(1191, 52);
             tableLayoutPanel3.TabIndex = 15;
             // 
             // label7
@@ -327,11 +329,11 @@
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label7.ForeColor = Color.Black;
-            label7.Location = new Point(244, 0);
+            label7.Location = new Point(434, 0);
             label7.Name = "label7";
-            label7.Size = new Size(385, 46);
+            label7.Size = new Size(322, 46);
             label7.TabIndex = 0;
-            label7.Text = "Tạo chi tiết đợt chuyển";
+            label7.Text = "Chi tiết đợt chuyển";
             // 
             // panel2
             // 
@@ -339,20 +341,20 @@
             panel2.BackColor = Color.Black;
             panel2.Location = new Point(-9, 111);
             panel2.Name = "panel2";
-            panel2.Size = new Size(879, 1);
+            panel2.Size = new Size(1196, 1);
             panel2.TabIndex = 17;
             // 
             // AddTransferDetailPopup
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(914, 895);
+            ClientSize = new Size(1231, 895);
             Controls.Add(panel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "AddTransferDetailPopup";
             Padding = new Padding(20);
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Thêm chi tiết đợt chuyển";
-            WindowState = FormWindowState.Maximized;
             FormClosed += AddTransferDetailPopup_FormClosed;
             Load += AddTransferDetailPopup_Load;
             panel1.ResumeLayout(false);

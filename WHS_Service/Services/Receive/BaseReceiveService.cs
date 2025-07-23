@@ -15,16 +15,15 @@ using WHS.Core.Dto;
 using WHS.Core.Query.Base;
 using WHS.Core.Query.Receive;
 using WHS.Service.Interface;
+using WHS.Core.ErrorHandle;
 
 namespace WHS.Service.Services.Receive
 {
     public abstract class BaseReceiveService : IReceiveService
     {
-        protected IReceiveRepository _receiveRepository;
-
-        public BaseReceiveService(IReceiveRepository receiveRepository)
+        public BaseReceiveService()
         {
-            _receiveRepository = receiveRepository;
+
         }
         /// <summary>
         /// Xuất file excel gồm các cột là tên trong list headers truyền vào
@@ -47,10 +46,9 @@ namespace WHS.Service.Services.Receive
                         cell.Value = headers[i];
                         cell.Style.Font.Bold = true;
                         cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-
-                        // Tô nền xanh dương
                         cell.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        cell.Style.Fill.BackgroundColor.SetColor(Color.LightSkyBlue);
+                        cell.Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                        cell.Style.Border.BorderAround(ExcelBorderStyle.Thin);
                     }
 
                     if (headers.Count > 0)
@@ -71,51 +69,55 @@ namespace WHS.Service.Services.Receive
         {
             return await Task.Run(() =>
             {
-                ExcelPackage.License.SetNonCommercialPersonal("whs");
-                using (var package = new ExcelPackage(new FileInfo(filePath)))
+                try
                 {
-                    var worksheet = package.Workbook.Worksheets[0]; // Sheet đầu tiên
-                    DataTable dt = new DataTable();
-
-                    int colCount = worksheet.Dimension.End.Column;
-                    int rowCount = worksheet.Dimension.End.Row;
-
-                    // Tạo cột từ dòng đầu tiên (header)
-                    for (int col = 1; col <= colCount; col++)
+                    ExcelPackage.License.SetNonCommercialPersonal("whs");
+                    using (var package = new ExcelPackage(new FileInfo(filePath)))
                     {
-                        string excelHeader = worksheet.Cells[1, col].Text.Trim();
-                        var match = headers.FirstOrDefault(h => h.Value == excelHeader);
-                        if (!string.IsNullOrEmpty(match.Key))
-                        {
-                            dt.Columns.Add(match.Key); // Thêm tên cột theo KEY
-                        }
-                    }
+                        var ws = package.Workbook.Worksheets[0]; // Sheet đầu tiên
+                        DataTable dt = new DataTable();
 
-                    // Đọc dữ liệu từ dòng 2 trở đi
-                    for (int row = 2; row <= rowCount; row++)
-                    {
-                        DataRow dr = dt.NewRow();
+                        int colCount = ws.Dimension.End.Column;
+                        int rowCount = ws.Dimension.End.Row;
+
+                        // Lấy mapping cột Excel → index
+                        var headerIndex = new Dictionary<string, int>();
                         for (int col = 1; col <= colCount; col++)
+                            headerIndex[ws.Cells[1, col].Text.Trim()] = col;
+
+                        // Tạo cột theo headers
+                        foreach (var (key, def) in headers)
+                            dt.Columns.Add(key);
+
+                        // Đọc từng dòng dữ liệu
+                        for (int row = 2; row <= rowCount; row++)
                         {
-                            dr[col - 1] = worksheet.Cells[row, col].Text;
+                            var dr = dt.NewRow();
+
+                            foreach (var (key, def) in headers)
+                            {
+                                if (headerIndex.TryGetValue(def, out int colIdx))
+                                {
+                                    dr[key] = ws.Cells[row, colIdx].Value?.ToString()?.Trim();
+                                }
+                                else
+                                {
+                                    dr[key] = DBNull.Value;
+                                }
+                            }
+
+                            dt.Rows.Add(dr);
                         }
-                        dt.Rows.Add(dr);
+
+                        return Response<DataTable>.Success(dt);
                     }
-
-                    return Response<DataTable>.Success(dt);
                 }
+                catch (Exception ex)
+                {
+                    return ErrorHandler<DataTable>.Show(ex);
+                }
+                
             });
-        }
-
-        /// <summary>
-        /// Lấy ra danh sách nhận NPL
-        /// </summary>
-        /// <param name="paginate"></param>
-        /// <param name="receiveSearch"></param>
-        /// <returns></returns>
-        public async Task<Response<PageDto<ReceiveDto>>> GetReceiveAsync(Paginate paginate, ReceiveSearch receiveSearch)
-        {
-            return await _receiveRepository.GetReceiveAsync(paginate, receiveSearch);
         }
     }
 }
