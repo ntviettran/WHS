@@ -23,35 +23,25 @@ using WHS.Factory;
 using WHS.Forms;
 using WHS.Popup;
 using WHS.Popup.Receive.DetailReceive;
-using WHS.Popup.Receive.ReceiveDetailTransaction;
 using WHS.Service.Interface;
 using WHS.Utils;
 
 namespace WHS.Pages.Receive
-{ 
-    public partial class DetailReceive : UserControl
+{
+    public partial class GroupDetailReceive : UserControl
     {
+        public MainForm Mainform { get; set; } = new MainForm();
+
         private E_NPLType _type = E_NPLType.FABRIC;
         private int _currentPage = 1;
         private Dictionary<string, string> _columns = new Dictionary<string, string>();
-        private E_StatusPage _status = E_StatusPage.ADD;
 
-        public DetailReceive()
+        public GroupDetailReceive()
         {
             InitializeComponent();
         }
 
         #region Setup
-
-        /// <summary>
-        /// Khởi tạo init cho trang lịch sử giao dịch
-        /// </summary>
-        public void InitTransactionView()
-        {
-            _status = E_StatusPage.EDIT;
-            titlteLabel.Text = "LỊCH SỬ GIAO DỊCH";
-            addBtn.Visible = false;
-        }
 
         /// <summary>
         /// Vẽ lại các cột của gridView
@@ -109,7 +99,7 @@ namespace WHS.Pages.Receive
             }
 
             // Active button truyền vào
-            button.BackColor = Color.FromArgb(0,46,92);
+            button.BackColor = Color.FromArgb(0, 46, 92);
         }
 
         private void SetColumn()
@@ -207,6 +197,7 @@ namespace WHS.Pages.Receive
         {
             if (e.KeyCode == Keys.Enter)
             {
+                _currentPage = 1;
                 e.SuppressKeyPress = true;
                 await LoadDataGridView();
             }
@@ -250,7 +241,7 @@ namespace WHS.Pages.Receive
                 default:
                     throw new NotSupportedException("Unsupported NPL type");
             }
-            
+
             if (!res.IsSuccess)
             {
                 ShowMessage.Error(res.Message);
@@ -281,7 +272,8 @@ namespace WHS.Pages.Receive
                 _ => null
             };
 
-            if (popup != null) { 
+            if (popup != null)
+            {
                 var screen = Screen.PrimaryScreen!.WorkingArea;
                 popup.Initialize(E_StatusForm.ADD, null);
                 popup.Size = new Size(screen.Width * 3 / 4, screen.Height * 3 / 4);
@@ -298,7 +290,7 @@ namespace WHS.Pages.Receive
         /// <param name="e"></param>
         private async void Popup_SaveSuccess(object? sender, EventArgs e)
         {
-            await LoadDataGridView(); 
+            await LoadDataGridView();
         }
 
         /// <summary>
@@ -316,10 +308,10 @@ namespace WHS.Pages.Receive
             {
                 BasePopup? popup = _type switch
                 {
-                        E_NPLType.FABRIC => FormFactory.CreateForm<FabricPopup>(),
-                        E_NPLType.PLSP => FormFactory.CreateForm<PLSPPopup>(),
-                        E_NPLType.PLDG => FormFactory.CreateForm<PLDGPopup>(),
-                        _ => null
+                    E_NPLType.FABRIC => FormFactory.CreateForm<FabricPopup>(),
+                    E_NPLType.PLSP => FormFactory.CreateForm<PLSPPopup>(),
+                    E_NPLType.PLDG => FormFactory.CreateForm<PLDGPopup>(),
+                    _ => null
                 };
 
                 if (popup != null)
@@ -328,7 +320,7 @@ namespace WHS.Pages.Receive
                     popup.SaveSuccess += Popup_SaveSuccess;
 
                     var screen = Screen.PrimaryScreen!.WorkingArea;
-                    popup.Size = new Size(screen.Width * 3/4, screen.Height * 3/4);
+                    popup.Size = new Size(screen.Width * 3 / 4, screen.Height * 3 / 4);
                     popup.Show();
                 }
             }
@@ -349,5 +341,17 @@ namespace WHS.Pages.Receive
 
         }
         #endregion
+
+        /// <summary>
+        /// Mở sang màn hình 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DetailReceivePage detailReceivePage = FormFactory.CreateUserControl<DetailReceivePage>();
+            detailReceivePage.MainForm = Mainform;
+            Mainform.ShowUserControl(detailReceivePage);
+        }
     }
 }

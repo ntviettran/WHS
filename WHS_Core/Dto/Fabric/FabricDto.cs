@@ -16,14 +16,14 @@ namespace WHS.Core.Dto.Fabric
         public string Color { get; set; } = String.Empty;
         public string FabricType { get; set; } = String.Empty;
         public string Batch { get; set; } = String.Empty;
-        public float FabricLength { get; set; }
+        public float? FabricLength { get; set; }
         public string LengthUnit { get; set; } = String.Empty;
-        public float FabricWeight { get; set; }
+        public float? FabricWeight { get; set; }
         public string WeightUnit { get; set; } = String.Empty;
-        public float RollWidth { get; set; }
+        public float? RollWidth { get; set; }
         public string WidthUnit { get; set; } = String.Empty;
-        public int FabricNumber { get; set; }
-        public int QuantityToReceived { get; set; }
+        public int? FabricNumber { get; set; }
+        public int? QuantityToReceived { get; set; }
         public string QuantityUnit { get; set; } = String.Empty;
         public DateTime OrderDate { get; set; }
         public DateTime AvailableDate { get; set; }

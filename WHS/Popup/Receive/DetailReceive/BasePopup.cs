@@ -77,6 +77,7 @@ namespace WHS.Popup.Receive.DetailReceive
             _gridView.ScrollBars = ScrollBars.Both;
             _gridView.AutoGenerateColumns = false;
 
+            int index = 0;
             foreach (var column in _columns)
             {
                 _gridView.Columns.Add(new DataGridViewTextBoxColumn
@@ -85,8 +86,18 @@ namespace WHS.Popup.Receive.DetailReceive
                     HeaderText = column.Value,
                     DataPropertyName = column.Key,
                     MinimumWidth = 150,
-                    ReadOnly = true
+                    ReadOnly = true,
+                    Frozen = index < 6
                 });
+
+                index++;
+            }
+
+            _gridView.Refresh();
+
+            foreach (DataGridViewColumn column in _gridView.Columns)
+            {
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             }
         }
         #endregion

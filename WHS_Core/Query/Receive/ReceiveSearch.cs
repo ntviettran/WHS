@@ -10,5 +10,7 @@ namespace WHS.Core.Query.Receive
     public class ReceiveSearch
     {
         public string? MO { get; set; } = String.Empty;
+        public int? Status { get; set; }
+        public int?  DispatchStatus { get; set; }
     }
 }

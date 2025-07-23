@@ -40,6 +40,18 @@ namespace WHS.Repository.Repository.Receive
         }
 
         /// <summary>
+        /// Lấy ra danh sách chi tiết
+        /// </summary>
+        /// <param name="paginate"></param>
+        /// <param name="receiveSearch"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public virtual Task<Response<PageDto<D>>> GetDetailReceiveAsync(Paginate paginate, ReceiveSearch receiveSearch)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Check xem có trùng giá trị không
         /// </summary>
         /// <param name="detail"></param>

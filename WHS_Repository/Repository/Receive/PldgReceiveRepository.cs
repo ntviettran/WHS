@@ -78,6 +78,62 @@ namespace WHS.Repository.Repository.Receive
         }
 
         /// <summary>
+        /// Get dữ liệu chi tiết
+        /// </summary>
+        /// <param name="paginate"></param>
+        /// <param name="receiveSearch"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public override async Task<Response<PageDto<PldgReceivedDto>>> GetDetailReceiveAsync(Paginate paginate, ReceiveSearch receiveSearch)
+        {
+            using var conn = CreateConnection();
+            await conn.OpenAsync();
+
+            try
+            {
+                // Tạo query
+                string baseSql = "from vw_npl_pldg_detail";
+                string whereClause = @"where (@Mo is null or mo like @Mo) and
+                                             (@Status is null or status = @Status) and
+                                             (@DispatchStatus is null or dispatch_status = @DispatchStatus)";
+                string countSql = $"select count(id) {baseSql} {whereClause};";
+                string dataSql = $@"select * {baseSql}
+                                    {whereClause}
+                                    order by modified_at
+                                    offset @Offset rows fetch next @PageSize rows only;";
+
+                // Tạo paramers
+                int offset = (paginate.PageIndex - 1) * paginate.PageSize;
+                var parameters = new
+                {
+                    Offset = offset,
+                    paginate.PageSize,
+                    Mo = string.IsNullOrEmpty(receiveSearch.MO) ? null : $"%{receiveSearch.MO}%",
+                    Status = receiveSearch.Status == -1 ? null : receiveSearch.Status,
+                    DispatchStatus = receiveSearch.DispatchStatus == -1 ? null : receiveSearch.DispatchStatus
+                };
+
+                // Lấy số lượng bản ghi và dữ liệu
+                var total = await conn.ExecuteScalarAsync<int>(countSql, parameters);
+                List<PldgReceivedDto> items = (await conn.QueryAsync<PldgReceivedDto>(dataSql, parameters)).ToList();
+
+                int totalPages = (int)Math.Ceiling(total / (double)paginate.PageSize);
+                PageDto<PldgReceivedDto> result = new PageDto<PldgReceivedDto>()
+                {
+                    TotalPage = totalPages,
+                    TotalRecord = total,
+                    PageData = items
+                };
+
+                return Response<PageDto<PldgReceivedDto>>.Success(result);
+            }
+            catch (Exception ex)
+            {
+                return ErrorHandler<PageDto<PldgReceivedDto>>.Show(ex);
+            }
+        }
+
+        /// <summary>
         /// Check duplicate giá trị detail
         /// </summary>
         /// <param name="detail"></param>

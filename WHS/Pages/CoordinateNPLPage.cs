@@ -261,6 +261,7 @@ namespace WHS.Pages.Transfer
 
                 if (int.TryParse(idTxb.Text, out var idTxbId) || string.IsNullOrEmpty(idTxb.Text))
                 {
+                    _currentPage = 1;
                     await GetTransferData();
                     return;
                 }
@@ -276,6 +277,7 @@ namespace WHS.Pages.Transfer
         /// <param name="e"></param>
         private async void esExecDatePicker_ValueChanged(object sender, EventArgs e)
         {
+            _currentPage = 1;
             await GetTransferData();
         }
 
@@ -286,6 +288,7 @@ namespace WHS.Pages.Transfer
         /// <param name="e"></param>
         private async void esWarehouseDatePicker_ValueChanged(object sender, EventArgs e)
         {
+            _currentPage = 1;
             await GetTransferData();
         }
 
@@ -296,6 +299,7 @@ namespace WHS.Pages.Transfer
         /// <param name="e"></param>
         private async void execDatePicker_ValueChanged(object sender, EventArgs e)
         {
+            _currentPage = 1;
             await GetTransferData();
         }
 
@@ -306,6 +310,7 @@ namespace WHS.Pages.Transfer
         /// <param name="e"></param>
         private async void warehouseDatePicker_ValueChanged(object sender, EventArgs e)
         {
+            _currentPage = 1;
             await GetTransferData();
         }
 
@@ -316,6 +321,7 @@ namespace WHS.Pages.Transfer
         /// <param name="e"></param>
         private async void statusCb_SelectionChangeCommitted(object sender, EventArgs e)
         {
+            _currentPage = 1;
             await GetTransferData();
         }
 

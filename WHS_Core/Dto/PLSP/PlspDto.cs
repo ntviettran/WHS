@@ -17,7 +17,7 @@ namespace WHS.Core.Dto.PLSP
         public string MarketCode { get; set; } = String.Empty;
         public string Size { get; set; } = String.Empty;
         public string PlspColor { get; set; } = String.Empty;
-        public int QuantityToReceived { get; set; }
+        public int? QuantityToReceived { get; set; }
         public DateTime OrderDate { get; set; }
         public DateTime AvailableDate { get; set; }
         public DateTime ExpectedDate { get; set; }

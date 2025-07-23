@@ -40,6 +40,14 @@ namespace WHS.Service.Interface
         Task<Response<PageDto<GroupReceiveDto>>> GetGroupedReceiveAsync(Paginate paginate, ReceiveSearch receiveSearch);
 
         /// <summary>
+        /// Lấy ra danh sách chi tiết
+        /// </summary>
+        /// <param name="paginate"></param>
+        /// <param name="receiveSearch"></param>
+        /// <returns></returns>
+        Task<Response<PageDto<D>>> GetDetailReceiveAsync(Paginate paginate, ReceiveSearch receiveSearch);
+
+        /// <summary>
         /// Tạo mới phiếu NPL
         /// </summary>
         /// <param name="fabric"></param>

@@ -19,8 +19,6 @@ using WHS.Core.Response;
 using WHS.Core.Utils;
 using WHS.Popup;
 using WHS.Popup.PO;
-using WHS.Popup.Receive.DetailReceive;
-using WHS.Popup.Receive.ReceiveDetailTransaction;
 using WHS.Service.Interface;
 using WHS.Utils;
 
@@ -91,6 +89,7 @@ namespace WHS.Pages
             popup.Show();
         }
 
+
         /// <summary>
         /// Double click vào ô dữ liệu để sửa
         /// </summary>
@@ -124,6 +123,7 @@ namespace WHS.Pages
         {
             if (e.KeyCode == Keys.Enter)
             {
+                _currentPage = 1;
                 e.SuppressKeyPress = true;
                 await LoadDataGridView();
             }

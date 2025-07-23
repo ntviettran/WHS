@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
+using WHS.Core.Factory;
 using WHS.Core.Session;
 using WHS.Pages;
 using WHS.Pages.Receive;
@@ -34,7 +35,8 @@ namespace WHS.Forms
         private void MainForm_Load(object sender, EventArgs e)
         {
             deliverySubMenu.Visible = false;
-            //transferWarhouseSubMenu.Visible = false;
+            poToggleBtn.Visible = false;
+            transferWarhouseSubMenu.Visible = false;
             if (Session.CurrentUser.DepartmentId == 2)
             {
                 poToggleBtn.Visible = false;
@@ -42,7 +44,7 @@ namespace WHS.Forms
             }
             else
             {
-                //transferToggleBtn.Visible = false;
+                transferToggleBtn.Visible = false;
             }
         }
 
@@ -126,7 +128,7 @@ namespace WHS.Forms
         /// Xử lý show các user control của màn
         /// </summary>
         /// <param name="newControl"></param>
-        private void ShowUserControl(UserControl newControl)
+        public void ShowUserControl(UserControl newControl)
         {
             if (mainLayout == null) return;
 
@@ -164,10 +166,10 @@ namespace WHS.Forms
         /// <param name="e"></param>
         private void detailReceiveBtn_Click(object sender, EventArgs e)
         {
-            if (Program.ServiceProvider == null) return;
             ActiveButton("deliveryToggleBtn", detailReceiveBtn);
 
-            DetailReceive detailReceive = Program.ServiceProvider.GetRequiredService<DetailReceive>();
+            GroupDetailReceive detailReceive = FormFactory.CreateUserControl<GroupDetailReceive>();
+            detailReceive.Mainform = this;
             ShowUserControl(detailReceive);
         }
 
@@ -178,10 +180,9 @@ namespace WHS.Forms
         /// <param name="e"></param>
         private void coordinateBtn_Click(object sender, EventArgs e)
         {
-            if (Program.ServiceProvider == null) return;
             ActiveButton("deliveryToggleBtn", coordinateBtn);
 
-            CoordinateNPLPage transferNPLPage = Program.ServiceProvider.GetRequiredService<CoordinateNPLPage>();
+            CoordinateNPLPage transferNPLPage = FormFactory.CreateUserControl<CoordinateNPLPage>();
             ShowUserControl(transferNPLPage);
         }
 
@@ -204,10 +205,9 @@ namespace WHS.Forms
         /// <param name="e"></param>
         private void coordinateManage_Click(object sender, EventArgs e)
         {
-            if (Program.ServiceProvider == null) return;
             ActiveButton("transferToggleBtn", coordinateManage);
 
-            CoordinateNPLPage transferNPLPage = Program.ServiceProvider.GetRequiredService<CoordinateNPLPage>();
+            CoordinateNPLPage transferNPLPage = FormFactory.CreateUserControl<CoordinateNPLPage>();
             transferNPLPage.InitWarehouseManager();
             ShowUserControl(transferNPLPage);
         }
@@ -222,9 +222,7 @@ namespace WHS.Forms
             HideSubMenu();
             SetBgButtons(sidebar, "poToggleBtn");
 
-            if (Program.ServiceProvider == null) return;
-
-            POPage poPage = Program.ServiceProvider.GetRequiredService<POPage>();
+            POPage poPage = FormFactory.CreateUserControl<POPage>();
             ShowUserControl(poPage);
         }
 

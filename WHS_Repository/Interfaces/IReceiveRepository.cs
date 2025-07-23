@@ -24,6 +24,14 @@ namespace WHS.Repository.Interfaces
         Task<Response<PageDto<GroupReceiveDto>>> GetGroupedReceiveAsync(Paginate paginate, ReceiveSearch receiveSearch);
 
         /// <summary>
+        /// Lấy ra danh sách chi tiết
+        /// </summary>
+        /// <param name="paginate"></param>
+        /// <param name="receiveSearch"></param>
+        /// <returns></returns>
+        Task<Response<PageDto<D>>> GetDetailReceiveAsync(Paginate paginate, ReceiveSearch receiveSearch);
+
+        /// <summary>
         /// Check xem có trùng lặp giá trị trong bảng detail không
         /// </summary>
         /// <param name="detail"></param>

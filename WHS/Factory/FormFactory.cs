@@ -13,5 +13,10 @@ namespace WHS.Core.Factory
         {
             return (T)Program.ServiceProvider!.GetRequiredService(typeof(T));
         }
+
+        public static T CreateUserControl<T>() where T : UserControl
+        {
+            return (T)Program.ServiceProvider!.GetRequiredService(typeof(T));
+        }
     }
 }

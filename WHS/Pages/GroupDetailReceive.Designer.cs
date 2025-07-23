@@ -1,6 +1,6 @@
 ﻿namespace WHS.Pages.Receive
 {
-    partial class DetailReceive
+    partial class GroupDetailReceive
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,10 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
             panel1 = new Panel();
+            button1 = new Button();
             moSearchTxb = new TextBox();
             pagination = new WHS.Components.Pagination();
             addBtn = new Button();
@@ -53,6 +54,7 @@
             // panel1
             // 
             panel1.BackColor = Color.WhiteSmoke;
+            panel1.Controls.Add(button1);
             panel1.Controls.Add(moSearchTxb);
             panel1.Controls.Add(pagination);
             panel1.Controls.Add(addBtn);
@@ -66,6 +68,22 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(948, 715);
             panel1.TabIndex = 1;
+            // 
+            // button1
+            // 
+            button1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button1.BackColor = Color.FromArgb(0, 46, 92);
+            button1.BackgroundImage = Properties.Resources.rightarrow;
+            button1.BackgroundImageLayout = ImageLayout.Zoom;
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button1.ForeColor = Color.White;
+            button1.Location = new Point(889, 3);
+            button1.Name = "button1";
+            button1.Size = new Size(55, 47);
+            button1.TabIndex = 14;
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
             // 
             // moSearchTxb
             // 
@@ -109,24 +127,24 @@
             gridView.AllowUserToResizeRows = false;
             gridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             gridView.BackgroundColor = Color.White;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(0, 46, 92);
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = Color.White;
-            dataGridViewCellStyle1.Padding = new Padding(0, 10, 0, 10);
-            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(0, 46, 92);
-            dataGridViewCellStyle1.SelectionForeColor = Color.White;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            gridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = Color.FromArgb(0, 46, 92);
+            dataGridViewCellStyle10.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle10.ForeColor = Color.White;
+            dataGridViewCellStyle10.Padding = new Padding(0, 10, 0, 10);
+            dataGridViewCellStyle10.SelectionBackColor = Color.FromArgb(0, 46, 92);
+            dataGridViewCellStyle10.SelectionForeColor = Color.White;
+            dataGridViewCellStyle10.WrapMode = DataGridViewTriState.True;
+            gridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
             gridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            gridView.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = SystemColors.Window;
+            dataGridViewCellStyle11.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle11.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle11.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = DataGridViewTriState.False;
+            gridView.DefaultCellStyle = dataGridViewCellStyle11;
             gridView.EnableHeadersVisualStyles = false;
             gridView.Location = new Point(1, 233);
             gridView.Name = "gridView";
@@ -134,8 +152,8 @@
             gridView.RowHeadersVisible = false;
             gridView.RowHeadersWidth = 51;
             gridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            gridView.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            gridView.RowsDefaultCellStyle = dataGridViewCellStyle12;
             gridView.RowTemplate.Height = 35;
             gridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             gridView.Size = new Size(947, 427);
@@ -145,11 +163,11 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.Black;
             label2.Location = new Point(-3, 166);
             label2.Name = "label2";
-            label2.Size = new Size(53, 31);
+            label2.Size = new Size(52, 31);
             label2.TabIndex = 1;
             label2.Text = "MO";
             // 
@@ -250,13 +268,13 @@
             titlteLabel.TabIndex = 0;
             titlteLabel.Text = "THEO DÕI NPL CẦN NHẬN";
             // 
-            // DetailReceive
+            // GroupDetailReceive
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.WhiteSmoke;
             Controls.Add(panel1);
-            Name = "DetailReceive";
+            Name = "GroupDetailReceive";
             Padding = new Padding(20, 20, 20, 10);
             Size = new Size(988, 745);
             Load += DetailReceive_Load;
@@ -283,5 +301,6 @@
         private Button fabricBtn;
         private TableLayoutPanel tableLayoutPanel1;
         private Label titlteLabel;
+        private Button button1;
     }
 }

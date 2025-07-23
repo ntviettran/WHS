@@ -158,6 +158,7 @@ namespace WHS.Popup.Transfer
             // Kích hoạt autofill
             gridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
 
+            int index = 0;
             foreach (var column in _columns)
             {
                 gridView.Columns.Add(new DataGridViewTextBoxColumn
@@ -166,8 +167,10 @@ namespace WHS.Popup.Transfer
                     HeaderText = column.Value,
                     DataPropertyName = column.Key,
                     MinimumWidth = 150,
-                    ReadOnly = _statusPage == E_StatusPage.VIEW || !(_statusPage == E_StatusPage.EDIT && Transfer.WarehouseDate.HasValue && _editColumns.Contains(column.Key))
+                    ReadOnly = _statusPage == E_StatusPage.VIEW || !(_statusPage == E_StatusPage.EDIT && Transfer.WarehouseDate.HasValue && _editColumns.Contains(column.Key)),
+                    Frozen = index < 6
                 });
+                index++;
             }
         }
         #endregion

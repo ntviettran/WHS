@@ -36,6 +36,11 @@ namespace WHS.Service.Services.Receive
             return _repository.GetGroupedReceiveAsync(paginate, receiveSearch);
         }
 
+        public Task<Response<PageDto<D>>> GetDetailReceiveAsync(Paginate paginate, ReceiveSearch receiveSearch)
+        {
+            return _repository.GetDetailReceiveAsync(paginate, receiveSearch);
+        }
+
         /// <summary>
         /// Tạo mới phiếu NPL vải
         /// </summary>

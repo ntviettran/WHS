@@ -12,7 +12,6 @@ using WHS.Pages.Receive;
 using WHS.Pages.Transfer;
 using WHS.Popup;
 using WHS.Popup.PO;
-using WHS.Popup.Receive.ReceiveDetailTransaction;
 using WHS.Popup.Transfer;
 using WHS.Repository.Interfaces;
 using WHS.Repository.Repository.Coordinate;
@@ -52,11 +51,8 @@ namespace WHS
 
             ApplicationConfiguration.Initialize();
 
-            //LoginForm loginForm = ServiceProvider.GetRequiredService<LoginForm>();
-            //Application.Run(loginForm);
-
-            MainForm mainForm = new MainForm();
-            Application.Run(mainForm);
+            LoginForm loginForm = ServiceProvider.GetRequiredService<LoginForm>();
+            Application.Run(loginForm);
         }
 
         private static void ConfigureServices(IServiceCollection services)
@@ -90,16 +86,14 @@ namespace WHS
             services.AddScoped<IReceiveService<PldgDto, PldgReceivedDto>, ReceiveService<PldgDto, PldgReceivedDto>>();
 
             services.AddTransient<LoginForm>();
-            services.AddTransient<DetailReceive>();
+            services.AddTransient<GroupDetailReceive>();
+            services.AddTransient<DetailReceivePage>();
             services.AddTransient<CoordinateNPLPage>();
             services.AddTransient<POPage>();
 
             services.AddTransient<FabricPopup>();
-            services.AddTransient<FabricTransaction>();
             services.AddTransient<PLSPPopup>();
-            services.AddTransient<PLSPTransaction>();
             services.AddTransient<PLDGPopup>();
-            services.AddTransient<PLDGTransaction>();
             services.AddTransient<AddTransferPopup>();
             services.AddTransient<AddTransferDetailPopup>();
             services.AddTransient<VehiclePopup>();
