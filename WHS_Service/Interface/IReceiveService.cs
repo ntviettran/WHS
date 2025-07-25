@@ -9,6 +9,7 @@ using WHS.Core.Dto;
 using WHS.Core.Query.Base;
 using WHS.Core.Query.Receive;
 using WHS.Core.Response;
+using WHS.Core.Enums;
 
 namespace WHS.Service.Interface
 {
@@ -56,18 +57,23 @@ namespace WHS.Service.Interface
         Task<Response<int>> CreateReceiveAsync(DataTable detail);
 
         /// <summary>
-        /// Chỉnh sửa phiếu NPL
-        /// </summary>
-        /// <param name="fabric"></param>
-        /// <param name="detail"></param>
-        /// <returns></returns>
-        Task<Response<int>> UpdateReceiveAsync(int id, DataTable detail);
-
-        /// <summary>
         /// Lấy ra detail chi tiết
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         Task<Response<List<D>>> GetReceiveDetailAsync(GroupReceiveDto receiveData);
+
+        /// <summary>
+        /// Xuẩt excel dữ liệu chưa điều phối
+        /// </summary>
+        /// <returns></returns>
+        Task<Response<Byte[]>> ExportExcelDetailNotDispatch(E_NPLType type, Dictionary<string, string> headers);
+
+        /// <summary>
+        /// Update phụ liệu chưa điều phối
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        Task<Response<int>> UpdateReceivedDetail(List<T> data);
     }
 }

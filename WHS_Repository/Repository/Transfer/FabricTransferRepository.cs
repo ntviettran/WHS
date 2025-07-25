@@ -49,7 +49,7 @@ namespace WHS.Repository.Repository.Coordinate
                                 status,
                                 dispatch_status
                              from vw_npl_fabric_detail
-                             where dispatch_status = @status";
+                             where dispatch_status = @status and status <> 3";
 
                 List<FabricCoordinationDto> result = (await conn.QueryAsync<FabricCoordinationDto>(sql, new { status })).ToList();
 

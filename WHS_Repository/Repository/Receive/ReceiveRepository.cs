@@ -74,18 +74,6 @@ namespace WHS.Repository.Repository.Receive
         }
 
         /// <summary>
-        /// Chỉnh sửa phiếu NPL
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="detail"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public virtual Task<Response<int>> UpdateReceiveAsync(int id, DataTable detail)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// Lấy ra detail chi tiết
         /// </summary>
         /// <param name="id"></param>
@@ -103,7 +91,7 @@ namespace WHS.Repository.Repository.Receive
         /// <param name="columnChecks"></param>
         /// <param name="sqlCheck"></param>
         /// <returns></returns>
-        public async Task<Response<bool>> BaseCheckDuplicate(DataTable detail, List<string> columnChecks, string sqlCheck)
+        public async Task<Response<bool>> CheckDuplicateBase(DataTable detail, List<string> columnChecks, string sqlCheck)
         {
             using var conn = CreateConnection();
             await conn.OpenAsync();
@@ -223,5 +211,73 @@ namespace WHS.Repository.Repository.Receive
                 return ErrorHandler<int>.Show(ex);
             }
         }
+
+        /// <summary>
+        /// Lấy ra danh sách dữ liệu chưa điều phối
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public virtual Task<Response<List<T>>> GetListReceiveAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Base check xem có dữ liệu nào đã điều phối chưa
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="table"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<Response<bool>> CheckHasDispatchBase(List<int> ids, string table)
+        {
+            using var conn = CreateConnection();
+            await conn.OpenAsync();
+
+            try
+            {
+                string sql = @$"
+                SELECT id FROM {table}
+                WHERE (status = 1 or status = 2) AND id IN @Ids";
+
+                var dispatched = (await conn.QueryAsync<int>(sql, new { Ids = ids })).ToList();
+                bool hasDispatched = dispatched.Any();
+
+                if (!hasDispatched)
+                {
+                    return Response<bool>.Success(false, "Không có dữ liệu đã điều phối.");
+                }
+
+                var message = $"Không thể update do ID {string.Join(", ", dispatched)} đã điều phối";
+                return Response<bool>.Fail(message);
+            }
+            catch (Exception ex)
+            {
+                return ErrorHandler<bool>.Show(ex);
+            }
+        }
+
+        /// <summary>
+        /// Check xem có dữ liệu nào đã điều phối chưa
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public virtual Task<Response<bool>> CheckHasDispatch(List<int> ids)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Update chi tiết npl chưa điều phối
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public virtual Task<Response<int>> UpdateReceivedDetail(List<T> data)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

@@ -42,7 +42,7 @@ namespace WHS.Repository.Repository.Receive
             {
                 // Tạo query
                 string baseSql = "from vw_grouped_plsp_received";
-                string countSql = $"select count(mo) {baseSql} where  @Mo is null or mo like @Mo;";
+                string countSql = $"select count(mo) {baseSql} where @Mo is null or mo like @Mo;";
                 string dataSql = $@"select mo, type_detail, supplier, quantity_to_received, received_quantity, expected_quantity {baseSql}
                                     where @Mo is null or mo like @Mo
                                     order by modified_at
@@ -99,7 +99,7 @@ namespace WHS.Repository.Repository.Receive
                 string countSql = $"select count(id) {baseSql} {whereClause};";
                 string dataSql = $@"select * {baseSql}
                                     {whereClause}
-                                    order by modified_at
+                                    order by id desc
                                     offset @Offset rows fetch next @PageSize rows only;";
 
                 // Tạo paramers
@@ -161,7 +161,7 @@ namespace WHS.Repository.Repository.Receive
                     ))
                 ";
 
-            return await BaseCheckDuplicate(detail, columnChecks, sqlCheck);
+            return await CheckDuplicateBase(detail, columnChecks, sqlCheck);
         }
 
         public override async Task<Response<int>> CreateReceiveAsync(DataTable detail)
@@ -223,44 +223,6 @@ namespace WHS.Repository.Repository.Receive
         }
 
         /// <summary>
-        /// Chỉnh sửa NPL vải
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="detail"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public override async Task<Response<int>> UpdateReceiveAsync(int id, DataTable detail)
-        {
-            //string updateSql = @"
-            //update npl_received
-            //set
-            //    mo = @Mo,
-            //    type_detail = @TypeDetail,
-            //    supplier = @Supplier,
-            //    quantity_to_received = @QuantityToReceived,
-            //    quantity_estimate = @QuantityEstimate,
-            //    modified_by = @ModifiedBy,
-            //    modified_at = GETDATE()
-            //where id = @ID;";
-
-            //var parentParams = new
-            //{
-            //    plsp.MO,
-            //    plsp.TypeDetail,
-            //    plsp.Supplier,
-            //    plsp.QuantityToReceived,
-            //    plsp.QuantityEstimate,
-            //    ModifiedBy = 0,
-            //    ID = id,
-            //};
-
-            //return await UpdateReceiveBaseAsync(id, updateSql, parentParams, detail,
-            //    "viet_sp_upsert_npl_plsp_detail", "dbo.NplPlspDetailType");
-
-            return Response<int>.Success(1);
-        }
-
-        /// <summary>
         /// Lấy ra detail chi tiết
         /// </summary>
         /// <param name="id"></param>
@@ -273,10 +235,10 @@ namespace WHS.Repository.Repository.Receive
 
             try
             {
-                string sql = @"
-                select *
-                from vw_npl_plsp_detail
-                where mo = @MO and plsp_type = @TypeDetail and supplier = @Supplier";
+                string sql = @"select * from vw_npl_plsp_detail
+                where (@MO is null or mo = @MO)
+                and (@TypeDetail is null or plsp_type = @TypeDetail)
+                and (@Supplier is null or supplier = @Supplier)";
 
                 var parameters = new
                 {
@@ -291,6 +253,115 @@ namespace WHS.Repository.Repository.Receive
             catch (Exception ex)
             {
                 return ErrorHandler<List<PlspReceivedDto>>.Show(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lấy ra danh sách dữ liệu chưa điều phối
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async override Task<Response<List<PlspDto>>> GetListReceiveAsync()
+        {
+            using var conn = CreateConnection();
+            await conn.OpenAsync();
+
+            try
+            {
+                string sql = @"
+                select id, mo, supplier, plsp_type, plsp_code, npl_color, market_code, 
+                    size, plsp_color, quantity_to_received, order_date, available_date, expected_date, is_cancelled
+                from vw_npl_plsp_detail
+                where status = 0 or status = 3";
+
+                var result = (await conn.QueryAsync<PlspDto>(sql)).ToList();
+                return Response<List<PlspDto>>.Success(result);
+            }
+            catch (Exception ex)
+            {
+                return ErrorHandler<List<PlspDto>>.Show(ex);
+            }
+        }
+
+        /// <summary>
+        /// Check xem có dữ liệu nào đã điều phối chưa
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public override async Task<Response<bool>> CheckHasDispatch(List<int> ids)
+        {
+            return await CheckHasDispatchBase(ids, "vw_npl_plsp_detail");
+        }
+
+        /// <summary>
+        /// Update chi tiết npl chưa điều phối
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public override async Task<Response<int>> UpdateReceivedDetail(List<PlspDto> data)
+        {
+            using var conn = CreateConnection();
+            await conn.OpenAsync();
+
+            try
+            {
+                var table = new DataTable();
+
+                table.Columns.Add("ID", typeof(int));
+                table.Columns.Add("MO", typeof(string));
+                table.Columns.Add("Supplier", typeof(string));
+                table.Columns.Add("PlspType", typeof(string));
+                table.Columns.Add("PlspCode", typeof(string));
+                table.Columns.Add("NplColor", typeof(string));
+                table.Columns.Add("MarketCode", typeof(string));
+                table.Columns.Add("Size", typeof(string));
+                table.Columns.Add("PlspColor", typeof(string));
+                table.Columns.Add("QuantityToReceived", typeof(int));
+                table.Columns.Add("OrderDate", typeof(DateTime));
+                table.Columns.Add("AvailableDate", typeof(DateTime));
+                table.Columns.Add("ExpectedDate", typeof(DateTime));
+                table.Columns.Add("IsCancelled", typeof(bool));
+
+                foreach (var item in data)
+                {
+                    table.Rows.Add(
+                        item.ID,
+                        item.MO,
+                        item.Supplier,
+                        item.PlspType,
+                        item.PlspCode,
+                        item.NplColor,
+                        item.MarketCode,
+                        item.Size,
+                        item.PlspColor,
+                        item.QuantityToReceived,
+                        item.OrderDate ?? (object)DBNull.Value,
+                        item.AvailableDate ?? (object)DBNull.Value,
+                        item.ExpectedDate ?? (object)DBNull.Value,
+                        item.IsCancelled ?? (object)DBNull.Value
+                    );
+                }
+
+                using (var cmd = new SqlCommand("viet_sp_update_plsp_received", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    var param = cmd.Parameters.AddWithValue("@PlspDetails", table);
+                    param.SqlDbType = SqlDbType.Structured;
+                    param.TypeName = "dbo.NplPlspDetailType";
+
+                    cmd.Parameters.AddWithValue("@ModifiedBy", 0);
+
+                    var rows = await cmd.ExecuteNonQueryAsync();
+
+                    return Response<int>.Success(rows, "Cập nhật plsp thành công");
+                }
+            }
+            catch (Exception ex)
+            {
+                return ErrorHandler<int>.Show(ex);
             }
         }
     }

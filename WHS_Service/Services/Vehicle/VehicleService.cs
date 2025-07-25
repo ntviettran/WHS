@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WHS.Core.Dto.Vehicle;
+using WHS.Core.Enums;
 using WHS.Core.Query.Vehicle;
 using WHS.Core.Response;
 using WHS.Repository.Interfaces;
@@ -42,6 +43,16 @@ namespace WHS.Service.Services.Vehicle
         }
 
         /// <summary>
+        /// Sửa phương tiện
+        /// </summary>
+        /// <param name="vehicle"></param>
+        /// <returns></returns>
+        public async Task<Response<int>> UpdateVehicleAsync(VehicleDto vehicle)
+        {
+            return await _vehicleRepository.UpdateVehicleAsync(vehicle);
+        }
+
+        /// <summary>
         /// Lấy ra phương tiện theo id
         /// </summary>
         /// <param name="id"></param>
@@ -61,6 +72,18 @@ namespace WHS.Service.Services.Vehicle
         public async Task<Response<List<VehicleDto>>> GetVehicles(VehicleSearch vehicleSearch)
         {
             return await _vehicleRepository.GetVehicles(vehicleSearch);
+        }
+
+        /// <summary>
+        /// Lấy ra danh sách phương tiện theo trạng thái
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="nplId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<Response<List<TransferDetailVehicle>>> GetVehicleTransferDetail(E_NPLType type, int nplId)
+        {
+            return await _vehicleRepository.GetVehicleTransferDetail(type, nplId);
         }
     }
 }

@@ -364,7 +364,7 @@
             typeContainer.Name = "typeContainer";
             typeContainer.RowCount = 1;
             typeContainer.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            typeContainer.Size = new Size(371, 58);
+            typeContainer.Size = new Size(308, 58);
             typeContainer.TabIndex = 7;
             // 
             // fabricBtn
@@ -387,7 +387,7 @@
             plspBtn.FlatStyle = FlatStyle.Flat;
             plspBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             plspBtn.ForeColor = Color.White;
-            plspBtn.Location = new Point(136, 3);
+            plspBtn.Location = new Point(104, 3);
             plspBtn.Name = "plspBtn";
             plspBtn.Size = new Size(94, 48);
             plspBtn.TabIndex = 4;
@@ -401,7 +401,7 @@
             pldgBtn.FlatStyle = FlatStyle.Flat;
             pldgBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pldgBtn.ForeColor = Color.White;
-            pldgBtn.Location = new Point(269, 3);
+            pldgBtn.Location = new Point(205, 3);
             pldgBtn.Name = "pldgBtn";
             pldgBtn.Size = new Size(94, 47);
             pldgBtn.TabIndex = 5;

@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle19 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle20 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle21 = new DataGridViewCellStyle();
             panel1 = new Panel();
             button1 = new Button();
             moSearchTxb = new TextBox();
@@ -39,21 +39,22 @@
             gridView = new DataGridView();
             label2 = new Label();
             panel2 = new Panel();
-            typeContainer = new TableLayoutPanel();
-            pldgBtn = new Button();
-            plspBtn = new Button();
-            fabricBtn = new Button();
             tableLayoutPanel1 = new TableLayoutPanel();
             titlteLabel = new Label();
+            typeContainer = new Panel();
+            fabricBtn = new Button();
+            pldgBtn = new Button();
+            plspBtn = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)gridView).BeginInit();
-            typeContainer.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
+            typeContainer.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
             // 
             panel1.BackColor = Color.WhiteSmoke;
+            panel1.Controls.Add(typeContainer);
             panel1.Controls.Add(button1);
             panel1.Controls.Add(moSearchTxb);
             panel1.Controls.Add(pagination);
@@ -61,7 +62,6 @@
             panel1.Controls.Add(gridView);
             panel1.Controls.Add(label2);
             panel1.Controls.Add(panel2);
-            panel1.Controls.Add(typeContainer);
             panel1.Controls.Add(tableLayoutPanel1);
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(20, 20);
@@ -127,24 +127,24 @@
             gridView.AllowUserToResizeRows = false;
             gridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             gridView.BackgroundColor = Color.White;
-            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = Color.FromArgb(0, 46, 92);
-            dataGridViewCellStyle10.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle10.ForeColor = Color.White;
-            dataGridViewCellStyle10.Padding = new Padding(0, 10, 0, 10);
-            dataGridViewCellStyle10.SelectionBackColor = Color.FromArgb(0, 46, 92);
-            dataGridViewCellStyle10.SelectionForeColor = Color.White;
-            dataGridViewCellStyle10.WrapMode = DataGridViewTriState.True;
-            gridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle19.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle19.BackColor = Color.FromArgb(0, 46, 92);
+            dataGridViewCellStyle19.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle19.ForeColor = Color.White;
+            dataGridViewCellStyle19.Padding = new Padding(0, 10, 0, 10);
+            dataGridViewCellStyle19.SelectionBackColor = Color.FromArgb(0, 46, 92);
+            dataGridViewCellStyle19.SelectionForeColor = Color.White;
+            dataGridViewCellStyle19.WrapMode = DataGridViewTriState.True;
+            gridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle19;
             gridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = SystemColors.Window;
-            dataGridViewCellStyle11.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle11.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle11.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = DataGridViewTriState.False;
-            gridView.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle20.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle20.BackColor = SystemColors.Window;
+            dataGridViewCellStyle20.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle20.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle20.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle20.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle20.WrapMode = DataGridViewTriState.False;
+            gridView.DefaultCellStyle = dataGridViewCellStyle20;
             gridView.EnableHeadersVisualStyles = false;
             gridView.Location = new Point(1, 233);
             gridView.Name = "gridView";
@@ -152,8 +152,8 @@
             gridView.RowHeadersVisible = false;
             gridView.RowHeadersWidth = 51;
             gridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            gridView.RowsDefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle21.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            gridView.RowsDefaultCellStyle = dataGridViewCellStyle21;
             gridView.RowTemplate.Height = 35;
             gridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             gridView.Size = new Size(947, 427);
@@ -179,67 +179,6 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(948, 1);
             panel2.TabIndex = 8;
-            // 
-            // typeContainer
-            // 
-            typeContainer.ColumnCount = 3;
-            typeContainer.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            typeContainer.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            typeContainer.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            typeContainer.Controls.Add(pldgBtn, 2, 0);
-            typeContainer.Controls.Add(plspBtn, 1, 0);
-            typeContainer.Controls.Add(fabricBtn, 0, 0);
-            typeContainer.Dock = DockStyle.Top;
-            typeContainer.Location = new Point(0, 83);
-            typeContainer.Name = "typeContainer";
-            typeContainer.RowCount = 1;
-            typeContainer.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            typeContainer.Size = new Size(948, 54);
-            typeContainer.TabIndex = 7;
-            // 
-            // pldgBtn
-            // 
-            pldgBtn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pldgBtn.BackColor = Color.DarkGray;
-            pldgBtn.FlatStyle = FlatStyle.Flat;
-            pldgBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pldgBtn.ForeColor = Color.White;
-            pldgBtn.Location = new Point(851, 3);
-            pldgBtn.Name = "pldgBtn";
-            pldgBtn.Size = new Size(94, 47);
-            pldgBtn.TabIndex = 2;
-            pldgBtn.Text = "PLĐG";
-            pldgBtn.UseVisualStyleBackColor = false;
-            pldgBtn.Click += pldgBtn_Click;
-            // 
-            // plspBtn
-            // 
-            plspBtn.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
-            plspBtn.BackColor = Color.DarkGray;
-            plspBtn.FlatStyle = FlatStyle.Flat;
-            plspBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            plspBtn.ForeColor = Color.White;
-            plspBtn.Location = new Point(425, 3);
-            plspBtn.Name = "plspBtn";
-            plspBtn.Size = new Size(94, 48);
-            plspBtn.TabIndex = 1;
-            plspBtn.Text = "PLSP";
-            plspBtn.UseVisualStyleBackColor = false;
-            plspBtn.Click += plspBtn_Click;
-            // 
-            // fabricBtn
-            // 
-            fabricBtn.BackColor = Color.FromArgb(0, 46, 92);
-            fabricBtn.FlatStyle = FlatStyle.Flat;
-            fabricBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            fabricBtn.ForeColor = Color.White;
-            fabricBtn.Location = new Point(3, 3);
-            fabricBtn.Name = "fabricBtn";
-            fabricBtn.Size = new Size(94, 45);
-            fabricBtn.TabIndex = 0;
-            fabricBtn.Text = "Vải";
-            fabricBtn.UseVisualStyleBackColor = false;
-            fabricBtn.Click += fabricBtn_Click;
             // 
             // tableLayoutPanel1
             // 
@@ -268,6 +207,58 @@
             titlteLabel.TabIndex = 0;
             titlteLabel.Text = "THEO DÕI NPL CẦN NHẬN";
             // 
+            // typeContainer
+            // 
+            typeContainer.Controls.Add(fabricBtn);
+            typeContainer.Controls.Add(pldgBtn);
+            typeContainer.Controls.Add(plspBtn);
+            typeContainer.Location = new Point(3, 87);
+            typeContainer.Name = "typeContainer";
+            typeContainer.Size = new Size(498, 53);
+            typeContainer.TabIndex = 27;
+            // 
+            // fabricBtn
+            // 
+            fabricBtn.BackColor = Color.FromArgb(0, 46, 92);
+            fabricBtn.FlatStyle = FlatStyle.Flat;
+            fabricBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            fabricBtn.ForeColor = Color.White;
+            fabricBtn.Location = new Point(3, 3);
+            fabricBtn.Name = "fabricBtn";
+            fabricBtn.Size = new Size(94, 48);
+            fabricBtn.TabIndex = 0;
+            fabricBtn.Text = "Vải";
+            fabricBtn.UseVisualStyleBackColor = false;
+            fabricBtn.Click += fabricBtn_Click;
+            // 
+            // pldgBtn
+            // 
+            pldgBtn.BackColor = Color.DarkGray;
+            pldgBtn.FlatStyle = FlatStyle.Flat;
+            pldgBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pldgBtn.ForeColor = Color.White;
+            pldgBtn.Location = new Point(203, 4);
+            pldgBtn.Name = "pldgBtn";
+            pldgBtn.Size = new Size(94, 47);
+            pldgBtn.TabIndex = 2;
+            pldgBtn.Text = "PLĐG";
+            pldgBtn.UseVisualStyleBackColor = false;
+            pldgBtn.Click += pldgBtn_Click;
+            // 
+            // plspBtn
+            // 
+            plspBtn.BackColor = Color.DarkGray;
+            plspBtn.FlatStyle = FlatStyle.Flat;
+            plspBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            plspBtn.ForeColor = Color.White;
+            plspBtn.Location = new Point(103, 4);
+            plspBtn.Name = "plspBtn";
+            plspBtn.Size = new Size(94, 48);
+            plspBtn.TabIndex = 1;
+            plspBtn.Text = "PLSP";
+            plspBtn.UseVisualStyleBackColor = false;
+            plspBtn.Click += plspBtn_Click;
+            // 
             // GroupDetailReceive
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -281,9 +272,9 @@
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)gridView).EndInit();
-            typeContainer.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
+            typeContainer.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -295,12 +286,12 @@
         private DataGridView gridView;
         private Button addBtn;
         private Components.Pagination pagination;
-        private TableLayoutPanel typeContainer;
-        private Button pldgBtn;
-        private Button plspBtn;
-        private Button fabricBtn;
         private TableLayoutPanel tableLayoutPanel1;
         private Label titlteLabel;
         private Button button1;
+        private Panel typeContainer;
+        private Button fabricBtn;
+        private Button pldgBtn;
+        private Button plspBtn;
     }
 }

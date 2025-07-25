@@ -25,8 +25,12 @@ namespace WHS.Core.Dto.Fabric
         public int? FabricNumber { get; set; }
         public int? QuantityToReceived { get; set; }
         public string QuantityUnit { get; set; } = String.Empty;
-        public DateTime OrderDate { get; set; }
-        public DateTime AvailableDate { get; set; }
-        public DateTime ExpectedDate { get; set; }
+        public DateTime? OrderDate { get; set; }
+        public DateTime? AvailableDate { get; set; }
+        public DateTime? ExpectedDate { get; set; }
+        public int? IsCancelled { get; set; }
+        public string? OrderDateVN => OrderDate?.ToString("dd/MM/yyyy");
+        public string? AvailableDateVN => AvailableDate?.ToString("dd/MM/yyyy");
+        public string? ExpectedDateVN => ExpectedDate?.ToString("dd/MM/yyyy");
     }
 }

@@ -178,7 +178,9 @@ namespace WHS.Popup.Receive.DetailReceive
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     string filePath = ofd.FileName;
+                    Cursor.Current = Cursors.WaitCursor;
                     Response<DataTable> response = await _receiveService.ReadExcelAsync(filePath, _columns);
+
 
                     if (!response.IsSuccess)
                     {
@@ -188,43 +190,9 @@ namespace WHS.Popup.Receive.DetailReceive
 
                     if (response.Data != null)
                     {
-                        //var newData = response.Data;
-
-                        //if (_dataTable == null || _dataTable.Rows.Count == 0)
-                        //{
-                        //    _dataTable = newData;
-                        //}
-                        //else
-                        //{
-                        //    // Lấy danh sách cột dùng để so sánh (trừ cột QuantityToReceived và Id)
-                        //    List<string> keyColumns = _dataTable.Columns
-                        //        .Cast<DataColumn>()
-                        //        .Where(c => !string.Equals(c.ColumnName, "QuantityToReceived", StringComparison.OrdinalIgnoreCase)
-                        //                 && !string.Equals(c.ColumnName, "Id", StringComparison.OrdinalIgnoreCase))
-                        //        .Select(c => c.ColumnName)
-                        //        .ToList();
-
-
-                        //    // Tạo HashSet chứa các cặp style-color đã tồn tại
-                        //    var existingKeys = new HashSet<string>(
-                        //        _dataTable.Rows.Cast<DataRow>()
-                        //            .Select(r => GetRowKey(r, keyColumns))
-                        //    );
-
-                        //    foreach (DataRow newRow in newData.Rows)
-                        //    {
-                        //        string key = GetRowKey(newRow, keyColumns);
-
-                        //        if (!existingKeys.Contains(key))
-                        //        {
-                        //            _dataTable.ImportRow(newRow);
-                        //            existingKeys.Add(key);
-                        //        }
-                        //    }
-                        //}
-
                         _dataTable = response.Data;
                         _gridView.DataSource = response.Data;
+                        Cursor.Current = Cursors.Default;
                     }
                 }
             }

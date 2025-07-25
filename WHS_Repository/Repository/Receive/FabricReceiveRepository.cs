@@ -42,7 +42,7 @@ namespace WHS.Repository.Repository.Receive
             {
                 // Tạo query
                 string baseSql = "from vw_grouped_fabric_received";
-                string countSql = $"select count(mo) {baseSql} where  @Mo is null or mo like @Mo;";
+                string countSql = $"select count(mo) {baseSql} where @Mo is null or mo like @Mo;";
                 string dataSql = $@"select mo, style, color, type_detail, supplier, quantity_to_received, received_quantity, expected_quantity {baseSql}
                                     where @Mo is null or mo like @Mo
                                     order by modified_at
@@ -99,7 +99,7 @@ namespace WHS.Repository.Repository.Receive
                 string countSql = $"select count(id) {baseSql} {whereClause};";
                 string dataSql = $@"select * {baseSql}
                                     {whereClause}
-                                    order by modified_at
+                                    order by id desc
                                     offset @Offset rows fetch next @PageSize rows only;";
 
                 // Tạo paramers
@@ -160,7 +160,7 @@ namespace WHS.Repository.Repository.Receive
                     ))
                 ";
 
-            return await BaseCheckDuplicate(detail, columnChecks, sqlCheck);
+            return await CheckDuplicateBase(detail, columnChecks, sqlCheck);
         }
 
         /// <summary>
@@ -232,48 +232,6 @@ namespace WHS.Repository.Repository.Receive
         }
 
         /// <summary>
-        /// Chỉnh sửa NPL vải
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="detail"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public override async Task<Response<int>> UpdateReceiveAsync(int id, DataTable detail)
-        {
-            //string updateSql = @"
-            //update npl_received
-            //set
-            //    mo = @Mo,
-            //    style = @Style,
-            //    color = @Color,
-            //    type_detail = @FabricType,
-            //    supplier = @Supplier,
-            //    quantity_to_received = @QuantityToReceived,
-            //    quantity_estimate = @QuantityEstimate,
-            //    modified_by = @ModifiedBy,
-            //    modified_at = GETDATE()
-            //where id = @ID;";
-
-            //var parentParams = new
-            //{
-            //    fabric.MO,
-            //    fabric.Style,
-            //    fabric.Color,
-            //    fabric.FabricType,
-            //    fabric.Supplier,
-            //    fabric.QuantityToReceived,
-            //    fabric.QuantityEstimate,
-            //    ModifiedBy = 0,
-            //    ID = id,
-            //};
-
-            //return await UpdateReceiveBaseAsync(id, updateSql, parentParams, detail,
-            //    "viet_sp_upsert_npl_fabric_detail", "dbo.NplFabricDetailType");
-
-            return Response<int>.Success(1);
-        }
-
-        /// <summary>
         /// Lấy ra detail chi tiết
         /// </summary>
         /// <param name="id"></param>
@@ -288,7 +246,11 @@ namespace WHS.Repository.Repository.Receive
                 string sql = @"
                 select *
                 from vw_npl_fabric_detail
-                where mo = @MO and style = @Style and color = @Color and fabric_type = @TypeDetail and supplier = @Supplier";
+                where (@MO is null or mo = @MO) and 
+                    (@Style is null or style = @Style) and 
+                    (@Color is null or color = @Color) and 
+                    (@TypeDetail is null or fabric_type = @TypeDetail) and 
+                    (@Supplier is null or supplier = @Supplier)";
 
                 var parameters = new
                 {
@@ -305,6 +267,128 @@ namespace WHS.Repository.Repository.Receive
             catch (Exception ex) 
             { 
                 return ErrorHandler<List<FabricReceivedDto>>.Show(ex);  
+            }
+        }
+
+        /// <summary>
+        /// Lấy ra danh sách dữ liệu chưa điều phối
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async override Task<Response<List<FabricDto>>> GetListReceiveAsync()
+        {
+            using var conn = CreateConnection();
+            await conn.OpenAsync();
+
+            try
+            {
+                string sql = @"
+                select id, mo, supplier, style, color, fabric_type, batch, 
+                    fabric_length, length_unit, fabric_weight, weight_unit, roll_width, width_unit, fabric_number, quantity_to_received, quantity_unit,
+                    order_date, available_date, expected_date, is_cancelled
+                from vw_npl_fabric_detail
+                where status = 0 or status = 3";
+
+                var result = (await conn.QueryAsync<FabricDto>(sql)).ToList();
+                return Response<List<FabricDto>>.Success(result);
+            }
+            catch (Exception ex)
+            {
+                return ErrorHandler<List<FabricDto>>.Show(ex);
+            }
+        }
+
+        /// <summary>
+        /// Check xem có dữ liệu nào đã điều phối chưa
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public override async Task<Response<bool>> CheckHasDispatch(List<int> ids)
+        {
+            return await CheckHasDispatchBase(ids, "vw_npl_fabric_detail");
+        }
+
+        /// <summary>
+        /// Update chi tiết npl chưa điều phối
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public override async Task<Response<int>> UpdateReceivedDetail(List<FabricDto> data)
+        {
+            using var conn = CreateConnection();
+            await conn.OpenAsync();
+
+            try
+            {
+                var table = new DataTable();
+
+                table.Columns.Add("ID", typeof(int));
+                table.Columns.Add("MO", typeof(string));
+                table.Columns.Add("Supplier", typeof(string));
+                table.Columns.Add("Style", typeof(string));
+                table.Columns.Add("Color", typeof(string));
+                table.Columns.Add("FabricType", typeof(string));
+                table.Columns.Add("Batch", typeof(string));
+                table.Columns.Add("FabricLength", typeof(float));
+                table.Columns.Add("LengthUnit", typeof(string));
+                table.Columns.Add("FabricWeight", typeof(float));
+                table.Columns.Add("WeightUnit", typeof(string));
+                table.Columns.Add("RollWidth", typeof(float));
+                table.Columns.Add("WidthUnit", typeof(string));
+                table.Columns.Add("FabricNumber", typeof(int));
+                table.Columns.Add("QuantityToReceived", typeof(int));
+                table.Columns.Add("QuantityUnit", typeof(string));
+                table.Columns.Add("OrderDate", typeof(DateTime));
+                table.Columns.Add("AvailableDate", typeof(DateTime));
+                table.Columns.Add("ExpectedDate", typeof(DateTime));
+                table.Columns.Add("IsCancelled", typeof(bool));
+
+                foreach (var item in data)
+                {
+                    table.Rows.Add(
+                        item.ID,
+                        item.MO,
+                        item.Supplier,
+                        item.Style,
+                        item.Color,
+                        item.FabricType,
+                        item.Batch,
+                        item.FabricLength,
+                        item.LengthUnit,
+                        item.FabricWeight,
+                        item.WeightUnit,
+                        item.RollWidth,
+                        item.WidthUnit,
+                        item.FabricNumber,
+                        item.QuantityToReceived,
+                        item.QuantityUnit,
+                        item.OrderDate ?? (object)DBNull.Value,
+                        item.AvailableDate ?? (object)DBNull.Value,
+                        item.ExpectedDate ?? (object)DBNull.Value,
+                        item.IsCancelled ?? (object)DBNull.Value
+                    );
+                }
+
+                using (var cmd = new SqlCommand("viet_sp_update_fabric_received", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    var param = cmd.Parameters.AddWithValue("@FabricDetails", table);
+                    param.SqlDbType = SqlDbType.Structured;
+                    param.TypeName = "dbo.NplFabricDetailType";
+
+                    cmd.Parameters.AddWithValue("@ModifiedBy", 0);
+
+                    var rows = await cmd.ExecuteNonQueryAsync();
+
+                    return Response<int>.Success(rows, "Cập nhật vải thành công");
+                }
+            }
+            catch (Exception ex)
+            {
+                return ErrorHandler<int>.Show(ex);
             }
         }
     }

@@ -8,7 +8,7 @@ namespace WHS.Core.Dto.PLSP
 {
     public class PlspDto
     {
-        public int Id { get; set; }
+        public int ID { get; set; }
         public string MO { get; set; } = String.Empty;
         public string Supplier { get; set; } = String.Empty;
         public string PlspType { get; set; } = String.Empty;
@@ -18,8 +18,12 @@ namespace WHS.Core.Dto.PLSP
         public string Size { get; set; } = String.Empty;
         public string PlspColor { get; set; } = String.Empty;
         public int? QuantityToReceived { get; set; }
-        public DateTime OrderDate { get; set; }
-        public DateTime AvailableDate { get; set; }
-        public DateTime ExpectedDate { get; set; }
+        public DateTime? OrderDate { get; set; }
+        public DateTime? AvailableDate { get; set; }
+        public DateTime? ExpectedDate { get; set; }
+        public int? IsCancelled { get; set; }
+        public string? OrderDateVN => OrderDate?.ToString("dd/MM/yyyy");
+        public string? AvailableDateVN => AvailableDate?.ToString("dd/MM/yyyy");
+        public string? ExpectedDateVN => ExpectedDate?.ToString("dd/MM/yyyy");
     }
 }

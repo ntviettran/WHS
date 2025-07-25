@@ -36,8 +36,8 @@
             coordinateManage = new Button();
             transferToggleBtn = new Button();
             deliverySubMenu = new Panel();
-            coordinateBtn = new Button();
             detailReceiveBtn = new Button();
+            coordinateBtn = new Button();
             deliveryToggleBtn = new Button();
             poToggleBtn = new Button();
             panel2 = new Panel();
@@ -63,7 +63,7 @@
             sidebar.ForeColor = Color.White;
             sidebar.Location = new Point(0, 0);
             sidebar.Name = "sidebar";
-            sidebar.Size = new Size(290, 619);
+            sidebar.Size = new Size(290, 863);
             sidebar.TabIndex = 0;
             // 
             // logoutToggleBtn
@@ -73,7 +73,7 @@
             logoutToggleBtn.FlatAppearance.BorderSize = 0;
             logoutToggleBtn.FlatStyle = FlatStyle.Flat;
             logoutToggleBtn.Font = new Font("Segoe UI", 13.8F);
-            logoutToggleBtn.Location = new Point(0, 574);
+            logoutToggleBtn.Location = new Point(0, 818);
             logoutToggleBtn.Name = "logoutToggleBtn";
             logoutToggleBtn.Size = new Size(290, 45);
             logoutToggleBtn.TabIndex = 7;
@@ -92,7 +92,7 @@
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 89);
             panel1.Name = "panel1";
-            panel1.Size = new Size(290, 406);
+            panel1.Size = new Size(290, 543);
             panel1.TabIndex = 1;
             // 
             // transferWarhouseSubMenu
@@ -149,23 +149,6 @@
             deliverySubMenu.Size = new Size(290, 98);
             deliverySubMenu.TabIndex = 9;
             // 
-            // coordinateBtn
-            // 
-            coordinateBtn.Dock = DockStyle.Top;
-            coordinateBtn.FlatAppearance.BorderSize = 0;
-            coordinateBtn.FlatStyle = FlatStyle.Flat;
-            coordinateBtn.Font = new Font("Segoe UI", 13.8F);
-            coordinateBtn.ForeColor = Color.Transparent;
-            coordinateBtn.Location = new Point(0, 45);
-            coordinateBtn.Name = "coordinateBtn";
-            coordinateBtn.Padding = new Padding(20, 0, 0, 0);
-            coordinateBtn.Size = new Size(290, 45);
-            coordinateBtn.TabIndex = 0;
-            coordinateBtn.Text = "Điều phối";
-            coordinateBtn.TextAlign = ContentAlignment.MiddleLeft;
-            coordinateBtn.UseVisualStyleBackColor = true;
-            coordinateBtn.Click += coordinateBtn_Click;
-            // 
             // detailReceiveBtn
             // 
             detailReceiveBtn.BackColor = Color.FromArgb(38, 32, 39);
@@ -173,7 +156,7 @@
             detailReceiveBtn.FlatAppearance.BorderSize = 0;
             detailReceiveBtn.FlatStyle = FlatStyle.Flat;
             detailReceiveBtn.Font = new Font("Segoe UI", 13.8F);
-            detailReceiveBtn.Location = new Point(0, 0);
+            detailReceiveBtn.Location = new Point(0, 45);
             detailReceiveBtn.Name = "detailReceiveBtn";
             detailReceiveBtn.Padding = new Padding(20, 0, 0, 0);
             detailReceiveBtn.Size = new Size(290, 45);
@@ -182,6 +165,23 @@
             detailReceiveBtn.TextAlign = ContentAlignment.MiddleLeft;
             detailReceiveBtn.UseVisualStyleBackColor = false;
             detailReceiveBtn.Click += detailReceiveBtn_Click;
+            // 
+            // coordinateBtn
+            // 
+            coordinateBtn.Dock = DockStyle.Top;
+            coordinateBtn.FlatAppearance.BorderSize = 0;
+            coordinateBtn.FlatStyle = FlatStyle.Flat;
+            coordinateBtn.Font = new Font("Segoe UI", 13.8F);
+            coordinateBtn.ForeColor = Color.Transparent;
+            coordinateBtn.Location = new Point(0, 0);
+            coordinateBtn.Name = "coordinateBtn";
+            coordinateBtn.Padding = new Padding(20, 0, 0, 0);
+            coordinateBtn.Size = new Size(290, 45);
+            coordinateBtn.TabIndex = 0;
+            coordinateBtn.Text = "Điều phối";
+            coordinateBtn.TextAlign = ContentAlignment.MiddleLeft;
+            coordinateBtn.UseVisualStyleBackColor = true;
+            coordinateBtn.Click += coordinateBtn_Click;
             // 
             // deliveryToggleBtn
             // 
@@ -251,14 +251,14 @@
             mainLayout.Dock = DockStyle.Fill;
             mainLayout.Location = new Point(290, 0);
             mainLayout.Name = "mainLayout";
-            mainLayout.Size = new Size(510, 619);
+            mainLayout.Size = new Size(510, 863);
             mainLayout.TabIndex = 1;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 619);
+            ClientSize = new Size(800, 863);
             Controls.Add(mainLayout);
             Controls.Add(sidebar);
             Icon = (Icon)resources.GetObject("$this.Icon");

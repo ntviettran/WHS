@@ -36,6 +36,10 @@
             DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddTransferDetailPopup));
             panel1 = new Panel();
+            typeContainer = new Panel();
+            fabricBtn = new Button();
+            pldgBtn = new Button();
+            plspBtn = new Button();
             backBtn = new Button();
             saveBtn = new Button();
             tableLayoutPanel1 = new TableLayoutPanel();
@@ -43,31 +47,27 @@
             label2 = new Label();
             coordinateDetailView = new DataGridView();
             panel4 = new Panel();
-            label1 = new Label();
             coordinateView = new DataGridView();
-            typeContainer = new TableLayoutPanel();
-            pldgBtn = new Button();
-            plspBtn = new Button();
-            fabricBtn = new Button();
+            label1 = new Label();
             tableLayoutPanel3 = new TableLayoutPanel();
             label7 = new Label();
             panel2 = new Panel();
             panel1.SuspendLayout();
+            typeContainer.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)coordinateDetailView).BeginInit();
             panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)coordinateView).BeginInit();
-            typeContainer.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
             // 
+            panel1.Controls.Add(typeContainer);
             panel1.Controls.Add(backBtn);
             panel1.Controls.Add(saveBtn);
             panel1.Controls.Add(tableLayoutPanel1);
-            panel1.Controls.Add(typeContainer);
             panel1.Controls.Add(tableLayoutPanel3);
             panel1.Controls.Add(panel2);
             panel1.Dock = DockStyle.Fill;
@@ -75,6 +75,58 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1191, 855);
             panel1.TabIndex = 0;
+            // 
+            // typeContainer
+            // 
+            typeContainer.Controls.Add(fabricBtn);
+            typeContainer.Controls.Add(pldgBtn);
+            typeContainer.Controls.Add(plspBtn);
+            typeContainer.Location = new Point(1, 55);
+            typeContainer.Name = "typeContainer";
+            typeContainer.Size = new Size(317, 53);
+            typeContainer.TabIndex = 27;
+            // 
+            // fabricBtn
+            // 
+            fabricBtn.BackColor = Color.FromArgb(0, 46, 92);
+            fabricBtn.FlatStyle = FlatStyle.Flat;
+            fabricBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            fabricBtn.ForeColor = Color.White;
+            fabricBtn.Location = new Point(3, 3);
+            fabricBtn.Name = "fabricBtn";
+            fabricBtn.Size = new Size(94, 48);
+            fabricBtn.TabIndex = 0;
+            fabricBtn.Text = "Vải";
+            fabricBtn.UseVisualStyleBackColor = false;
+            fabricBtn.Click += fabricBtn_Click;
+            // 
+            // pldgBtn
+            // 
+            pldgBtn.BackColor = Color.DarkGray;
+            pldgBtn.FlatStyle = FlatStyle.Flat;
+            pldgBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pldgBtn.ForeColor = Color.White;
+            pldgBtn.Location = new Point(203, 4);
+            pldgBtn.Name = "pldgBtn";
+            pldgBtn.Size = new Size(94, 47);
+            pldgBtn.TabIndex = 2;
+            pldgBtn.Text = "PLĐG";
+            pldgBtn.UseVisualStyleBackColor = false;
+            pldgBtn.Click += pldgBtn_Click;
+            // 
+            // plspBtn
+            // 
+            plspBtn.BackColor = Color.DarkGray;
+            plspBtn.FlatStyle = FlatStyle.Flat;
+            plspBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            plspBtn.ForeColor = Color.White;
+            plspBtn.Location = new Point(103, 4);
+            plspBtn.Name = "plspBtn";
+            plspBtn.Size = new Size(94, 48);
+            plspBtn.TabIndex = 1;
+            plspBtn.Text = "PLSP";
+            plspBtn.UseVisualStyleBackColor = false;
+            plspBtn.Click += plspBtn_Click;
             // 
             // backBtn
             // 
@@ -193,16 +245,6 @@
             panel4.Size = new Size(1181, 322);
             panel4.TabIndex = 25;
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(0, 10);
-            label1.Name = "label1";
-            label1.Size = new Size(199, 38);
-            label1.TabIndex = 22;
-            label1.Text = "Cần điều phối";
-            // 
             // coordinateView
             // 
             coordinateView.AllowUserToAddRows = false;
@@ -247,66 +289,15 @@
             coordinateView.TabIndex = 21;
             coordinateView.CellContentClick += coordinateView_CellContentClick;
             // 
-            // typeContainer
+            // label1
             // 
-            typeContainer.ColumnCount = 3;
-            typeContainer.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            typeContainer.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            typeContainer.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            typeContainer.Controls.Add(pldgBtn, 2, 0);
-            typeContainer.Controls.Add(plspBtn, 1, 0);
-            typeContainer.Controls.Add(fabricBtn, 0, 0);
-            typeContainer.Dock = DockStyle.Top;
-            typeContainer.Location = new Point(0, 52);
-            typeContainer.Name = "typeContainer";
-            typeContainer.RowCount = 1;
-            typeContainer.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            typeContainer.Size = new Size(1191, 54);
-            typeContainer.TabIndex = 22;
-            // 
-            // pldgBtn
-            // 
-            pldgBtn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pldgBtn.BackColor = Color.DarkGray;
-            pldgBtn.FlatStyle = FlatStyle.Flat;
-            pldgBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pldgBtn.ForeColor = Color.White;
-            pldgBtn.Location = new Point(1094, 3);
-            pldgBtn.Name = "pldgBtn";
-            pldgBtn.Size = new Size(94, 47);
-            pldgBtn.TabIndex = 2;
-            pldgBtn.Text = "PLĐG";
-            pldgBtn.UseVisualStyleBackColor = false;
-            pldgBtn.Click += pldgBtn_Click;
-            // 
-            // plspBtn
-            // 
-            plspBtn.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
-            plspBtn.BackColor = Color.DarkGray;
-            plspBtn.FlatStyle = FlatStyle.Flat;
-            plspBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            plspBtn.ForeColor = Color.White;
-            plspBtn.Location = new Point(548, 3);
-            plspBtn.Name = "plspBtn";
-            plspBtn.Size = new Size(94, 48);
-            plspBtn.TabIndex = 1;
-            plspBtn.Text = "PLSP";
-            plspBtn.UseVisualStyleBackColor = false;
-            plspBtn.Click += plspBtn_Click;
-            // 
-            // fabricBtn
-            // 
-            fabricBtn.BackColor = Color.FromArgb(0, 46, 92);
-            fabricBtn.FlatStyle = FlatStyle.Flat;
-            fabricBtn.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            fabricBtn.ForeColor = Color.White;
-            fabricBtn.Location = new Point(3, 3);
-            fabricBtn.Name = "fabricBtn";
-            fabricBtn.Size = new Size(94, 45);
-            fabricBtn.TabIndex = 0;
-            fabricBtn.Text = "Vải";
-            fabricBtn.UseVisualStyleBackColor = false;
-            fabricBtn.Click += fabricBtn_Click;
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(0, 10);
+            label1.Name = "label1";
+            label1.Size = new Size(199, 38);
+            label1.TabIndex = 22;
+            label1.Text = "Cần điều phối";
             // 
             // tableLayoutPanel3
             // 
@@ -358,6 +349,7 @@
             FormClosed += AddTransferDetailPopup_FormClosed;
             Load += AddTransferDetailPopup_Load;
             panel1.ResumeLayout(false);
+            typeContainer.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
@@ -365,7 +357,6 @@
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)coordinateView).EndInit();
-            typeContainer.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             tableLayoutPanel3.PerformLayout();
             ResumeLayout(false);
@@ -374,10 +365,6 @@
         #endregion
 
         private Panel panel1;
-        private TableLayoutPanel typeContainer;
-        private Button pldgBtn;
-        private Button plspBtn;
-        private Button fabricBtn;
         private TableLayoutPanel tableLayoutPanel3;
         private Label label7;
         private Panel panel2;
@@ -390,5 +377,9 @@
         private DataGridView coordinateView;
         private Button backBtn;
         private Button saveBtn;
+        private Panel typeContainer;
+        private Button fabricBtn;
+        private Button pldgBtn;
+        private Button plspBtn;
     }
 }

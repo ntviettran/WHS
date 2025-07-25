@@ -152,7 +152,7 @@ namespace WHS.Repository.Repository.User
                     UserInfoDto user = new UserInfoDto()
                     {
                         CompanyId = 1,
-                        DepartmentCode = "PPC",
+                        DepartmentCode = "WHS",
                         DepartmentId = 1,
                         ID = 1,
                         FullName = "Trần Đức Việt",

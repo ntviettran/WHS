@@ -13,6 +13,7 @@ using WHS.Pages.Transfer;
 using WHS.Popup;
 using WHS.Popup.PO;
 using WHS.Popup.Transfer;
+using WHS.Popup.Vehicle;
 using WHS.Repository.Interfaces;
 using WHS.Repository.Repository.Coordinate;
 using WHS.Repository.Repository.PO;
@@ -53,6 +54,8 @@ namespace WHS
 
             LoginForm loginForm = ServiceProvider.GetRequiredService<LoginForm>();
             Application.Run(loginForm);
+
+            //Application.Run(new MainForm());
         }
 
         private static void ConfigureServices(IServiceCollection services)
@@ -100,6 +103,7 @@ namespace WHS
             services.AddTransient<AddVehiclePopup>();
             services.AddTransient<TransferDetail>();
             services.AddTransient<PoPopup>();
+            services.AddTransient<VehicleTransferPopup>();
         }
     }
 }

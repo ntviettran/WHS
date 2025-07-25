@@ -19,14 +19,42 @@ namespace WHS.Popup.Transfer
 {
     public partial class AddVehiclePopup : Form
     {
-        private IVehicleService _transferService;
+        private IVehicleService _vehicleService;
+        private E_StatusForm _status = E_StatusForm.ADD;
         public event EventHandler? SaveSuccess;
 
-        public AddVehiclePopup(IVehicleService transferService)
+
+        public AddVehiclePopup(IVehicleService vehicleService)
         {
-            _transferService = transferService;
+            _vehicleService = vehicleService;
 
             InitializeComponent();
+            SetupCombobox();
+        }
+
+        public void SetupEdit(VehicleDto vehicle)
+        {
+            _status = E_StatusForm.EDIT;
+            idTxb.Text = vehicle.ID.ToString();
+            licensePlateTxb.Text = vehicle.LicensePlate;
+            sealNumberTxb.Text = vehicle.SealNumber ?? string.Empty;
+            capacityTxb.Text = vehicle.Capacity?.ToString() ?? string.Empty;
+            vehicleModeCb.SelectedValue = vehicle.VehicleMode;
+            vehicleTypeCb.SelectedValue = vehicle.VehicleType;
+        }
+
+        private async void SetupAdd()
+        {
+            Response<int> res = await _vehicleService.GetNewVehicleIdAsync();
+
+            if (!res.IsSuccess)
+            {
+                ShowMessage.Error(res.Message);
+                return;
+            }
+
+            idTxb.BackColor = Color.White;
+            idTxb.Text = res.Data.ToString();
         }
 
         private void SetupCombobox()
@@ -65,20 +93,12 @@ namespace WHS.Popup.Transfer
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void AddVehiclePopup_Load(object sender, EventArgs e)
+        private void AddVehiclePopup_Load(object sender, EventArgs e)
         {
-            Response<int> res = await _transferService.GetNewVehicleIdAsync();
-
-            if (!res.IsSuccess)
+            if (_status == E_StatusForm.ADD)
             {
-                ShowMessage.Error(res.Message);
-                return;
-            } 
-
-            idTxb.BackColor = Color.White;  
-            idTxb.Text = res.Data.ToString();
-
-            SetupCombobox();
+                SetupAdd();
+            }
         }
 
         /// <summary>
@@ -108,14 +128,25 @@ namespace WHS.Popup.Transfer
                 VehicleMode = (E_VehicleMode)vehicleModeCb.SelectedValue!,
                 VehicleType = (E_VehicleType)vehicleTypeCb.SelectedValue!,
                 LicensePlate = licensePlateTxb.Text,
-                SealNumber = sealNumberTxb.Text,
-                Capacity = float.Parse(capacityTxb.Text)
+                SealNumber = !string.IsNullOrEmpty(sealNumberTxb.Text) ? sealNumberTxb.Text : null,
+                Capacity = !string.IsNullOrEmpty(capacityTxb.Text) ? float.Parse(capacityTxb.Text) : null
             };
 
-            Response<int> res = await _transferService.CreateVehicleAsync(vehicle);
+            Response<int> res = null!;
+            if (_status == E_StatusForm.EDIT)
+            {
+                res = await _vehicleService.UpdateVehicleAsync(vehicle);
+            } else
+            {
+                res = await _vehicleService.CreateVehicleAsync(vehicle);
+            }
 
             // Kiểm tra xem dữ liệu trả về và đưa ra thông báo
-            if (!res.IsSuccess) ShowMessage.Error(res.Message);
+            if (!res.IsSuccess)
+            {
+                ShowMessage.Error(res.Message);
+                return;
+            }
 
             DialogResult result = ShowMessage.Success(res.Message);
 
@@ -137,16 +168,6 @@ namespace WHS.Popup.Transfer
             if (string.IsNullOrWhiteSpace(licensePlateTxb.Text))
             {
                 errors.Add("Biển số không được để trống.");
-            }
-
-            if (string.IsNullOrWhiteSpace(sealNumberTxb.Text))
-            {
-                errors.Add("Số chì không được để trống.");
-            }
-
-            if (!float.TryParse(capacityTxb.Text, out float capacity))
-            {
-                errors.Add("Tải trọng phải là dạng số.");
             }
 
             if (errors.Count > 0)

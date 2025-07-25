@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using WHS.Core.Dto.Vehicle;
+using WHS.Core.Enums;
 using WHS.Core.ErrorHandle;
 using WHS.Core.Query.Receive;
 using WHS.Core.Query.Vehicle;
@@ -69,6 +70,48 @@ namespace WHS.Repository.Repository.Vehicle
                 });
 
                 return Response<int>.Success(id, "Tạo thành công phương tiện!");
+
+            }
+            catch (Exception ex)
+            {
+                return ErrorHandler<int>.Show(ex);
+            }
+        }
+
+        /// <summary>
+        /// Sửa phương tiện
+        /// </summary>
+        /// <param name="vehicle"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<Response<int>> UpdateVehicleAsync(VehicleDto vehicle)
+        {
+            using var conn = CreateConnection();
+            await conn.OpenAsync();
+
+            try
+            {
+                string sql = @"update sys_vehicle
+                            set vehicle_type = @VehicleType, 
+                                vehicle_mode = @VehicleMode, 
+                                license_plate = @licensePlate, 
+                                seal_number = @SealNumber, 
+                                capacity = @Capacity, 
+                                modified_by = @ModifiedBy,
+                                modified_at = GETDATE()
+                            where id = @ID ";
+                int id = await conn.ExecuteAsync(sql, new
+                {
+                    vehicle.ID,
+                    vehicle.VehicleType,
+                    vehicle.VehicleMode,
+                    vehicle.LicensePlate,
+                    SealNumber = vehicle.SealNumber ?? (object)DBNull.Value,
+                    vehicle.Capacity,
+                    ModifiedBy = 0
+                });
+
+                return Response<int>.Success(id, "Sửa phương tiện thành công!");
 
             }
             catch (Exception ex)
@@ -154,6 +197,49 @@ namespace WHS.Repository.Repository.Vehicle
             }
             catch (Exception ex) { 
                 return ErrorHandler<List<VehicleDto>>.Show(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lấy ra danh sách phương tiện theo trạng thái
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="nplId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<Response<List<TransferDetailVehicle>>> GetVehicleTransferDetail(E_NPLType type, int nplId)
+        {
+            using var conn = CreateConnection();
+            await conn.OpenAsync();
+
+            try
+            {
+                string sql = @"
+                select 
+                    transfer_id,
+                    exec_status, 
+                    transfer_status, 
+                    vehicle_type, 
+                    vehicle_mode, 
+                    license_plate, 
+                    seal_number, 
+                    capacity
+                from vw_npl_transfer_detail_vehicle
+                where detail_type = @Type AND detail_id = @NplId";
+
+                var parameters = new
+                {
+                    Type = type,
+                    NplId = nplId
+                };
+
+                var result = (await conn.QueryAsync<TransferDetailVehicle>(sql, parameters)).ToList();
+
+                return Response<List<TransferDetailVehicle>>.Success(result);
+            }
+            catch (Exception ex)
+            {
+                return ErrorHandler<List<TransferDetailVehicle>>.Show(ex);
             }
         }
     }

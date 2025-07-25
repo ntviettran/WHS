@@ -63,6 +63,7 @@ namespace WHS.Popup
 
                 _columns = new Dictionary<string, string>()
                 {
+                    ["ID"] = "ID",
                     ["MO"] = "MO",
                     ["Supplier"] = "Mã nhà cung cấp",
                     ["Style"] = "Style",
@@ -81,9 +82,9 @@ namespace WHS.Popup
                     ["RemainingQuantity"] = "Số lượng còn lại",
                     ["EstimateQuantity"] = "Số lượng dự kiến nhận",
                     ["QuantityUnit"] = "Đơn vị số lượng",
-                    ["OrderDate"] = "Ngày đặt hàng",
-                    ["AvailableDate"] = "Ngày có thể nhận",
-                    ["ExpectedDate"] = "Ngày dự kiến nhận",
+                    ["OrderDateVN"] = "Ngày đặt hàng",
+                    ["AvailableDateVN"] = "Ngày có thể nhận",
+                    ["ExpectedDateVN"] = "Ngày dự kiến nhận",
                     ["StatusDescription"] = "Trạng thái",
                     ["DispatchStatusDescription"] = "Trạng thái điều phối",
                 };
@@ -106,9 +107,9 @@ namespace WHS.Popup
                     ["WidthUnit"] = "Đơn vị khổ",
                     ["QuantityToReceived"] = "Số lượng cần nhận",
                     ["QuantityUnit"] = "Đơn vị số lượng",
-                    ["OrderDate"] = "Ngày đặt hàng",
-                    ["AvailableDate"] = "Ngày có thể nhận",
-                    ["ExpectedDate"] = "Ngày dự kiến nhận",
+                    ["OrderDateVN"] = "Ngày đặt hàng",
+                    ["AvailableDateVN"] = "Ngày có thể nhận",
+                    ["ExpectedDateVN"] = "Ngày dự kiến nhận",
                 };
             }
 
@@ -149,17 +150,14 @@ namespace WHS.Popup
         /// <param name="e"></param>
         private async void saveBtn_Click(object sender, EventArgs e)
         {
-            Response<int> res;
+            if (_statusForm != E_StatusForm.ADD) return;
 
-            if (_statusForm == E_StatusForm.ADD)
-            {
-                 res = await _fabricService.CreateReceiveAsync(_dataTable);
-            } else
-            {
-                res = await _fabricService.UpdateReceiveAsync(_receiveData.Id, _dataTable);
-            }
+            List<string> numCols = new List<string>() { "QuantityToReceived" };
+            bool validateDetail = ValidateNPLDetail(numCols);
+            if (!validateDetail) return;
 
-            // Bước3: Xử lí message trả về
+            Response<int> res = await _fabricService.CreateReceiveAsync(_dataTable);
+
             if (!res.IsSuccess)
             {
                 MessageBox.Show(res.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);

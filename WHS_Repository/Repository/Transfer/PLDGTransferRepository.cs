@@ -47,7 +47,7 @@ namespace WHS.Repository.Repository.Transfer
                                 status,
                                 dispatch_status
                              from vw_npl_pldg_detail
-                             where dispatch_status = @status";
+                             where dispatch_status = @status and status <> 3";
 
                 List<PLDGCoordinationDto> ressult = (await conn.QueryAsync<PLDGCoordinationDto>(sql, new { status })).ToList();
 

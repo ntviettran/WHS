@@ -47,18 +47,30 @@ namespace WHS.Repository.Interfaces
         Task<Response<int>> CreateReceiveAsync(DataTable detail);
 
         /// <summary>
-        /// Chỉnh sửa phiếu NPL
-        /// </summary>
-        /// <param name="fabric"></param>
-        /// <param name="detail"></param>
-        /// <returns></returns>
-        Task<Response<int>> UpdateReceiveAsync(int id, DataTable detail);
-
-        /// <summary>
-        /// Lấy ra detail chi tiết
+        /// Lấy ra detail chi tiết theo thằng group
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         Task<Response<List<D>>> GetReceiveDetailAsync(GroupReceiveDto receiveData);
+
+        /// <summary>
+        /// Lấy ra danh sách dữ liệu chưa điều phối
+        /// </summary>
+        /// <returns></returns>
+        Task<Response<List<T>>> GetListReceiveAsync();
+
+        /// <summary>
+        /// Check xem có dữ liệu nào đã điều phối chưa
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        Task<Response<bool>> CheckHasDispatch(List<int> ids);
+
+        /// <summary>
+        /// Update phụ liệu chưa điều phối
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        Task<Response<int>> UpdateReceivedDetail(List<T> data);
     }
 }

@@ -102,7 +102,8 @@ namespace WHS.Pages.Transfer
             if (_status == E_StatusPage.VIEW)
             {
                 gridView.ContextMenuStrip = contextMenuStrip1;
-            } else
+            }
+            else
             {
                 gridView.ContextMenuStrip = null;
             }
@@ -158,7 +159,7 @@ namespace WHS.Pages.Transfer
         /// <param name="e"></param>
         private void addBtn_Click(object sender, EventArgs e)
         {
-            
+
             if (Program.ServiceProvider == null) return;
 
             AddTransferPopup transferPopup = FormFactory.CreateForm<AddTransferPopup>();

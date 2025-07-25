@@ -347,7 +347,7 @@ namespace WHS.Popup.Transfer
 
             _editColumns = new List<string>
             {
-                "QuantityReceived",
+                "ReceivedQuantity",
                 "LengthReceived",
                 "WeightReceived"
             };
@@ -365,7 +365,7 @@ namespace WHS.Popup.Transfer
 
             _editColumns = new List<string>
             {
-                "QuantityReceived"
+                "ReceivedQuantity"
             };
 
             RefreshCurrentDataGrid();
@@ -382,7 +382,7 @@ namespace WHS.Popup.Transfer
 
             _editColumns = new List<string>
             {
-                "QuantityReceived"
+                "ReceivedQuantity"
             };
 
             RefreshCurrentDataGrid();
@@ -636,10 +636,8 @@ namespace WHS.Popup.Transfer
                 ofd.Filter = "Excel Files|*.xlsx;*.xls";
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    Cursor.Current = Cursors.WaitCursor;
                     string filePath = ofd.FileName;
                     UpdateFromExcel(filePath);
-                    Cursor.Current = Cursors.Default;
                 }
             }
         }
@@ -772,11 +770,6 @@ namespace WHS.Popup.Transfer
             }
 
             this.Close();
-        }
-
-        private void gridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
     }
 }

@@ -84,6 +84,18 @@ namespace WHS.Pages.Receive
         #region Type_NPL
 
         /// <summary>
+        /// Mở sang màn hình 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DetailReceivePage detailReceivePage = FormFactory.CreateUserControl<DetailReceivePage>();
+            detailReceivePage.MainForm = Mainform;
+            Mainform.ShowUserControl(detailReceivePage);
+        }
+
+        /// <summary>
         /// Hiện ui active loại NPL được chọn (Vải, PLSP, PLĐG)
         /// </summary>
         /// <param name="btn"></param>
@@ -115,7 +127,7 @@ namespace WHS.Pages.Receive
                     {"Supplier", "Nhà cung cấp"},
                     {"QuantityToReceived", "Số lượng cần nhận"},
                     {"ReceivedQuantity", "Số lượng đã nhận"},
-                    {"ExpectedQuantity", "Sô lượng dự kiến nhận"}
+                    {"ExpectedQuantity", "Số lượng dự kiến nhận"}
                 },
                 E_NPLType.PLSP => new Dictionary<string, string>()
                 {
@@ -124,7 +136,7 @@ namespace WHS.Pages.Receive
                     {"Supplier", "Nhà cung cấp"},
                     {"QuantityToReceived", "Số lượng cần nhận"},
                     {"ReceivedQuantity", "Số lượng đã nhận"},
-                    {"ExpectedQuantity", "Sô lượng dự kiến nhận"}
+                    {"ExpectedQuantity", "Số lượng dự kiến nhận"}
                 },
                 E_NPLType.PLDG => new Dictionary<string, string>()
                 {
@@ -133,7 +145,7 @@ namespace WHS.Pages.Receive
                     {"Supplier", "Nhà cung cấp"},
                     {"QuantityToReceived", "Số lượng cần nhận"},
                     {"ReceivedQuantity", "Số lượng đã nhận"},
-                    {"ExpectedQuantity", "Sô lượng dự kiến nhận"}
+                    {"ExpectedQuantity", "Số lượng dự kiến nhận"}
                 },
                 _ => throw new NotSupportedException("Unsupported NPL type")
             };
@@ -340,18 +352,7 @@ namespace WHS.Pages.Receive
             await LoadDataGridView();
 
         }
-        #endregion
 
-        /// <summary>
-        /// Mở sang màn hình 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button1_Click(object sender, EventArgs e)
-        {
-            DetailReceivePage detailReceivePage = FormFactory.CreateUserControl<DetailReceivePage>();
-            detailReceivePage.MainForm = Mainform;
-            Mainform.ShowUserControl(detailReceivePage);
-        }
+        #endregion
     }
 }

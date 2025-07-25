@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VehiclePopup));
@@ -37,11 +38,13 @@
             saveBtn = new Button();
             gridView = new DataGridView();
             id = new DataGridViewTextBoxColumn();
-            VehicleMode = new DataGridViewTextBoxColumn();
-            VehicleType = new DataGridViewTextBoxColumn();
+            VehicleModeDescription = new DataGridViewTextBoxColumn();
+            VehicleTypeDescription = new DataGridViewTextBoxColumn();
             LicensePlate = new DataGridViewTextBoxColumn();
             SealNumber = new DataGridViewTextBoxColumn();
             Capacity = new DataGridViewTextBoxColumn();
+            editContext = new ContextMenuStrip(components);
+            editVehicleContext = new ToolStripMenuItem();
             panel2 = new Panel();
             licensePlateTxb = new TextBox();
             vehicleModeCb = new ComboBox();
@@ -49,6 +52,7 @@
             label1 = new Label();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)gridView).BeginInit();
+            editContext.SuspendLayout();
             panel2.SuspendLayout();
             SuspendLayout();
             // 
@@ -127,7 +131,8 @@
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             gridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             gridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            gridView.Columns.AddRange(new DataGridViewColumn[] { id, VehicleMode, VehicleType, LicensePlate, SealNumber, Capacity });
+            gridView.Columns.AddRange(new DataGridViewColumn[] { id, VehicleModeDescription, VehicleTypeDescription, LicensePlate, SealNumber, Capacity });
+            gridView.ContextMenuStrip = editContext;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -137,7 +142,7 @@
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
             gridView.DefaultCellStyle = dataGridViewCellStyle2;
             gridView.EnableHeadersVisualStyles = false;
-            gridView.Location = new Point(0, 126);
+            gridView.Location = new Point(3, 119);
             gridView.MultiSelect = false;
             gridView.Name = "gridView";
             gridView.ReadOnly = true;
@@ -145,7 +150,7 @@
             gridView.RowHeadersWidth = 51;
             gridView.RowTemplate.Height = 35;
             gridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            gridView.Size = new Size(871, 306);
+            gridView.Size = new Size(868, 306);
             gridView.TabIndex = 4;
             // 
             // id
@@ -157,23 +162,23 @@
             id.Name = "id";
             id.ReadOnly = true;
             // 
-            // VehicleMode
+            // VehicleModeDescription
             // 
-            VehicleMode.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            VehicleMode.DataPropertyName = "VehicleMode";
-            VehicleMode.HeaderText = "Hình thức";
-            VehicleMode.MinimumWidth = 6;
-            VehicleMode.Name = "VehicleMode";
-            VehicleMode.ReadOnly = true;
+            VehicleModeDescription.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            VehicleModeDescription.DataPropertyName = "VehicleModeDescription";
+            VehicleModeDescription.HeaderText = "Hình thức";
+            VehicleModeDescription.MinimumWidth = 6;
+            VehicleModeDescription.Name = "VehicleModeDescription";
+            VehicleModeDescription.ReadOnly = true;
             // 
-            // VehicleType
+            // VehicleTypeDescription
             // 
-            VehicleType.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            VehicleType.DataPropertyName = "VehicleType";
-            VehicleType.HeaderText = "Loại xe";
-            VehicleType.MinimumWidth = 6;
-            VehicleType.Name = "VehicleType";
-            VehicleType.ReadOnly = true;
+            VehicleTypeDescription.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            VehicleTypeDescription.DataPropertyName = "VehicleTypeDescription";
+            VehicleTypeDescription.HeaderText = "Loại xe";
+            VehicleTypeDescription.MinimumWidth = 6;
+            VehicleTypeDescription.Name = "VehicleTypeDescription";
+            VehicleTypeDescription.ReadOnly = true;
             // 
             // LicensePlate
             // 
@@ -201,6 +206,20 @@
             Capacity.MinimumWidth = 6;
             Capacity.Name = "Capacity";
             Capacity.ReadOnly = true;
+            // 
+            // editContext
+            // 
+            editContext.ImageScalingSize = new Size(20, 20);
+            editContext.Items.AddRange(new ToolStripItem[] { editVehicleContext });
+            editContext.Name = "editContext";
+            editContext.Size = new Size(143, 28);
+            // 
+            // editVehicleContext
+            // 
+            editVehicleContext.Name = "editVehicleContext";
+            editVehicleContext.Size = new Size(142, 24);
+            editVehicleContext.Text = "Chỉnh sửa";
+            editVehicleContext.Click += editVehicleContext_Click;
             // 
             // panel2
             // 
@@ -269,6 +288,7 @@
             Load += VehiclePopup_Load;
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)gridView).EndInit();
+            editContext.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ResumeLayout(false);
@@ -286,9 +306,11 @@
         private Button addBtn;
         private Button cancelBtn;
         private Button saveBtn;
+        private ContextMenuStrip editContext;
+        private ToolStripMenuItem editVehicleContext;
         private DataGridViewTextBoxColumn id;
-        private DataGridViewTextBoxColumn VehicleMode;
-        private DataGridViewTextBoxColumn VehicleType;
+        private DataGridViewTextBoxColumn VehicleModeDescription;
+        private DataGridViewTextBoxColumn VehicleTypeDescription;
         private DataGridViewTextBoxColumn LicensePlate;
         private DataGridViewTextBoxColumn SealNumber;
         private DataGridViewTextBoxColumn Capacity;

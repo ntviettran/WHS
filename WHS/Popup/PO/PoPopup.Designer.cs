@@ -276,7 +276,6 @@
 
         private Panel panel1;
         private Button cancelBtn;
-        private Button nextBtn;
         private TableLayoutPanel tableLayoutPanel2;
         private Panel panel25;
         private TextBox idItemTxb;
@@ -291,7 +290,6 @@
         private TextBox poTxb;
         private Label label14;
         private Panel addIDBtn;
-        private Button button1;
         private Button saveBtn;
     }
 }

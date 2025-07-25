@@ -227,7 +227,7 @@ namespace WHS.Popup.Transfer
             }
 
             // Active button truyền vào
-            button.BackColor = Color.FromArgb(0,46,92);
+            button.BackColor = Color.FromArgb(0, 46, 92);
 
             _transferService = TransferFactory.GetService(_type);
         }
@@ -250,7 +250,7 @@ namespace WHS.Popup.Transfer
                 {"Batch", "Lot"},
                 {"FabricNumber", "Cuộn số"},
                 {"QuantityToReceived", "Số lượng cần nhận"},
-                {"QuantityReceived", "Số lượng đã nhận"},
+                {"ReceivedQuantity", "Số lượng đã nhận"},
                 {"RemainingQuantity", "Số lượng còn lại"},
                 {"StatusDescription", "Trạng thái"},
                 {"DispatchStatusDescription", "Trạng thái điều phối"},
@@ -265,7 +265,7 @@ namespace WHS.Popup.Transfer
                 {"FabricType", "Loại vải"},
                 {"Batch", "Lot"},
                 {"QuantityToReceived", "Số lượng cần nhận"},
-                {"QuantityReceived", "Số lượng thực nhận"},
+                {"ReceivedQuantity", "Số lượng thực nhận"},
                 {"QuantityStatusDescription", "Trạng thái số lượng"},
                 {"LengthReceived", "Chiều dài thực nhận"},
                 {"LengthStatusDescription", "Trạng thái chiều dài"},
@@ -304,7 +304,7 @@ namespace WHS.Popup.Transfer
                 {"PlspCode", "Mã code"},
                 {"NplColor", "Màu"},
                 {"QuantityToReceived", "Số lượng cần nhận"},
-                {"QuantityReceived", "Số lượng đã nhận"},
+                {"ReceivedQuantity", "Số lượng đã nhận"},
                 {"StatusDescription", "Trạng thái"},
                 {"DispatchStatusDescription", "Trạng thái điều phối"}
             };
@@ -320,9 +320,9 @@ namespace WHS.Popup.Transfer
                 {"Size", "Kích thước"},
                 {"PlspColor", "Màu sắc sản phẩm"},
                 {"QuantityToReceived", "Số lượng cần nhận"},
-                {"QuantityReceived", "Số lượng thực nhận"},
+                {"ReceivedQuantity", "Số lượng thực nhận"},
                 {"QuantityStatusDescription", "Trạng thái số lượng"},
-                {"EstimateQuantity", "Số lượng đã nhận"},
+                {"EstimateQuantity", "Số lượng dự kiến nhận"},
             };
             SetColumnGridView();
             await GetCoordiateView();
@@ -351,7 +351,7 @@ namespace WHS.Popup.Transfer
                 {"PldgCode", "Mã pack"},
                 {"Color", "Màu"},
                 {"QuantityToReceived", "Số lượng cần nhận"},
-                {"QuantityReceived", "Số lượng đã nhận"},
+                {"ReceivedQuantity", "Số lượng đã nhận"},
                 {"StatusDescription", "Trạng thái"},
                 {"DispatchStatusDescription", "Trạng thái điều phối"}
             };
@@ -368,9 +368,9 @@ namespace WHS.Popup.Transfer
                 {"NetWeight", "N.W"},
                 {"GrossWeight", "G.W"},
                 {"QuantityToReceived", "Số lượng cần nhận"},
-                {"QuantityReceived", "Số lượng đã nhận"},
+                {"ReceivedQuantity", "Số lượng đã nhận"},
                 {"QuantityStatusDescription", "Trạng thái số lượng"},
-                {"EstimateQuantity", "Số lượng đã nhận"},
+                {"EstimateQuantity", "Số lượng dự kiến nhận"},
             };
             SetColumnGridView();
             await GetCoordiateView();
@@ -470,7 +470,7 @@ namespace WHS.Popup.Transfer
 
                             coordinateDetailView.DataSource = null;
                             coordinateDetailView.DataSource = _fabricSelected;
-                        } 
+                        }
                         break;
                     case E_NPLType.PLDG:
                         {
@@ -616,7 +616,7 @@ namespace WHS.Popup.Transfer
                 var item = row.DataBoundItem;
                 if (item != null)
                 {
-                    sourceList.Remove(item); 
+                    sourceList.Remove(item);
                 }
             }
 

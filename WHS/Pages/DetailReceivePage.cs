@@ -1,9 +1,13 @@
-﻿using System;
+﻿using OfficeOpenXml;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -21,6 +25,9 @@ using WHS.Core.Utils;
 using WHS.Factory;
 using WHS.Forms;
 using WHS.Pages.Receive;
+using WHS.Popup;
+using WHS.Popup.Receive.DetailReceive;
+using WHS.Popup.Vehicle;
 using WHS.Service.Interface;
 using WHS.Utils;
 
@@ -263,9 +270,9 @@ namespace WHS.Pages
                     ["RemainingQuantity"] = "Số lượng còn lại",
                     ["EstimateQuantity"] = "Số lượng dự kiến nhận",
                     ["QuantityUnit"] = "Đơn vị số lượng",
-                    ["OrderDate"] = "Ngày đặt hàng",
-                    ["AvailableDate"] = "Ngày có thể nhận",
-                    ["ExpectedDate"] = "Ngày dự kiến nhận",
+                    ["OrderDateVN"] = "Ngày đặt hàng",
+                    ["AvailableDateVN"] = "Ngày có thể nhận",
+                    ["ExpectedDateVN"] = "Ngày dự kiến nhận",
                     ["StatusDescription"] = "Trạng thái",
                     ["DispatchStatusDescription"] = "Trạng thái điều phối",
                 },
@@ -284,9 +291,9 @@ namespace WHS.Pages
                     ["ReceivedQuantity"] = "Số lượng đã nhận",
                     ["RemainingQuantity"] = "Số lượng còn lại",
                     ["EstimateQuantity"] = "Số lượng dự kiến nhận",
-                    ["OrderDate"] = "Ngày đặt hàng",
-                    ["AvailableDate"] = "Ngày có thể nhận",
-                    ["ExpectedDate"] = "Ngày dự kiến nhận",
+                    ["OrderDateVN"] = "Ngày đặt hàng",
+                    ["AvailableDateVN"] = "Ngày có thể nhận",
+                    ["ExpectedDateVN"] = "Ngày dự kiến nhận",
                     ["StatusDescription"] = "Trạng thái",
                     ["DispatchStatusDescription"] = "Trạng thái điều phối",
                 },
@@ -310,9 +317,9 @@ namespace WHS.Pages
                     ["ReceivedQuantity"] = "Số lượng đã nhận",
                     ["RemainingQuantity"] = "Số lượng còn lại",
                     ["EstimateQuantity"] = "Số lượng dự kiến nhận",
-                    ["OrderDate"] = "Ngày đặt hàng",
-                    ["AvailableDate"] = "Ngày có thể nhận",
-                    ["ExpectedDate"] = "Ngày dự kiến nhận",
+                    ["OrderDateVN"] = "Ngày đặt hàng",
+                    ["AvailableDateVN"] = "Ngày có thể nhận",
+                    ["ExpectedDateVN"] = "Ngày dự kiến nhận",
                     ["StatusDescription"] = "Ngày dự kiến nhận",
                     ["DispatchStatusDescription"] = "Ngày dự kiến nhận",
                 },
@@ -420,5 +427,296 @@ namespace WHS.Pages
             _currentPage = 1;
             await LoadDataGridView();
         }
+
+        /// <summary>
+        /// Mở popup trạng thái xe
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void gridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex < 0) return; // Bỏ qua nếu double click header
+
+            var selectedRow = gridView.Rows[e.RowIndex];
+
+            int id = 0;
+
+            switch (_type)
+            {
+                case E_NPLType.FABRIC:
+                    if (selectedRow.DataBoundItem is FabricReceivedDto fabricData)
+                    {
+                        id = fabricData.ID;
+                    }
+                    break;
+                case E_NPLType.PLSP:
+                    if (selectedRow.DataBoundItem is PlspReceivedDto plspData)
+                    {
+                        id = plspData.ID;
+                    }
+                    break;
+                case E_NPLType.PLDG:
+                    if (selectedRow.DataBoundItem is PlspReceivedDto pldgData)
+                    {
+                        id = pldgData.ID;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            VehicleTransferPopup vehicleTransferPopup = FormFactory.CreateForm<VehicleTransferPopup>();
+            vehicleTransferPopup.Type = _type;
+            vehicleTransferPopup.ID = id;
+            vehicleTransferPopup.ShowDialog();
+        }
+
+        private Dictionary<string,string> GetColumnExcel()
+        {
+            return _type switch
+            {
+                E_NPLType.FABRIC => new Dictionary<string, string>()
+                {
+                    ["ID"] = "ID",
+                    ["MO"] = "MO",
+                    ["Supplier"] = "Mã nhà cung cấp",
+                    ["Style"] = "Style",
+                    ["Color"] = "Màu",
+                    ["FabricType"] = "Loại vải",
+                    ["Batch"] = "Lot",
+                    ["FabricLength"] = "Chiều dài",
+                    ["LengthUnit"] = "Đơn vị chiều dài",
+                    ["FabricWeight"] = "Khối lượng",
+                    ["WeightUnit"] = "Đơn vị khối lượng",
+                    ["FabricNumber"] = "Cuộn số",
+                    ["RollWidth"] = "Khổ",
+                    ["WidthUnit"] = "Đơn vị khổ",
+                    ["QuantityToReceived"] = "Số lượng cần nhận",
+                    ["QuantityUnit"] = "Đơn vị số lượng",
+                    ["OrderDate"] = "Ngày đặt hàng",
+                    ["AvailableDate"] = "Ngày có thể nhận",
+                    ["ExpectedDate"] = "Ngày dự kiến nhận",
+                    ["IsCancelled"] = "Hủy"
+                },
+                E_NPLType.PLSP => new Dictionary<string, string>()
+                {
+                    ["ID"] = "ID",
+                    ["MO"] = "MO",
+                    ["Supplier"] = "Mã nhà cung cấp",
+                    ["PlspType"] = "Loại phụ liệu",
+                    ["PlspCode"] = "Mã code",
+                    ["NplColor"] = "Màu",
+                    ["MarketCode"] = "Mã thị trường",
+                    ["Size"] = "Kích thước",
+                    ["PlspColor"] = "Màu sản phẩm",
+                    ["QuantityToReceived"] = "Số lượng cần nhận",
+                    ["OrderDate"] = "Ngày đặt hàng",
+                    ["AvailableDate"] = "Ngày có thể nhận",
+                    ["ExpectedDate"] = "Ngày dự kiến nhận",
+                    ["IsCancelled"] = "Hủy"
+                },
+                E_NPLType.PLDG => new Dictionary<string, string>()
+                {
+                    ["ID"] = "ID",
+                    ["MO"] = "MO",
+                    ["Supplier"] = "Mã nhà cung cấp",
+                    ["PldgType"] = "Loại phụ liệu",
+                    ["PldgCode"] = "Mã code",
+                    ["PoCode"] = "Mã PO",
+                    ["QuantityPerCarton"] = "Số chiếc mỗi thùng",
+                    ["NetWeight"] = "N.W",
+                    ["GrossWeight"] = "G.W",
+                    ["Color"] = "Màu",
+                    ["PldgWeight"] = "Khối lượng",
+                    ["WeightUnit"] = "Đơn vị khối lượng",
+                    ["PldgSize"] = "Kích thước",
+                    ["SizeUnit"] = "Đơn vị kích thước",
+                    ["QuantityToReceived"] = "Số lượng cần nhận",
+                    ["OrderDate"] = "Ngày đặt hàng",
+                    ["StatusDescription"] = "Trạng thái",
+                    ["DispatchStatusDescription"] = "Trạng thái điều phối",
+                    ["IsCancelled"] = "Hủy"
+                },
+                _ => throw new NotSupportedException("Unsupported NPL type")
+            };
+        }
+
+        private async void exportBtn_Click(object sender, EventArgs e)
+        {
+            Response<byte[]>? res = null;
+
+            Dictionary<string, string> headers = GetColumnExcel();
+            switch (_type)
+            {
+                case E_NPLType.FABRIC:
+                    {
+                        var service = ReceiveFactory.GetService<FabricDto, FabricReceivedDto>(_type);
+                        res = await service.ExportExcelDetailNotDispatch(_type, headers);
+                        break;
+                    }
+                case E_NPLType.PLSP:
+                    {
+                        var service = ReceiveFactory.GetService<PlspDto, PlspReceivedDto>(_type);
+                        res = await service.ExportExcelDetailNotDispatch(_type, headers);
+                        break;
+                    }
+                case E_NPLType.PLDG:
+                    {
+                        var service = ReceiveFactory.GetService<PldgDto, PldgReceivedDto>(_type);
+                        res = await service.ExportExcelDetailNotDispatch(_type, headers);
+                        break;
+                    }
+                default:
+                    throw new NotSupportedException("Unsupported NPL type");
+            }
+
+            if (!res.IsSuccess)
+            {
+                ShowMessage.Error(res.Message);
+                return;
+            }
+
+            // Chọn nơi lưu file và lưu file
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "Excel files (*.xlsx)|*.xlsx";
+                string timestamp = DateTime.Now.ToString("ddMMyyyyHHmmss");
+                saveFileDialog.FileName = $"{_type}_{timestamp}.xlsx";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    File.WriteAllBytes(saveFileDialog.FileName, res.Data!);
+                    DialogResult result = MessageBox.Show("Xuất file thành công! Bạn có muốn mở file không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                    {
+                        Process.Start(new ProcessStartInfo(saveFileDialog.FileName) { UseShellExecute = true });
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Upload dữ liệu từ file excel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void updateBtn_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "Excel Files|*.xlsx;*.xls";
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = ofd.FileName;
+
+                    Dictionary<string, string> headers = GetColumnExcel();
+                    Response<int> res = null!;
+
+                    switch (_type)
+                    {
+                        case E_NPLType.FABRIC:
+                            List<FabricDto> fabricData = ReadExcelAs<FabricDto>(filePath, headers);
+                            var fabricService = ReceiveFactory.GetService<FabricDto, FabricReceivedDto>(_type);
+                            res = await fabricService.UpdateReceivedDetail(fabricData);
+                            break;
+
+                        case E_NPLType.PLSP:
+                            List<PlspDto> plspData = ReadExcelAs<PlspDto>(filePath, headers);
+                            var plspService = ReceiveFactory.GetService<PlspDto, PlspReceivedDto>(_type);
+                            res = await plspService.UpdateReceivedDetail(plspData);
+                            break;
+
+                        case E_NPLType.PLDG:
+                            List<PldgDto> pldgData = ReadExcelAs<PldgDto>(filePath, headers);
+                            var pldgService = ReceiveFactory.GetService<PldgDto, PldgReceivedDto>(_type);
+                            res = await pldgService.UpdateReceivedDetail(pldgData);
+                            break;
+                    }
+
+                    if (!res.IsSuccess)
+                    {
+                        ShowMessage.Error(res.Message);
+                        return;
+                    }
+
+                    DialogResult result = ShowMessage.Success(res.Message);
+                    if (result == DialogResult.OK)
+                    {
+                        _currentPage = 1;
+                        await LoadDataGridView();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Lấy dữ liệu từ file excel ép kiểu về kiểu T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filePath"></param>
+        /// <param name="headers"></param>
+        /// <returns></returns>
+        public List<T> ReadExcelAs<T>(string filePath, Dictionary<string, string> headers) where T : new()
+        {
+            ExcelPackage.License.SetNonCommercialPersonal("whs");
+
+            var result = new List<T>();
+
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
+            {
+                var worksheet = package.Workbook.Worksheets[0];
+                var colMapping = new Dictionary<int, PropertyInfo>();
+                var props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+                // Ánh xạ header Excel -> Property
+                for (int col = 1; col <= worksheet.Dimension.End.Column; col++)
+                {
+                    var cellHeader = worksheet.Cells[1, col].Text.Trim();
+                    var propMatch = props.FirstOrDefault(p =>
+                        headers.TryGetValue(p.Name, out string? headerName) && headerName == cellHeader
+                    );
+                    if (propMatch != null)
+                        colMapping[col] = propMatch;
+                }
+
+                // Đọc từng dòng dữ liệu
+                for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                {
+                    var instance = new T();
+
+                    foreach (var map in colMapping)
+                    {
+                        var cell = worksheet.Cells[row, map.Key];
+                        var prop = map.Value;
+                        object? cellValue = cell.Value;
+
+                        if (cellValue == null) continue;
+
+                        try
+                        {
+                            object? convertedValue = cellValue;
+
+                            var targetType = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+
+                            if (targetType != typeof(DateTime))
+                            {
+                                convertedValue = Convert.ChangeType(cellValue, targetType, CultureInfo.InvariantCulture);
+                            }
+
+                            prop.SetValue(instance, convertedValue);
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+
+                    result.Add(instance);
+                }
+            }
+
+            return result;
+        }
+
     }
 }

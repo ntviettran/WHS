@@ -64,6 +64,7 @@ namespace WHS.Popup
                 panel3.Visible = false;
                 _columns = new Dictionary<string, string>()
                 {
+                    ["ID"] = "ID",
                     ["MO"] = "MO",
                     ["Supplier"] = "Mã nhà cung cấp",
                     ["PlspType"] = "Loại phụ liệu",
@@ -76,9 +77,9 @@ namespace WHS.Popup
                     ["ReceivedQuantity"] = "Số lượng đã nhận",
                     ["RemainingQuantity"] = "Số lượng còn lại",
                     ["EstimateQuantity"] = "Số lượng dự kiến nhận",
-                    ["OrderDate"] = "Ngày đặt hàng",
-                    ["AvailableDate"] = "Ngày có thể nhận",
-                    ["ExpectedDate"] = "Ngày dự kiến nhận",
+                    ["OrderDateVN"] = "Ngày đặt hàng",
+                    ["AvailableDateVN"] = "Ngày có thể nhận",
+                    ["ExpectedDateVN"] = "Ngày dự kiến nhận",
                     ["StatusDescription"] = "Trạng thái",
                     ["DispatchStatusDescription"] = "Trạng thái điều phối",
                 };
@@ -95,9 +96,9 @@ namespace WHS.Popup
                     ["Size"] = "Kích thước",
                     ["PlspColor"] = "Màu sản phẩm",
                     ["QuantityToReceived"] = "Số lượng cần nhận",
-                    ["OrderDate"] = "Ngày đặt hàng",
-                    ["AvailableDate"] = "Ngày có thể nhận",
-                    ["ExpectedDate"] = "Ngày dự kiến nhận",
+                    ["OrderDateVN"] = "Ngày đặt hàng",
+                    ["AvailableDateVN"] = "Ngày có thể nhận",
+                    ["ExpectedDateVN"] = "Ngày dự kiến nhận",
                 };
             }
 
@@ -123,8 +124,7 @@ namespace WHS.Popup
 
             if (res.Data != null)
             {
-                _dataTable = ConvertToDataTable<PlspReceivedDto>(res.Data);
-                gridView.DataSource = _dataTable;
+                gridView.DataSource = res.Data;
                 gridView.ClearSelection();
             }
         }
@@ -139,22 +139,15 @@ namespace WHS.Popup
         /// <param name="e"></param>
         private async void saveBtn_Click(object sender, EventArgs e)
         {
+
+            if (_statusForm != E_StatusForm.ADD) return;
+
             List<string> numCols = new List<string>() { "QuantityToReceived" };
             bool validateDetail = ValidateNPLDetail(numCols);
             if (!validateDetail) return;
 
-            Response<int> res;
+            Response<int> res = await _plspService.CreateReceiveAsync(_dataTable);
 
-            if (_statusForm == E_StatusForm.ADD)
-            {
-                res = await _plspService.CreateReceiveAsync(_dataTable);
-            }
-            else
-            {
-                res = await _plspService.UpdateReceiveAsync(_receiveData.Id, _dataTable);
-            }
-
-            // Bước3: Xử lí message trả về
             if (!res.IsSuccess)
             {
                 MessageBox.Show(res.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);

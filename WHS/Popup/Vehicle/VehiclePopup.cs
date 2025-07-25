@@ -71,6 +71,7 @@ namespace WHS.Popup.Transfer
         private async void VehiclePopup_Load(object sender, EventArgs e)
         {
             GridViewUtils.SetBuffer(gridView);
+            gridView.AutoGenerateColumns = false;
             await GetDataGridView();
         }
 
@@ -96,17 +97,7 @@ namespace WHS.Popup.Transfer
                 return;
             }
 
-            var viewList = res.Data!.Select(x => new
-            {
-                x.ID,
-                VehicleMode = EnumHelper.GetEnumDescription(x.VehicleMode),
-                VehicleType = EnumHelper.GetEnumDescription(x.VehicleType),
-                x.LicensePlate,
-                x.SealNumber,
-                x.Capacity
-            }).ToList();
-
-            gridView.DataSource = viewList;
+            gridView.DataSource = res.Data;
         }
 
         /// <summary>
@@ -167,20 +158,39 @@ namespace WHS.Popup.Transfer
         /// <param name="e"></param>
         private void saveBtn_Click(object sender, EventArgs e)
         {
-            var row = gridView.CurrentRow;
-
-            VehicleDto vehicle = new VehicleDto()
+            if (gridView.CurrentRow?.DataBoundItem is VehicleDto vehicle)
             {
-                ID = int.Parse(row.Cells["ID"].Value.ToString()!),
-                VehicleMode = EnumHelper.GetEnumByDescription<E_VehicleMode>(row.Cells["VehicleMode"].Value.ToString()!),
-                VehicleType = EnumHelper.GetEnumByDescription<E_VehicleType>(row.Cells["VehicleType"].Value.ToString()!),
-                LicensePlate = row.Cells["LicensePlate"].Value.ToString()!,
-                SealNumber = row.Cells["SealNumber"].Value.ToString()!,
-                Capacity = float.Parse(row.Cells["Capacity"].Value.ToString()!)
-            };
+                OnVehicleSelected?.Invoke(vehicle);
+                this.Close();
+            }
+            else
+            {
+                ShowMessage.Error("Vui lòng chọn phương tiện");
+            }
+        }
+        /// <summary>
+        /// Edit phương tiện hiện tại
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void editVehicleContext_Click(object sender, EventArgs e)
+        {
+            if (gridView.CurrentRow?.DataBoundItem is VehicleDto vehicle)
+            {
+                AddVehiclePopup vehiclePopup = FormFactory.CreateForm<AddVehiclePopup>();
+                vehiclePopup.SetupEdit(vehicle);
 
-            OnVehicleSelected?.Invoke(vehicle);
-            this.Close();
+                vehiclePopup.SaveSuccess += async (sender, e) =>
+                {
+                    await GetDataGridView();
+                };
+
+                vehiclePopup.ShowDialog();
+            }
+            else
+            {
+                ShowMessage.Error("Vui lòng chọn phương tiện cần chỉnh sửa");
+            }
         }
     }
 }
